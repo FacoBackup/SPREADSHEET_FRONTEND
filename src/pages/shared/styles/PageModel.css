@@ -1,0 +1,120 @@
+.component_title_container{
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    border-bottom: #262d37 2px solid;
+}
+.center_component {
+    margin: 1vh auto;
+    width: 45vw;
+
+}
+.content_bar_selected_item_box_container{
+    display: flex;
+    justify-content: space-evenly;
+    width: 10vw;
+
+    overflow: hidden;
+    margin:  1vh auto;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #3b424c;
+    border:#39adf6 2px solid;
+}
+.content_bar_box_container {
+    display: flex;
+    justify-content: space-evenly;
+    width: 10vw;
+
+    overflow: hidden;
+    margin:  1vh auto;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #3b424c;
+
+}
+
+div.content_bar_box_container:hover {
+    border:#39adf6 2px solid;
+}
+.left_components {
+
+    position: fixed;
+    bottom: 1vh;
+    left: 0;
+    background-color: #303741;
+    box-shadow: -1px 5px 5px #23282e;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    height: 98vh;
+
+    width: 15vw;
+    overflow: hidden;
+}
+.right_components {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    height: 100vh;
+    width: 15vw;
+
+    overflow: hidden;
+}
+
+.right_top_half_container{
+    display: grid;
+    grid-template-rows: 1fr 13.8fr 1fr;
+    row-gap: 1vh;
+    justify-content: space-around;
+    height: 56vh;
+
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    background-color: #303741;
+    margin: 1vh auto;
+    align-items: flex-start;
+    overflow: hidden;
+
+}
+.right_bottom_half_container{
+    height: 41vh;
+    box-shadow: 0 5px 5px #23282e;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    background-color: #303741;
+}
+
+.modal_container {
+    display: grid;
+    justify-content: center;
+    padding: 20px;
+    width: 30vw;
+    height: 30vh;
+    margin: 2% auto auto;
+    background-color: #303741;
+}
+
+.modal_title_component {
+    grid-row: 1;
+    text-align: center;
+}
+
+.modal_top_component {
+    grid-row: 2;
+    width: 500px;
+
+    margin: auto;
+}
+
+.modal_middle_component {
+    grid-row: 3;
+    width: 200px;
+    margin: auto;
+}
+
+.modal_bottom_component {
+    grid-row: 4;
+    width: 350px;
+    margin: auto;
+}

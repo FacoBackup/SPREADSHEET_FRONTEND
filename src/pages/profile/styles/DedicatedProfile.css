@@ -1,0 +1,114 @@
+.profile_center_component {
+    margin: auto;
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+.profile_background_image_container {
+    position: fixed;
+    top:1vh;
+    right: 0;
+
+    display: grid;
+    align-content: center;
+    width: 90vw;
+    height: 35vh;
+    overflow: hidden;
+}
+
+.profile_content_container {
+    box-shadow: 0 5px 5px #23282e;
+    background-color: #303741;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    /* position:initial; */
+
+    border-radius: 8px;
+    /* max-height: 65.6vh; */
+    margin-top: 27vh;
+    margin-left: 41vw;
+    width: 55vw;
+    padding-bottom: 2vh;
+    /* overflow-x: hidden; */
+    position: relative;
+
+}
+
+.profile_container {
+    position: fixed;
+    top: 27vh;
+    right: 61vw;
+
+    display: grid;
+    box-shadow: 0 5px 5px #23282e;
+    justify-content: center;
+    align-content: space-between;
+    /* row-gap: vh; */
+    border-radius: 8px;
+    /* grid-template-rows: 1fr 1fr 1fr; */
+    overflow: hidden;
+    background-color: #303741;
+
+    width: 20vw;
+    height: 72vh;
+}
+
+.options_container {
+    position: fixed;
+    top: 64vh;
+    right:61vw;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    justify-content: space-between;
+    column-gap: 1vw;
+    row-gap: 1vh;
+    align-content: space-between;
+    /* row-gap: vh; */
+    border-radius: 8px;
+    /* grid-template-rows: 1fr 1fr 1fr; */
+
+
+    width: 20vw;
+    height: 25vh;
+}
+.profile_topics_container {
+    position: relative;
+    margin: auto;
+
+    width: 42vw;
+}
+
+
+.option_content {
+    /* margin: auto; */
+    display: grid;
+    /* column-gap: .5vw; */
+    /*justify-items: space-between;*/
+    align-items: center;
+    /* width: 11vw; */
+    height: 11vh;
+
+}
+
+
+.profile_background_image {
+    width: 100%;
+}
+
+.background_image {
+    width: 100%;
+}
+
+.profile_settings_container {
+    margin-top: 2vh;
+
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    /* justify-content: left; */
+    width: 30vw;
+    row-gap: 2vh;
+}
