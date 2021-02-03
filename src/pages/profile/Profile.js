@@ -7,7 +7,7 @@ import axios from 'axios';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AboutComponent from './components/options/UserAboutComponent'
 import AboutProfileComponent from './components/options/UserAboutComponent'
-import UserCommunitiesComponent from './components/options/UserCommunitiesComponent'
+import UserGroupsComponent from './components/options/UserGroupsComponent'
 import Host from '../../Host'
 import ProfileBar from './components/bar/ProfileBarComponent'
 import Avatar from '@material-ui/core/Avatar'
@@ -24,8 +24,7 @@ class Profile extends React.Component {
             userID: match.params.userID,
             token: (new Cookies()).get("JWT"),
             profile: {},
-
-            community: false,
+            group: false,
             aboutOption: false,
             settings: false
         }
@@ -62,9 +61,9 @@ class Profile extends React.Component {
                     <AboutComponent profile={this.state.profile}/>
                 )
             }
-            case this.state.community: {
+            case this.state.group: {
                 return (
-                    <UserCommunitiesComponent token={(new Cookies()).get('JWT')} userID={this.state.userID}/>
+                    <UserGroupsComponent token={(new Cookies()).get('JWT')} userID={this.state.userID}/>
                 )
             }
             case this.state.settings: {

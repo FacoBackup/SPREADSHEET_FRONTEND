@@ -7,12 +7,12 @@ import Cookies from 'universal-cookie';
 import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
 import Button from '@material-ui/core/Button'
 
-class UserCommunitiesComponent extends React.Component {
+class UserGroupsComponent extends React.Component {
     constructor(params) {
         super(params)
         this.state = {
             token: params.token,
-            communities: [],
+            groups: [],
             date: new Date(),
             conversations: {},
             userID: params.userID
@@ -61,8 +61,8 @@ class UserCommunitiesComponent extends React.Component {
             <div>
                 <p style={{fontSize: '20px', fontWeight: '500', textAlign: 'center'}}>Communities</p>
                 {(this.state.communities.length === 0 && this.state.userID === (new Cookies()).get("ID")) ?
-                    <p style={{textAlign: 'center'}}>Looks like you are not a member of any community, try searching by one.</p>
-                    : this.state.communities.map((community) =>(
+                    <p style={{textAlign: 'center'}}>Looks like you are not a member of any group, try searching by one.</p>
+                    : this.state.communities.map((group) =>(
                         <div style={{
                             marginTop:'1vh',
                             width: '20vw',
@@ -78,22 +78,22 @@ class UserCommunitiesComponent extends React.Component {
                             <div style={{display: 'flex', alignItems: 'center', alignContent: 'center'}}>
                                 <Avatar
                                     style={{height: '55px', width: '55px'}}
-                                    src={community.imageURL}
-                                    alt="community"
+                                    src={group.imageURL}
+                                    alt="group"
 
-                                >{typeof community.imageURL !== 'undefined' && community.imageURL !== null ? null :
+                                >{typeof group.imageURL !== 'undefined' && group.imageURL !== null ? null :
                                     <PeopleAltRoundedIcon/>}</Avatar>
                                 <ul>
                                     <li style={{fontSize: '17px', fontWeight: '400'}}>
-                                        {community.name}
+                                        {group.name}
                                     </li>
                                     <li style={{fontSize: '17px', fontWeight: '400', color: '#aaadb1'}}>
-                                        {community.about}
+                                        {group.about}
                                     </li>
                                 </ul>
                             </div>
                             <Button style={{marginLeft: '10px', textTransform:'capitalize'}} variant="outlined" disableElevation color="default"
-                                    href={"/community/" + community.communityID}>See</Button>
+                                    href={"/group/" + group.groupID}>See</Button>
                         </div>
                         )
                     )}
@@ -102,4 +102,4 @@ class UserCommunitiesComponent extends React.Component {
     }
 }
 
-export default UserCommunitiesComponent;
+export default UserGroupsComponent;

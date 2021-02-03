@@ -8,8 +8,6 @@ import Avatar from '@material-ui/core/Avatar'
 import TextField from '@material-ui/core/TextField';
 import "../styles/SearchComponentStyle.css"
 import Host from '../../../Host'
-import followUser from '../../shared/functions/social/FollowUser'
-import UnfollowUser from '../../shared/functions/social/UnfollowUser'
 import ChatRoundedIcon from '@material-ui/icons/ChatRounded';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
@@ -17,7 +15,6 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FollowCommunity from "../../shared/functions/community/FollowCommunity";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const theme = createMuiTheme({
@@ -34,7 +31,7 @@ class SearchComponent extends React.Component {
             token: params.token,
             subjects: [],
             maxID: null,
-            community: false
+            group: false
         }
         this.fetchData = this.fetchData.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -42,10 +39,10 @@ class SearchComponent extends React.Component {
 
 
     handleChange(event) {
-        if(event.target.name === "community"){
+        if(event.target.name === "group"){
             console.log(event)
             this.setState({
-                community: event.target.value === "community",
+                group: event.target.value === "group",
                 subjects: [],
                 maxID: null
             })
@@ -66,7 +63,7 @@ class SearchComponent extends React.Component {
     async fetchData(input) {
         try{
 
-            if (input !== '' && this.state.community === false)
+            if (input !== '' && this.state.group === false)
                 await axios({
                     method: 'patch',
                     url: Host() + 'api/search/user',
@@ -89,10 +86,10 @@ class SearchComponent extends React.Component {
                         maxID: null
                     })
                 })
-            else if(input !== '' && this.state.community === true){
+            else if(input !== '' && this.state.group === true){
                 await axios({
                     method: 'patch',
-                    url: Host() + 'api/search/community',
+                    url: Host() + 'api/search/group',
                     headers: {"Authorization": 'Bearer ' + this.state.token},
                     data: {
                         maxID: this.state.maxID,
@@ -139,13 +136,13 @@ class SearchComponent extends React.Component {
         this.fetchData().then(r => console.log(r))
     }
 
-    async followCommunity(id){
-        await FollowCommunity(id).then(r => console.log(r))
+    async followgroup(id){
+        await FollowGroup(id).then(r => console.log(r))
         this.fetchData().then(r => console.log(r))
     }
 
     renderAsUser(subject){
-       if(this.state.community === false){
+       if(this.state.group === false){
            return(
                <div style={{
                    width:'65%',
@@ -201,8 +198,8 @@ class SearchComponent extends React.Component {
            )
        }
     }
-    renderAsCommunity(subject){
-        if(this.state.community === true){
+    renderAsgroup(subject){
+        if(this.state.group === true){
             return(
                 <div style={{width:'65%', margin:'1vh auto', display:'grid', justifyContent:'center', justifyItems:'center',backgroundColor: '#3b424c',
                     borderRadius: '8px',
@@ -218,7 +215,7 @@ class SearchComponent extends React.Component {
                         <Avatar
                             style={{height: '55px', width: '55px'}}
                             src={subject.imageURL}
-                            alt="community"
+                            alt="group"
 
                         />
                         <ul>
@@ -239,10 +236,10 @@ class SearchComponent extends React.Component {
                         marginBottom:'1vh'
 
                     }}>
-                        <Button href={"/component/" + subject.communityID } variant="contained" disableElevation >SEE</Button>
+                        <Button href={"/component/" + subject.groupID } variant="contained" disableElevation >SEE</Button>
                         {typeof subject.role !== 'undefined' && subject.role !== null  ?
                             <Button disabled variant="outlined" style={{border:'#e34f50 2px solid', color:'white', textTransform:'capitalize'}}><RemoveCircleRoundedIcon/> {subject.role === "FOLLOWER" ? "Unfollow": "Leave"}</Button> :
-                            <Button onClick={() => this.followCommunity(subject.communityID)} variant="outlined"  style={{border:'#39adf6 2px solid', color:'white'}} disableElevation><AddCircleRoundedIcon/></Button>}
+                            <Button onClick={() => this.followgroup(subject.groupID)} variant="outlined"  style={{border:'#39adf6 2px solid', color:'white'}} disableElevation><AddCircleRoundedIcon/></Button>}
                     </div>
                 </div>
             )
@@ -254,11 +251,11 @@ class SearchComponent extends React.Component {
             <div className="search_component">
 
                 <div className="search_box_container">
-                    <TextField style={{width:'32vw'}} label={"Search " + (this.state.community === true ? "Communities" : "Users")} variant="outlined"  onChange={this.handleChange}/>
+                    <TextField style={{width:'32vw'}} label={"Search " + (this.state.group === true ? "Groups" : "Users")} variant="outlined"  onChange={this.handleChange}/>
                     <FormControl component="fieldset">
-                        <RadioGroup aria-label="option" name="community" value={this.state.community === true?  "community":"user"} onChange={this.handleChange}>
+                        <RadioGroup aria-label="option" name="group" value={this.state.group === true?  "group":"user"} onChange={this.handleChange}>
                             <FormControlLabel value="user" control={<Radio />} label="User" />
-                            <FormControlLabel value="community" control={<Radio />} label="Community" />
+                            <FormControlLabel value="group" control={<Radio />} label="group" />
                         </RadioGroup>
                     </FormControl>
                 </div>
@@ -272,7 +269,7 @@ class SearchComponent extends React.Component {
                         loader={console.log("LOADING")}>
                         {this.state.subjects.map((subject) =>
                             <>
-                                {this.renderAsCommunity(subject)}
+                                {this.renderAsgroup(subject)}
                                 {this.renderAsUser(subject)}
                             </>
                         )}

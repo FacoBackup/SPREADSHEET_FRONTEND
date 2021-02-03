@@ -1,21 +1,20 @@
 import React from 'react'
 import axios from 'axios';
 import {DefaultButton} from 'office-ui-fabric-react';
-// import { Persona, PersonaSize } from 'office-ui-fabric-react/lib/Persona';
 import Host from '../../../../Host'
 import {FontSizes, FontWeights} from '@fluentui/theme';
 import Cookies from 'universal-cookie';
 import Avatar from '@material-ui/core/Avatar'
 import Button from "@material-ui/core/Button";
 
-class CommunityUsersComponent extends React.Component {
-    communityName;
+class GroupUsersComponent extends React.Component {
+    groupName;
     userImageURL;
     constructor(params) {
         super(params)
         this.state = {
             options: params.options,
-            communityID: params.communityID,
+            groupID: params.groupID,
             token: params.token,
             members: [],
             role: params.role
@@ -58,7 +57,7 @@ class CommunityUsersComponent extends React.Component {
             }
             default : {
                 return (
-                    "All Users Related To This Community"
+                    "All Users Related To This Group"
                 )
             }
         }
@@ -72,10 +71,10 @@ class CommunityUsersComponent extends React.Component {
                 })
                 await axios({
                     method: 'patch',
-                    url: Host() + 'api/get/followers/community',
+                    url: Host() + 'api/get/followers/group',
                     headers: {"Authorization": 'Bearer ' + this.state.token},
                     data: {
-                        communityID: this.state.communityID
+                        groupID: this.state.groupID
                     }
                 }).then(res => {
                     this.setState({
@@ -95,7 +94,7 @@ class CommunityUsersComponent extends React.Component {
                     url: Host() + 'api/get/all/users',
                     headers: {"Authorization": 'Bearer ' + this.state.token},
                     data: {
-                        communityID: this.state.communityID
+                        groupID: this.state.groupID
                     }
                 }).then(res => {
                     this.setState({
@@ -115,7 +114,7 @@ class CommunityUsersComponent extends React.Component {
                     url: Host() + 'api/get/mods',
                     headers: {"Authorization": 'Bearer ' + this.state.token},
                     data: {
-                        communityID: this.state.communityID
+                        groupID: this.state.groupID
                     }
                 }).then(res => {
                     this.setState({
@@ -132,10 +131,10 @@ class CommunityUsersComponent extends React.Component {
                 })
                 await axios({
                     method: 'patch',
-                    url: Host() + 'api/get/community/related/users',
+                    url: Host() + 'api/get/group/related/users',
                     headers: {"Authorization": 'Bearer ' + this.state.token},
                     data: {
-                        communityID: this.state.communityID
+                        groupID: this.state.groupID
                     }
                 }).then(res => {
 
@@ -149,13 +148,13 @@ class CommunityUsersComponent extends React.Component {
         }
     }
 
-    async promote(userID, communityID) {
+    async promote(userID, groupID) {
         await axios({
             method: 'put',
             url: Host() + 'api/promote/member',
             headers: {"Authorization": 'Bearer ' + this.state.token},
             data: {
-                communityID: communityID,
+                groupID: groupID,
                 memberID: userID
             }
         }).then(res => {
@@ -165,13 +164,13 @@ class CommunityUsersComponent extends React.Component {
             .catch(error => console.log(error))
     }
 
-    async lower(userID, communityID) {
+    async lower(userID, groupID) {
         await axios({
             method: 'put',
             url: Host() + 'api/lower/member',
             headers: {"Authorization": 'Bearer ' + this.state.token},
             data: {
-                communityID: communityID,
+                groupID: groupID,
                 memberID: userID
             }
         }).then(res => {
@@ -181,7 +180,7 @@ class CommunityUsersComponent extends React.Component {
             .catch(error => console.log(error))
     }
 
-    async removeUser(userID, communityID) {
+    async removeUser(userID, groupID) {
 
 
         await axios({
@@ -189,7 +188,7 @@ class CommunityUsersComponent extends React.Component {
             url: Host() + 'api/remove/member',
             headers: {"Authorization": 'Bearer ' + this.state.token},
             data: {
-                communityID: communityID,
+                groupID: groupID,
                 memberID: userID
             }
         }).then(res => {
@@ -199,7 +198,7 @@ class CommunityUsersComponent extends React.Component {
             .catch(error => console.log(error))
     }
 
-    renderButtons(userID, userRole, communityID) {
+    renderButtons(userID, userRole, groupID) {
         console.log(userRole)
         if (userID !== (new Cookies()).get("ID"))
             return (
@@ -208,10 +207,10 @@ class CommunityUsersComponent extends React.Component {
                     {(userRole !== "MODERATOR" && this.state.role === "MODERATOR") ?
                         <DefaultButton text="Promote User" onClick={alert("CLICKED")}/> : null}
                     {(userRole !== "FOLLOWER" && this.state.role === "MODERATOR") ?
-                        <DefaultButton text="Lower User" onClick={() => this.lower(userID, communityID)}/> : null}
+                        <DefaultButton text="Lower User" onClick={() => this.lower(userID, groupID)}/> : null}
                     {(this.state.role === "MODERATOR") ?
                         <DefaultButton style={{backgroundColor: "red", color: "white"}} text="Remove User"
-                                       onClick={() => this.removeUser(userID, communityID)}/> : null}
+                                       onClick={() => this.removeUser(userID, groupID)}/> : null}
                 </div>
             )
     }
@@ -256,9 +255,9 @@ class CommunityUsersComponent extends React.Component {
                             }}>
                                 {member.role.toLowerCase()}
                             </li>
-                            {typeof member.communityName !== 'undefined' && member.communityName !== null ?
+                            {typeof member.groupName !== 'undefined' && member.groupName !== null ?
                                 <li style={{fontSize: '17px', fontWeight: '400', color: '#aaadb1'}}>
-                                    {member.communityName}
+                                    {member.groupName}
                                 </li> : null}
                         </ul>
                         {parseInt((new Cookies()).get("ID")) !== member.userID?
@@ -273,4 +272,4 @@ class CommunityUsersComponent extends React.Component {
     }
 }
 
-export default CommunityUsersComponent
+export default GroupUsersComponent

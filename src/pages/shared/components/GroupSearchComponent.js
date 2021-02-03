@@ -13,12 +13,12 @@ const theme = createMuiTheme({
     }
 });
 
-class CommunitySearchComponent extends React.Component {
+class GroupSearchComponent extends React.Component {
     constructor(params) {
         super(params)
         this.state = {
             token: params.token,
-            communities: [],
+            groups: [],
             date: new Date(),
             searchInput: '',
             maxID: null
@@ -65,7 +65,7 @@ class CommunitySearchComponent extends React.Component {
                 const size = res.data.length
                 if(typeof size !== 'undefined' && size > 0){
                     this.setState({
-                        communities: res.data
+                        groups: res.data
                     })
                 }
             }).catch(error => console.log(error))
@@ -74,21 +74,21 @@ class CommunitySearchComponent extends React.Component {
         }
     }
 
-    selectCommunity(community) {
-        sessionStorage.setItem("SELECTED_COMMUNITY", JSON.stringify(community))
+    selectGroup(group) {
+        sessionStorage.setItem("SELECTED_GROUP", JSON.stringify(group))
     }
 
     render() {
         return (
             <ThemeProvider theme={theme}>
                 <div >
-                    {this.state.communities.map((subject) =>
+                    {this.state.groups.map((subject) =>
                         <div className={"subject_content_container"}>
 
                             <Avatar
                                 style={{height: '55px', width: '55px'}}
                                 src={subject.imageURL}
-                                alt="community"
+                                alt="group"
 
                             />
                             <ul>
@@ -100,7 +100,7 @@ class CommunitySearchComponent extends React.Component {
                                 </li>
                             </ul>
 
-                            <Button variant="contained" color="primary" onClick={() => this.selectCommunity(subject)} disableElevation>Select</Button>
+                            <Button variant="contained" color="primary" onClick={() => this.selectGroup(subject)} disableElevation>Select</Button>
                         </div>
                     )}
                 </div>
@@ -109,4 +109,4 @@ class CommunitySearchComponent extends React.Component {
     }
 }
 
-export default CommunitySearchComponent
+export default GroupSearchComponent

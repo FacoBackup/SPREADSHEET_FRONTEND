@@ -1,0 +1,50 @@
+.group_options_buttons {
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    padding-bottom: 1vh;
+    padding-top: 1vh;
+    border-radius: 8px;
+    margin: auto auto 1vh;
+}
+
+.group_about_container {
+    display: grid;
+    justify-content: center;
+    row-gap: 1vh;
+    width: 75%;
+    background-color: rgba(210, 208, 206, .5);
+    border-radius: 8px;
+    margin: auto;
+    padding: 1vh;
+}
+
+.group_creation_component {
+    display: grid;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    border-radius: 8px;
+    align-items: center;
+    margin: auto;
+    row-gap: 1vh;
+}
+
+.group_creation_buttons {
+    width: 75%;
+    padding-top: 1vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+}
+
+.group_creation_fields {
+    width: 75%;
+    display: grid;
+    row-gap: 1vh;
+    margin: auto;
+}
+
+.group_creation_title {
+    text-align: center;
+}

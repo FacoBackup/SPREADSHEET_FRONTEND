@@ -6,13 +6,13 @@ import {FontSizes, FontWeights} from '@fluentui/theme';
 import Cookies from 'universal-cookie';
 import "../../../shared/styles/TopicStyles.css"
 import {TextField} from 'office-ui-fabric-react/lib/TextField';
-import "../../styles/CommunityOptionsStyle.css"
+import "../../styles/GroupOptionsStyle.css"
 
-class CommunityAboutComponent extends React.Component {
+class GroupAboutComponent extends React.Component {
     constructor(params) {
         super(params)
         this.state = {
-            community: params.community,
+            group: params.group,
             imageURL: null,
             backgroundImageURL: null,
             about: null,
@@ -193,9 +193,7 @@ class CommunityAboutComponent extends React.Component {
                     break
             }
             default: {
-                return (
-                    null
-                )
+                return null
             }
         }
 
@@ -218,13 +216,13 @@ class CommunityAboutComponent extends React.Component {
     }
 
     async submitChanges() {
-        alert(this.state.community.communityID)
+        alert(this.state.group.groupID)
         await axios({
             method: 'put',
-            url: Host() + 'api/update/community',
+            url: Host() + 'api/update/group',
             headers: {"Authorization": 'Bearer ' + (new Cookies()).get("JWT")},
             data: {
-                communityID: this.state.community.communityID,
+                groupID: this.state.group.groupID,
                 about: this.state.about,
                 imageURL: this.state.imageURL,
                 backgroundImageURL: this.state.backgroundImageURL
@@ -250,25 +248,25 @@ class CommunityAboutComponent extends React.Component {
                     }}>Info</p>
 
                 </div>
-                <div className="community_about_container">
+                <div className="group_about_container">
                     <p style={{textAlign: 'center', fontSize: FontSizes.size16, fontWeight: FontWeights.regular}}>About
-                        this Community:</p>
+                        this Group:</p>
                     <p style={{
                         textAlign: 'center',
                         fontSize: FontSizes.size14,
                         fontWeight: FontWeights.regular
-                    }}>{this.state.community.about}</p>
-                    {(this.state.community.role === "MODERATOR") ?
-                        <TextField multiline onChange={this.handleChange} placeholder="About This Community"/> : null}
+                    }}>{this.state.group.about}</p>
+                    {(this.state.group.role === "MODERATOR") ?
+                        <TextField multiline onChange={this.handleChange} placeholder="About This Group"/> : null}
                 </div>
 
-                <div className="topic_image_container community_about_container">
+                <div className="topic_image_container group_about_container">
                     <p style={{
                         textAlign: 'center',
                         fontSize: FontSizes.size16,
                         fontWeight: FontWeights.regular
-                    }}>Community Pic</p>
-                    {(this.state.community.role === "MODERATOR") ?
+                    }}>Group Pic</p>
+                    {(this.state.group.role === "MODERATOR") ?
                         <DefaultButton style={{margin: 'auto'}} text="Upload a new image" onClick={() => this.setState({
                             backgroundModal: false,
                             imageModal: true
@@ -278,17 +276,17 @@ class CommunityAboutComponent extends React.Component {
                             fontWeight: FontWeights.regular
                         }}>Nothing here yet</p>}
                     {this.renderModal(0)}
-                    {this.renderImage((this.state.imageURL !== null) ? this.state.imageURL : this.state.community.imageURL)}
+                    {this.renderImage((this.state.imageURL !== null) ? this.state.imageURL : this.state.group.imageURL)}
 
                 </div>
-                <div className="topic_image_container community_about_container">
+                <div className="topic_image_container group_about_container">
                     <p style={{
                         color: '',
                         textAlign: 'center',
                         fontSize: FontSizes.size16,
                         fontWeight: FontWeights.regular
-                    }}>Community Background</p>
-                    {(this.state.community.role === "MODERATOR") ?
+                    }}>Group Background</p>
+                    {(this.state.group.role === "MODERATOR") ?
                         <DefaultButton style={{margin: 'auto'}} text="Upload a new background image"
                                        onClick={() => this.setState({
                                            backgroundModal: true,
@@ -299,10 +297,10 @@ class CommunityAboutComponent extends React.Component {
                             fontWeight: FontWeights.regular
                         }}>Nothing here yet</p>}
                     {this.renderModal(1)}
-                    {this.renderImage((this.state.backgroundImageURL !== null) ? this.state.backgroundImageURL : this.state.community.backgroundImageURL)}
+                    {this.renderImage((this.state.backgroundImageURL !== null) ? this.state.backgroundImageURL : this.state.group.backgroundImageURL)}
                 </div>
-                <div className="topic_image_container community_about_container">
-                    {(this.state.community.role === "MODERATOR") ?
+                <div className="topic_image_container group_about_container">
+                    {(this.state.group.role === "MODERATOR") ?
                         <DefaultButton style={{margin: 'auto'}} text="Submit Changes"
                                        onClick={() => this.submitChanges()}/> : null}
                 </div>
@@ -313,4 +311,4 @@ class CommunityAboutComponent extends React.Component {
     }
 }
 
-export default CommunityAboutComponent
+export default GroupAboutComponent

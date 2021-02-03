@@ -15,16 +15,16 @@ const theme = createMuiTheme({
     }
 });
 
-class CommunitySettingsComponent extends React.Component {
+class GroupSettingsComponent extends React.Component {
     constructor(params) {
         super(params)
         this.state = {
-            community: params.community,
-            about: params.community.about,
+            group: params.group,
+            about: params.group.about,
             // privacy: null,
-            name: params.community.name,
-            backgroundImage: params.community.backgroundImageURL,
-            pic: params.community.imageURL,
+            name: params.group.name,
+            backgroundImage: params.group.backgroundImageURL,
+            pic: params.group.imageURL,
         }
         this.handleChange = this.handleChange.bind(this)
     }
@@ -37,14 +37,14 @@ class CommunitySettingsComponent extends React.Component {
         })
     }
 
-    async updateCommunity() {
+    async updateGroup() {
         try {
             await axios({
                 method: 'put',
-                url: Host() + 'api/update/community',
+                url: Host() + 'api/update/group',
                 headers: {"Authorization": 'Bearer ' + (new Cookies()).get("JWT")},
                 data: {
-                    communityID: this.state.community.communityID,
+                    groupID: this.state.group.groupID,
                     name: this.state.name !== null ? this.state.name.toLowerCase() : this.state.name,
                     about: this.state.about,
                     backgroundImageURL: this.state.backgroundImage,
@@ -100,7 +100,7 @@ class CommunitySettingsComponent extends React.Component {
                     </div>
                     <div>
                         <TextField variant="outlined" multiline defaultValue={this.state.about}
-                                   style={{width: '30vw'}} label="About this community" name="about" onChange={this.handleChange}/>
+                                   style={{width: '30vw'}} label="About this group" name="about" onChange={this.handleChange}/>
 
                     </div>
                     <div style={{display: 'flex', justifyContent: 'center'}}>
@@ -170,11 +170,11 @@ class CommunitySettingsComponent extends React.Component {
                         </div> : null}
 
                     <Button variant="contained" style={{textTransform: 'capitalize', width: '15vw', margin: 'auto'}}
-                            color="primary" disableElevation onClick={() => this.updateCommunity()}>save</Button>
+                            color="primary" disableElevation onClick={() => this.updateGroup()}>save</Button>
                 </ThemeProvider>
             </div>
         )
     }
 }
 
-export default CommunitySettingsComponent
+export default GroupSettingsComponent

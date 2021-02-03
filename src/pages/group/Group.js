@@ -3,7 +3,7 @@ import ProfileBar from "../profile/components/bar/ProfileBarComponent.js"
 import "../shared/styles/PageModel.css"
 import {Redirect} from 'react-router-dom'
 import Cookies from 'universal-cookie';
-import NewCommunityComponent from './component/NewCommunityComponent'
+import GroupComponent from './component/GroupComponent'
 import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
@@ -12,11 +12,11 @@ const theme = createMuiTheme({
     }
 });
 
-class Community extends React.Component {
+class Group extends React.Component {
     constructor({match}) {
         super()
         this.state = {
-            communityID: match.params.id
+            groupID: match.params.id
         }
     }
 
@@ -25,7 +25,7 @@ class Community extends React.Component {
             return (
                 <ThemeProvider theme={theme}>
                     <div>
-                        <NewCommunityComponent communityID={this.state.communityID} token={(new Cookies()).get("JWT")}/>
+                        <GroupComponent groupID={this.state.groupID} token={(new Cookies()).get("JWT")}/>
                     </div>
                     <div className="left_components">
                         <ProfileBar/>
@@ -37,4 +37,4 @@ class Community extends React.Component {
     }
 }
 
-export default Community;
+export default Group;

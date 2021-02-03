@@ -12,25 +12,23 @@ import ListAltRoundedIcon from '@material-ui/icons/ListAltRounded';
 import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
 import HelpIcon from '@material-ui/icons/Help';
 import Host from '../../../Host'
-import CommunityUsersComponent from './users/CommunityUsersComponent'
-import CommunityRelatedComponent from './related/CommunityRelatedComponent'
+import GroupUsersComponent from './users/GroupUsersComponent'
 import SubjectRoundedIcon from '@material-ui/icons/SubjectRounded';
-import CommunitySettingsComponent from "./settings/CommunitySettingsComponent";
+import GroupSettingsComponent from "./settings/GroupSettingsComponent";
 
-class CommunityComponent extends React.Component {
+class GroupComponent extends React.Component {
     constructor(params) {
         super()
         this.state = {
-            community: {},
+            group: {},
             token: params.token,
-            communityID: params.communityID,
+            groupID: params.groupID,
             membersOption: false,
             all: false,
             mods: false,
             followers: false,
             topic: true,
             date: new Date(),
-            related: false,
             about: false,
             settings: false,
             dropdownSelectedOption: null
@@ -46,14 +44,14 @@ class CommunityComponent extends React.Component {
       try{
           await axios({
               method: 'patch',
-              url: Host() + 'api/get/community/by/id',
+              url: Host() + 'api/get/group/by/id',
               headers: {"Authorization": 'Bearer ' + this.state.token},
               data: {
-                  communityID: this.state.communityID
+                  groupID: this.state.groupID
               }
           }).then(res => {
               this.setState({
-                  community: res.data
+                  group: res.data
               })
           })
               .catch(error => console.log(error))
@@ -66,20 +64,12 @@ class CommunityComponent extends React.Component {
 
     optionSelect() {
         switch (true) {
-            case this.state.related: {
-                return (
-
-                    <CommunityRelatedComponent communityID={this.state.communityID}/>
-
-                )
-            }
-
             case (this.state.membersOption): {
 
                 return (
 
-                    <CommunityUsersComponent token={this.state.token} role={this.state.community.role}
-                                             communityID={this.state.communityID} options={1}/>
+                    <GroupUsersComponent token={this.state.token} role={this.state.group.role}
+                                         groupID={this.state.groupID} options={1}/>
 
                 )
             }
@@ -87,15 +77,15 @@ class CommunityComponent extends React.Component {
 
                 return (
 
-                    <CommunityUsersComponent token={this.state.token} role={this.state.community.role}
-                                             communityID={this.state.communityID}/>
+                    <GroupUsersComponent token={this.state.token} role={this.state.group.role}
+                                         groupID={this.state.groupID}/>
 
                 )
             }
             case this.state.mods: {
                 return (
 
-                    <CommunityUsersComponent token={this.state.token} communityID={this.state.communityID} options={2}/>
+                    <GroupUsersComponent token={this.state.token} groupID={this.state.groupID} options={2}/>
 
                 )
             }
@@ -103,25 +93,16 @@ class CommunityComponent extends React.Component {
 
                 return (
 
-                    <CommunityUsersComponent token={this.state.token} communityID={this.state.communityID} options={0}/>
+                    <GroupUsersComponent token={this.state.token} groupID={this.state.groupID} options={0}/>
 
                 )
             }
             case this.state.settings:{
                 console.log('here')
                 return(
-                    <CommunitySettingsComponent community={this.state.community}/>
+                    <GroupSettingsComponent group={this.state.group}/>
                 )
             }
-
-            // case this.state.about: {
-            //     return (
-            //
-            //         <CommunityAboutComponent community={this.state.community}/>
-            //
-            //     )
-            // }
-
             default: {
                 return (
                     "OK"
@@ -137,7 +118,7 @@ class CommunityComponent extends React.Component {
                 <div className="profile_center_component">
                     <div className='profile_background_image_container'>
                         <img className='profile_background_image' alt="BACKGROUD"
-                             src={(typeof this.state.community.backgroundImageURL !== 'undefined' && this.state.community.backgroundImageURL !== null) ? this.state.community.backgroundImageURL : "https://www.beautycolorcode.com/2f2f2f-1440x900.png"}/>
+                             src={(typeof this.state.group.backgroundImageURL !== 'undefined' && this.state.group.backgroundImageURL !== null) ? this.state.group.backgroundImageURL : "https://www.beautycolorcode.com/2f2f2f-1440x900.png"}/>
                     </div>
                     <div className="dedicated_component_container">
 
@@ -146,10 +127,10 @@ class CommunityComponent extends React.Component {
                                 <div style={{marginTop: '1vh', textAlign: 'center'}}>
                                     <Avatar
                                         style={{margin: 'auto', height: '4vw', width: '4vw'}}
-                                        src={this.state.community.imageURL}
-                                        alt="community"
+                                        src={this.state.group.imageURL}
+                                        alt="group"
                                     />
-                                    <p style={{fontSize: '18px', fontWeight: '400', textTransform:'capitalize'}}>{this.state.community.name}</p>
+                                    <p style={{fontSize: '18px', fontWeight: '400', textTransform:'capitalize'}}>{this.state.group.name}</p>
                                     <div style={{
                                         display: 'flex',
                                         justifyContent: 'center',
@@ -157,7 +138,7 @@ class CommunityComponent extends React.Component {
                                         color: '#aaadb1'
                                     }}>
                                         <SubjectRoundedIcon/>
-                                        {this.state.community.about}
+                                        {this.state.group.about}
                                     </div>
                                 </div>
                                 <div>
@@ -173,7 +154,7 @@ class CommunityComponent extends React.Component {
                                                     all: false,
                                                     settings:false
                                                 })}
-                                        >Topics <p style={{color: 'white'}}>{this.state.community.topics}</p></Button>
+                                        >Topics <p style={{color: 'white'}}>{this.state.group.topics}</p></Button>
 
                                         <Button style={{display: 'grid', lineHeight: '7px', fontSize: '15px', width:'5vw',textTransform:'capitalize',color:(this.state.followers === true? "#39adf6": "#aaadb1")}}
                                                 color={this.state.followers === true ? "primary" : "default"}
@@ -186,7 +167,7 @@ class CommunityComponent extends React.Component {
                                                     all: false,
                                                     settings:false
                                                 })}
-                                        >Followers <p style={{color: 'white'}}>{this.state.community.followers}</p>
+                                        >Followers <p style={{color: 'white'}}>{this.state.group.followers}</p>
                                         </Button>
 
                                         <Button style={{display: 'grid', lineHeight: '7px', fontSize: '15px', width:'5vw',textTransform:'capitalize',color:(this.state.membersOption === true? "#39adf6": "#aaadb1")}}
@@ -200,7 +181,7 @@ class CommunityComponent extends React.Component {
                                                     all: false,
                                                     settings:false
                                                 })}
-                                        >Members <p style={{color: 'white'}}>{this.state.community.members}</p>
+                                        >Members <p style={{color: 'white'}}>{this.state.group.members}</p>
                                         </Button>
 
 
@@ -214,7 +195,7 @@ class CommunityComponent extends React.Component {
                                                     all: false,
                                                     settings:false
                                                 })}
-                                        >Mods <p style={{color: 'white'}}>{this.state.community.mods}</p>
+                                        >Mods <p style={{color: 'white'}}>{this.state.group.mods}</p>
                                         </Button>
                                     </ButtonGroup>
                                 </div>
@@ -240,7 +221,7 @@ class CommunityComponent extends React.Component {
                                 <Button variant="outlined" disabled style={{gridColumn: '1', gridRow: '2',textTransform:'capitalize',  display:'grid'}}
                                         className='option_content'>
 
-                                    <HelpIcon style={{height: '33px', width: '33px',  color:(this.state.community === true? "#39adf6": "#aaadb1"), margin:'auto'}}/>
+                                    <HelpIcon style={{height: '33px', width: '33px',  color:(this.state.group === true? "#39adf6": "#aaadb1"), margin:'auto'}}/>
                                     help
                                 </Button>
                                 <Button variant={"outlined"} style={{
@@ -265,7 +246,7 @@ class CommunityComponent extends React.Component {
                                     <PeopleAltRoundedIcon style={{height: '33px', width: '33px', color:(this.state.related === true? "#39adf6": "#aaadb1"), margin:'auto'}}/>
                                     related Communities
                                 </Button>
-                                {this.state.community.role === "MODERATOR" ?
+                                {this.state.group.role === "MODERATOR" ?
                                     <Button variant={ "outlined"} style={{ backgroundColor: (this.state.settings === true ? "#303741" : 'transparent'),gridColumn: '2', gridRow: '2',textTransform:'capitalize',  display:'grid', color:(this.state.settings === true? "#39adf6": "white")}}
                                             className='option_content'
                                             onClick={() =>
@@ -301,4 +282,4 @@ class CommunityComponent extends React.Component {
     }
 }
 
-export default CommunityComponent;
+export default GroupComponent;

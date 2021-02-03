@@ -4,18 +4,13 @@ import axios from 'axios';
 import "../../styles/ProfileBarStyle.css";
 import Button from '@material-ui/core/Button';
 import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
-import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
 import Host from '../../../../Host'
-import {Avatar, Modal} from '@material-ui/core';
+import {Avatar} from '@material-ui/core';
 import {ThemeProvider} from "@material-ui/styles";
 import {createMuiTheme} from "@material-ui/core/styles";
 import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
-import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
-import NotificationsRoundedIcon from '@material-ui/icons/NotificationsRounded';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
-import NotificationComponent from '../notification/NotificationComponent'
 import {Redirect} from 'react-router-dom'
-import CommunityCreationComponent from "../../../community/component/creation/CommunityCreationComponent";
 import {HomeRounded} from "@material-ui/icons";
 
 const theme = createMuiTheme({
@@ -41,16 +36,12 @@ class ProfileBarComponent extends Component {
             external: params.external,
             search: params.search,
             timeline: params.timeline,
-            communityOptions: params.communityOptions,
+            groupOptions: params.groupOptions,
             more: false,
             notificationsQuantity: null,
             date: new Date(),
-            notificationModal: false,
             signOut: false,
-            communityCreationModal:false
         }
-        this.renderCommunityCreationModal = this.renderCommunityCreationModal.bind(this)
-        this.renderNotificationModal = this.renderNotificationModal.bind(this)
     }
 
     componentDidMount() {
@@ -112,50 +103,12 @@ class ProfileBarComponent extends Component {
         }
     }
 
-    renderNotificationModal() {
-        if (this.state.notificationModal === true)
-            return (
-                <Modal
-                    style={{display: 'grid', justifyContent: "center", alignContent: "center"}}
-                    open={this.state.notificationModal === true}
-                    onClose={() => this.setState({
-                        notificationModal: false
-                    })}
-                >
-                    <div className="notification_modal_container">
-                        <NotificationComponent/>
-                    </div>
-
-                </Modal>
-            )
-        else return null
-    }
-    renderCommunityCreationModal() {
-        if (this.state.communityCreationModal === true)
-            return (
-                <Modal
-                    style={{display: 'grid', justifyContent: "center", alignContent: "center"}}
-                    open={this.state.communityCreationModal === true}
-                    onClose={() => this.setState({
-                        communityCreationModal: false
-                    })}
-                >
-                    <div className="community_modal_container">
-                        <CommunityCreationComponent/>
-                    </div>
-
-                </Modal>
-            )
-        else return null
-    }
     render() {
         if (this.state.signOut === false)
             return (
 
                 <div className="profile_bar_container">
                     <ThemeProvider theme={theme}>
-                        <this.renderNotificationModal/>
-                        <this.renderCommunityCreationModal/>
                         <div className="profile_info_container">
 
                             <Avatar
@@ -175,7 +128,7 @@ class ProfileBarComponent extends Component {
 
                         </div>
                         {/* <div  className="profile_qrcode_container">
-                        <QRcode 
+                        <QRcode
                                 value= {"BEGIN:VCARD" +
                                 "VERSION:4.0" +
                                 "N:{components.name}" +
@@ -185,7 +138,6 @@ class ProfileBarComponent extends Component {
                                 "EMAIL:" + this.state.components.email + "END:VCARD"}
                                 />
                         </div> */}
-
 
                         <div className="profile_bar_buttons_container">
 
@@ -201,9 +153,6 @@ class ProfileBarComponent extends Component {
                             </div>
 
 
-                            {/*<div className={this.state.notificationModal === true ? "clicked_button_style" : null} >*/}
-                            {/*    <Button  style={{textTransform:"capitalize",  color:('#ededed'),fontSize:'16px', width:'14vw',marginLeft:'1vw', justifyContent:'flex-start'}}> <PeopleAltRoundedIcon style={{marginRight:'10px', fontSize:'27px',color:('#62666f')}}/>Communities</Button>*/}
-                            {/*</div>*/}
                             <div className={this.state.search === true ? "clicked_button_style" : null} >
                                 <Button style={{textTransform:"capitalize",  color:(this.state.search === true ? "#39adf6":'#ededed'),fontSize:'16px', width:'14vw',marginLeft:'1vw', justifyContent:'flex-start'}} href="/search_user">
                                     <SearchRoundedIcon style={{marginRight:'10px', fontSize:'27px',color:(this.state.search === true ? "#39adf6":'#62666f'),}}/>search
