@@ -24,7 +24,7 @@ const theme = createMuiTheme({
 });
 
 class SearchComponent extends React.Component {
-    isFollowing;
+
     constructor(params) {
         super(params)
         this.state = {
@@ -118,29 +118,6 @@ class SearchComponent extends React.Component {
 
     }
 
-    async follow(userID) {
-        await followUser(userID).then(r => console.log(r))
-        this.setState({
-            subjects: [],
-            maxID: null
-        })
-        this.fetchData().then(r => console.log(r))
-    }
-
-    async unfollow(userID) {
-        await UnfollowUser(userID).then(r => console.log(r))
-        this.setState({
-            subjects: [],
-            maxID: null
-        })
-        this.fetchData().then(r => console.log(r))
-    }
-
-    async followgroup(id){
-        await FollowGroup(id).then(r => console.log(r))
-        this.fetchData().then(r => console.log(r))
-    }
-
     renderAsUser(subject){
        if(this.state.group === false){
            return(
@@ -172,9 +149,6 @@ class SearchComponent extends React.Component {
                                {subject.name}
                            </li>
                            <li style={{fontSize: '17px', fontWeight: '400', color: '#aaadb1'}}>
-                               {subject.userName}
-                           </li>
-                           <li style={{fontSize: '17px', fontWeight: '400', color: '#aaadb1'}}>
                                {subject.email}
                            </li>
                        </ul>
@@ -188,17 +162,12 @@ class SearchComponent extends React.Component {
 
                    }}>
                        <Button href={"/profile/" + subject.userID } variant="outlined" style={{color:'white'}} disableElevation>See</Button>
-
-                       {subject.isFollowing === true ?
-                           <Button onClick={() => this.unfollow(subject.userID)} variant="outlined" style={{border:'#e34f50 2px solid', color:'white', textTransform:'capitalize'}} ><RemoveCircleRoundedIcon/> Unfollow</Button> :
-                           <Button onClick={() => this.follow(subject.userID)} variant="outlined" style={{border:'#39adf6 2px solid', color:'white', textTransform:'capitalize'}}  >Follow</Button>}
-                       <Button href={"/chat/"+subject.userID+"/false/null"} variant="outlined" style={{color:'white'}} disableElevation><ChatRoundedIcon/></Button>
                    </div>
                </div>
            )
        }
     }
-    renderAsgroup(subject){
+    renderAsGroup(subject){
         if(this.state.group === true){
             return(
                 <div style={{width:'65%', margin:'1vh auto', display:'grid', justifyContent:'center', justifyItems:'center',backgroundColor: '#3b424c',
@@ -269,7 +238,7 @@ class SearchComponent extends React.Component {
                         loader={console.log("LOADING")}>
                         {this.state.subjects.map((subject) =>
                             <>
-                                {this.renderAsgroup(subject)}
+                                {this.renderAsGroup(subject)}
                                 {this.renderAsUser(subject)}
                             </>
                         )}
