@@ -12,6 +12,7 @@ import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 import {Redirect} from 'react-router-dom'
 import {HomeRounded} from "@material-ui/icons";
+import PhoneRoundedIcon from "@material-ui/icons/PhoneRounded";
 
 const theme = createMuiTheme({
     palette: {
@@ -25,55 +26,12 @@ class ProfileBarComponent extends Component {
     constructor(params) {
         super(params)
         this.state = {
-            profile: {},
-            followers: params.followers,
-            following: params.following,
-            communities: params.communities,
+
             home: params.home,
-            about: params.about,
-            conversation: params.conversation,
-            topics: params.topics,
-            external: params.external,
             search: params.search,
-            timeline: params.timeline,
-            groupOptions: params.groupOptions,
-            more: false,
-            notificationsQuantity: null,
-            date: new Date(),
             signOut: false,
         }
     }
-
-    componentDidMount() {
-        const profile = sessionStorage.getItem("PROFILE")
-        if(profile === null)
-            this.fetchData().catch(r => console.log(r))
-        else
-            this.setState({
-                profile: JSON.parse(profile)
-            })
-    }
-
-    async fetchData() {
-        try {
-            await axios({
-                method: 'patch',
-                url: Host() + 'api/get/user/by_id',
-                headers: {"authorization": cookies.get("JWT")},
-                data: {
-                    user_id: parseInt((new Cookies()).get("ID"))
-                }
-            }).then(res => {
-                sessionStorage.setItem("PROFILE", JSON.stringify(res.data))
-                this.setState({
-                    profile: res.data
-                })
-            }).catch(error => console.log(error))
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
 
     render() {
         if (this.state.signOut === false)
@@ -98,7 +56,7 @@ class ProfileBarComponent extends Component {
 
 
                             <div className={this.state.home === true ? "clicked_button_style" : null} >
-                                <Button style={{textTransform:"capitalize", color:(this.state.home === true ? "#39adf6":'#ededed'),fontSize:'16px', width:'14vw',marginLeft:'1vw', justifyContent:'flex-start'}} href={"/profile/"+this.state.profile.id}>
+                                <Button style={{textTransform:"capitalize", color:(this.state.home === true ? "#39adf6":'#ededed'),fontSize:'16px', width:'14vw',marginLeft:'1vw', justifyContent:'flex-start'}} href={"/profile/"+cookies.get("ID")}>
                                     <HomeRounded style={{marginRight:'10px', fontSize:'27px',color:(this.state.home === true ? "#39adf6":'#62666f')}}/>Home
                                 </Button>
                             </div>
@@ -109,8 +67,8 @@ class ProfileBarComponent extends Component {
 
 
                             <div className={this.state.search === true ? "clicked_button_style" : null} >
-                                <Button style={{textTransform:"capitalize",  color:(this.state.search === true ? "#39adf6":'#ededed'),fontSize:'16px', width:'14vw',marginLeft:'1vw', justifyContent:'flex-start'}} href="/search_user">
-                                    <SearchRoundedIcon style={{marginRight:'10px', fontSize:'27px',color:(this.state.search === true ? "#39adf6":'#62666f'),}}/>search
+                                <Button style={{textTransform:"capitalize",  color:(this.state.search === true ? "#39adf6":'#ededed'),fontSize:'16px', width:'14vw',marginLeft:'1vw', justifyContent:'flex-start'}}>
+                                    <PhoneRoundedIcon style={{marginRight:'10px', fontSize:'27px',color:(this.state.search === true ? "#39adf6":'#62666f'),}}/>ramais
                                 </Button>
                             </div>
                             <div >

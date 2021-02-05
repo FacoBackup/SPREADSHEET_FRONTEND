@@ -19,9 +19,17 @@ class SearchBarComponent extends React.Component {
         super(params)
         this.state = {
             redirect: false,
-            searchInput: null
+            searchInput: null,
+            profile: null
         }
         this.handleChange = this.handleChange.bind(this)
+    }
+    componentDidMount() {
+        const profile = sessionStorage.getItem("PROFILE")
+        if(profile !== null)
+            this.setState({
+                profile: JSON.parse(profile)
+            })
     }
 
     handleChange(event){
@@ -34,31 +42,33 @@ class SearchBarComponent extends React.Component {
         return (
             <ThemeProvider theme={theme}>
                 <div className={"top_nav_bar_container"}>
-                    <div style={{display:'grid', justifyContent:'center'}}>
-                        <div style={{display:'flex', marginTop:'1%'}}>
-                            <TextField placeholder={"Search"} variant={"outlined"} onChange={this.handleChange}/>
-                            <Button href={"/search?="+this.state.searchInput+"/true"}><SearchIcon/></Button >
-                        </div>
-                        {typeof (new Cookies()).get("JWT") != 'undefined' ?
-                            <div className="profile_info_container">
-                                <p style={{
-                                    marginLeft: '5px',
-                                    fontSize: '17px',
-                                    fontWeight: '400',
-                                    lineBreak: 'auto',
-                                    wordBreak: 'break-all',
-                                    textTransform: 'capitalize'
-                                }}>{("" + this.state.profile.name).substr(0, ("" + this.state.profile.name).indexOf(' '))}</p>
-                                <Avatar
-                                    style={{height: '55px', width: '55px'}}
-                                    src={this.state.profile.imageURL}
-                                    alt="user"
-
-                                />
-                            </div>:
-                            null
-                        }
+                    <div style={{width:'33.333334%'}} >
+                        <img style={{width:'9vw', float:'left'}}src='cafe' alt={"aeb"} />
                     </div>
+                    <div style={{display:'flex', alignItems:'center', justifyContent: (this.state.profile !== null? "center": "flex-start"), width:(this.state.profile !== null? "33.333334%" : "66.666667%")}}>
+                        <TextField placeholder={"Search"} variant={"outlined"} color={'none'} style={{width:'90%', backgroundColor:'#272e38'}} onChange={this.handleChange}/>
+                        <Button href={"/search?="+this.state.searchInput+"/true"} style={{height:"56px", border:'#39adf6 2px solid', backgroundColor:'#272e38'}} variant={"outlined"}><SearchIcon/></Button >
+                    </div>
+                    {this.state.profile !== null?
+                        <div className="top_nav_bar_profile_container" >
+                            <p style={{
+                                marginRight: '1%',
+                                fontSize: '16px',
+                                fontWeight: '400',
+                                lineBreak: 'auto',
+                                wordBreak: 'break-all',
+                                textTransform: 'capitalize'
+                            }}>{("" + this.state.profile.name).substr(0, ("" + this.state.profile.name).indexOf(' '))}</p>
+                            <Avatar
+                                style={{height: '45px', marginRight: '1%',width: '45px'}}
+                                src={this.state.profile.imageURL}
+                                alt="user"
+
+                            />
+                        </div>:
+                        null
+                    }
+
                 </div>
             </ThemeProvider>
         )

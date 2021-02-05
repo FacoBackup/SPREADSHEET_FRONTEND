@@ -17,7 +17,7 @@ class Search extends Component {
         super({match});
         this.state={
             input: match.params.input,
-            asUser: match.params.asUser
+            asUser: match.params.asUser === "true"
         }
 
     }

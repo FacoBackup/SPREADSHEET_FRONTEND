@@ -14,6 +14,8 @@ import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
 import ProfileSettingsComponent from './components/options/ProfileSettingsComponent'
 import SearchBarComponent from '../shared/components/search_bar/SearchBarComponent'
 import {Redirect} from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 class Profile extends React.Component {
     constructor({match}) {
@@ -29,14 +31,18 @@ class Profile extends React.Component {
     }
 
     componentDidMount() {
+
         if(this.state.userID === (new Cookies()).get("ID")){
             const profile = sessionStorage.getItem("PROFILE")
-            if(profile === null)
+            console.log(profile)
+            if(profile === null) {
                 this.fetchData().catch(r => console.log(r))
-            else
+            }
+            else {
                 this.setState({
                     profile: JSON.parse(profile)
                 })
+            }
         }
         else
             this.fetchData().catch(r => console.log(r))
@@ -94,8 +100,13 @@ class Profile extends React.Component {
             }
         }
     }
+
+    Alert(props) {
+        return (<MuiAlert elevation={4} variant="filled" {...props}/>)
+    }
+
     render() {
-        if (typeof this.state.userID !== 'undefined' || typeof (new Cookies()).get("JWT") !== 'undefined')
+        if ((typeof this.state.userID !== 'undefined' || typeof (new Cookies()).get("JWT") !== 'undefined') && typeof this.state.profile !== 'undefined')
             return (
                 <div>
                     <SearchBarComponent/>
@@ -143,11 +154,19 @@ class Profile extends React.Component {
                     </div>
                 </div>
             )
-        else
+        else if(typeof this.state.userID === 'undefined' && typeof (new Cookies()).get("JWT") === 'undefined')
             return(
                 <Redirect to="/authenticate"/>
             )
-
+        else
+            return (
+                <div>
+                    <Snackbar open={this.state.error === true} autoHideDuration={6000}
+                              onClose={() => this.setState({error: false, errorMessage: null})}>
+                        <this.Alert severity="alert">Fetching content.</this.Alert>
+                    </Snackbar>
+                </div>
+            )
     }
 }
 
