@@ -5,12 +5,8 @@ import Button from '@material-ui/core/Button'
 import React from 'react'
 import "../../profile/styles/SocialStyle.css"
 import Avatar from '@material-ui/core/Avatar'
-import TextField from '@material-ui/core/TextField';
 import "../styles/SearchComponentStyle.css"
 import Host from '../../../Host'
-// import ChatRoundedIcon from '@material-ui/icons/ChatRounded';
-import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
-import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -31,12 +27,17 @@ class SearchComponent extends React.Component {
             token: params.token,
             subjects: [],
             maxID: null,
-            group: false
+            input: params.input,
+            asUser: params.asUser
+
         }
         this.fetchData = this.fetchData.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
 
+    componentDidMount() {
+        this.fetchData().catch(r => console.log(r))
+    }
 
     handleChange(event) {
         if(event.target.name === "group"){
@@ -67,10 +68,9 @@ class SearchComponent extends React.Component {
                 await axios({
                     method: 'patch',
                     url: Host() + 'api/search/user',
-                    headers: {"Authorization": 'Bearer ' + this.state.token},
                     data: {
-                        maxID: this.state.maxID,
-                        subjectName: input.toLowerCase()
+                        max_id: this.state.maxID,
+                        search_input: this.state.input
                     }
                 }).then(res => {
                     console.log(res)
@@ -119,7 +119,7 @@ class SearchComponent extends React.Component {
     }
 
     renderAsUser(subject){
-       if(this.state.group === false){
+       if(this.state.asUser === true){
            return(
                <div style={{
                    width:'65%',
@@ -142,15 +142,19 @@ class SearchComponent extends React.Component {
                            style={{height: '55px', width: '55px'}}
                            src={subject.imageURL}
                            alt="user"
-
                        />
                        <ul>
                            <li style={{fontSize: '17px', fontWeight: '400'}}>
                                {subject.name}
                            </li>
-                           <li style={{fontSize: '17px', fontWeight: '400', color: '#aaadb1'}}>
-                               {subject.email}
-                           </li>
+                           <ul>
+                               <li style={{fontSize: '17px', fontWeight: '400', color: '#aaadb1'}}>
+                                   {subject.email}
+                               </li>
+                               <li style={{fontSize: '17px', fontWeight: '400', color: '#aaadb1'}}>
+                                   {subject.phone}
+                               </li>
+                           </ul>
                        </ul>
                    </div>
                    <div style={{
@@ -168,7 +172,7 @@ class SearchComponent extends React.Component {
        }
     }
     renderAsGroup(subject){
-        if(this.state.group === true){
+        if(this.state.asUser === false){
             return(
                 <div style={{width:'65%', margin:'1vh auto', display:'grid', justifyContent:'center', justifyItems:'center',backgroundColor: '#3b424c',
                     borderRadius: '8px',
@@ -203,12 +207,8 @@ class SearchComponent extends React.Component {
                         justifyItems:'space-between',
                         width:'100%',
                         marginBottom:'1vh'
-
                     }}>
-                        <Button href={"/component/" + subject.groupID } variant="contained" disableElevation >SEE</Button>
-                        {typeof subject.role !== 'undefined' && subject.role !== null  ?
-                            <Button disabled variant="outlined" style={{border:'#e34f50 2px solid', color:'white', textTransform:'capitalize'}}><RemoveCircleRoundedIcon/> {subject.role === "FOLLOWER" ? "Unfollow": "Leave"}</Button> :
-                            <Button onClick={() => this.followgroup(subject.groupID)} variant="outlined"  style={{border:'#39adf6 2px solid', color:'white'}} disableElevation><AddCircleRoundedIcon/></Button>}
+                        <Button href={"/component/" + subject.groupID } variant="contained" disableElevation style={{textTransform:'capitalize'}}>See</Button>
                     </div>
                 </div>
             )
@@ -220,9 +220,8 @@ class SearchComponent extends React.Component {
             <div className="search_component">
 
                 <div className="search_box_container">
-                    <TextField style={{width:'32vw'}} label={"Search " + (this.state.group === true ? "Groups" : "Users")} variant="outlined"  onChange={this.handleChange}/>
                     <FormControl component="fieldset">
-                        <RadioGroup aria-label="option" name="group" value={this.state.group === true?  "group":"user"} onChange={this.handleChange}>
+                        <RadioGroup aria-label="option" name="group" value={this.state.asUser === false?  "group":"user"} onChange={this.handleChange}>
                             <FormControlLabel value="user" control={<Radio />} label="User" />
                             <FormControlLabel value="group" control={<Radio />} label="group" />
                         </RadioGroup>

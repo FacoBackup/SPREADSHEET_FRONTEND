@@ -29,13 +29,17 @@ class Profile extends React.Component {
     }
 
     componentDidMount() {
-        const profile = sessionStorage.getItem("PROFILE")
-        if(profile === null)
-            this.fetchData().catch(r => console.log(r))
+        if(this.state.userID === (new Cookies()).get("ID")){
+            const profile = sessionStorage.getItem("PROFILE")
+            if(profile === null)
+                this.fetchData().catch(r => console.log(r))
+            else
+                this.setState({
+                    profile: JSON.parse(profile)
+                })
+        }
         else
-            this.setState({
-                profile: JSON.parse(profile)
-            })
+            this.fetchData().catch(r => console.log(r))
     }
 
     async fetchData() {
@@ -47,7 +51,8 @@ class Profile extends React.Component {
                     user_id: typeof this.state.userID !== "undefined" ? parseInt(this.state.userID) : parseInt((new Cookies()).get("ID"))
                 }
             }).then(res => {
-                sessionStorage.setItem("PROFILE", JSON.stringify(res.data))
+                if(this.state.userID === (new Cookies()).get("ID"))
+                    sessionStorage.setItem("PROFILE", JSON.stringify(res.data))
                 this.setState({
                     profile: res.data
                 })

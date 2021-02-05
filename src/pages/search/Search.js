@@ -13,13 +13,21 @@ const theme = createMuiTheme({
 });
 
 class Search extends Component {
+    constructor({match}) {
+        super({match});
+        this.state={
+            input: match.params.input,
+            asUser: match.params.asUser
+        }
+
+    }
     render() {
 
         if (typeof (new Cookies()).get("JWT") !== 'undefined') {
             return (
                 <ThemeProvider theme={theme}>
                     <div className="center_component">
-                        <SearchComponent token={new Cookies().get("JWT")}/>
+                        <SearchComponent token={new Cookies().get("JWT")} asUser={this.state.asUser} input={this.state.input}/>
                     </div>
                     <div className="left_components">
                         <ProfileBar search={true}/>
