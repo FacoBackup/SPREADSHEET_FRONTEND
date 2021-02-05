@@ -45,63 +45,35 @@ class ProfileBarComponent extends Component {
     }
 
     componentDidMount() {
-
-        this.fetchData().catch(r => console.log(r))
-        this.fetchNotifications().catch(r => console.log(r))
-        this.timerID = setInterval(
-            () => this.tick(),
-            1500
-        );
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.timerID);
-    }
-
-    tick() {
-        this.fetchNotifications().catch(r => console.log(r))
-        this.setState({
-            date: new Date(),
-        });
+        const profile = sessionStorage.getItem("PROFILE")
+        if(profile === null)
+            this.fetchData().catch(r => console.log(r))
+        else
+            this.setState({
+                profile: JSON.parse(profile)
+            })
     }
 
     async fetchData() {
         try {
-            if (typeof (cookies).get("JWT") !== 'undefined') {
-                await axios({
-                    method: 'get',
-                    url: Host() + 'api/user',
-                    headers: {"Authorization": 'Bearer ' + (cookies).get("JWT")}
-                }).then(res => {
-                    console.log(res.data)
-                    this.setState({
-                        profile: res.data
-                    })
-                }).catch(e => console.log(e))
-            }
+            await axios({
+                method: 'patch',
+                url: Host() + 'api/get/user/by_id',
+                headers: {"authorization": cookies.get("JWT")},
+                data: {
+                    user_id: parseInt((new Cookies()).get("ID"))
+                }
+            }).then(res => {
+                sessionStorage.setItem("PROFILE", JSON.stringify(res.data))
+                this.setState({
+                    profile: res.data
+                })
+            }).catch(error => console.log(error))
         } catch (error) {
             console.log(error)
         }
     }
 
-    async fetchNotifications() {
-        try {
-            if (typeof (cookies).get("JWT") !== 'undefined') {
-                await axios({
-                    method: 'get',
-                    url: Host() + 'api/fetch/quantity/message/notifications',
-                    headers: {"Authorization": 'Bearer ' + (cookies).get("JWT")}
-                }).then(res => {
-                    this.setState({
-                        notificationsQuantity: res.data
-                    })
-                })
-                    .catch()
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     render() {
         if (this.state.signOut === false)

@@ -11,10 +11,10 @@ function AppRoutes() {
         <div>
             <Router>
                 <Switch>
+                    <Route path={"/"} exact component={Profile}/>
                     <Route path="/profile/:userID" exact component={Profile}/>
                     <Route path="/group/:id" exact component={Group}/>
                     <Route path="/search_user" exact component={Search}/>
-                    <Route path="/" exact component={SignIn}/>
                     <Route path="/authenticate" exact component={SignIn}/>
                 </Switch>
             </Router>

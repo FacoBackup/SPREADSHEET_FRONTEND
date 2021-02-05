@@ -4,18 +4,15 @@ import "../shared/styles/PageModel.css"
 import "./styles/DedicatedProfile.css"
 import "../shared/styles/DedicatedPagesStyle.css"
 import axios from 'axios';
-import SettingsIcon from '@material-ui/icons/Settings';
 import AboutComponent from './components/options/UserAboutComponent'
 import AboutProfileComponent from './components/options/UserAboutComponent'
 import UserGroupsComponent from './components/options/UserGroupsComponent'
 import Host from '../../Host'
 import ProfileBar from './components/bar/ProfileBarComponent'
 import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
 import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
-import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
-import HighlightIcon from '@material-ui/icons/Highlight';
 import ProfileSettingsComponent from './components/options/ProfileSettingsComponent'
+import SearchBarComponent from '../shared/components/search_bar/SearchBarComponent'
 
 class Profile extends React.Component {
     constructor({match}) {
@@ -31,28 +28,37 @@ class Profile extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchData().catch(r => console.log(r))
+        const profile = sessionStorage.getItem("PROFILE")
+        if(profile === null)
+            this.fetchData().catch(r => console.log(r))
+        else
+            this.setState({
+                profile: JSON.parse(profile)
+            })
     }
 
     async fetchData() {
         try {
             await axios({
                 method: 'patch',
-                url: Host() + 'api/get/profile',
-                headers: {"Authorization": 'Bearer ' + this.state.token},
+                url: Host() + 'api/get/user/by_id',
+                headers: {"authorization": this.state.token},
                 data: {
-                    userID: this.state.userID
+                    user_id: typeof this.state.userID !== "undefined" ? parseInt(this.state.userID) : parseInt((new Cookies()).get("ID"))
                 }
             }).then(res => {
-
+                sessionStorage.setItem("PROFILE", JSON.stringify(res.data))
                 this.setState({
                     profile: res.data
                 })
-            }).catch(error => console.log(error))
+            }).catch(error => {
+                console.log(error)
+            })
         } catch (error) {
             console.log(error)
         }
     }
+
     optionSelect() {
         switch (true) {
 
@@ -86,6 +92,7 @@ class Profile extends React.Component {
     render() {
         return (
             <div>
+                <SearchBarComponent/>
                 <div className="profile_center_component">
                     <div className='profile_background_image_container'>
                         <img className='profile_background_image' alt="BACKGROUD"

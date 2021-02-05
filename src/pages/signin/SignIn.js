@@ -20,6 +20,9 @@ const theme = createMuiTheme({
 
 const cookies = new Cookies()
 class SignIn extends Component {
+    EMAIL;
+    PHONE;
+    JWT;
     constructor() {
         super(null)
         this.state = {
@@ -41,6 +44,8 @@ class SignIn extends Component {
     componentDidMount() {
         cookies.remove("JWT")
         cookies.remove("ID")
+        cookies.remove("EMAIL")
+        cookies.remove("PHONE")
     }
 
     handleChangeInput(event) {
@@ -61,18 +66,22 @@ class SignIn extends Component {
     async handleSubmit() {
       try{
           await axios({
-              method: 'put',
-              url: Host() + 'api/login',
-              headers: {'Access-Control-Allow-Origin': '*'},
+              method: 'post',
+              url: Host() + 'api/sign_in',
+              // headers: {'Access-Control-Allow-Origin': '*'},
               data: {
-                  input: this.state.input,
-                  password: this.state.password,
-                  ip: localIpUrl('public')
+                  email: this.state.input,
+                  password:  this.state.password
               }
           })
           .then(response => {
-              cookies.set('JWT', response.data, {path: '/'});
-              this.getID()
+              cookies.set('JWT', response.data.JWT, {path: '/'});
+              cookies.set('ID', response.data.ID, {path: '/'});
+              cookies.set('EMAIL', response.data.EMAIL, {path: '/'});
+              cookies.set('PHONE', response.data.PHONE, {path: '/'});
+              this.setState({
+                  accepted: true
+              })
           })
           .catch(error => {
               this.setState({
@@ -84,40 +93,6 @@ class SignIn extends Component {
       }catch (e){
           console.log(e)
       }
-    }
-
-    async getID(){
-
-        try{
-            await axios({
-                method: 'get',
-                url: Host() + 'api/id',
-                headers: {"Authorization": 'Bearer ' + (cookies).get("JWT")},
-                data: {
-                    input: this.state.input,
-                    password: this.state.password,
-                    ip: localIpUrl('public')
-                }
-            })
-                .then(response => {
-                    cookies.set('ID', response.data, {path: '/'});
-                    this.setState({
-                        accepted: true
-                    })
-                })
-                .catch(error => {
-                    console.log(error)
-                    this.setState({
-                        accepted: false
-                    })
-                })
-            if (this.state.accepted === null)
-                this.setState({
-                    accepted: false
-                })
-        }catch (e){
-            console.log(e)
-        }
     }
     render() {
         if (this.state.accepted === true)
@@ -155,9 +130,6 @@ class SignIn extends Component {
                                     style={{border:'#39adf6 2px solid', color:'white', textTransform:'capitalize'}}
                                     variant='outlined'
                                     onClick={() => this.handleSubmit()}>Sign in</Button>
-                                <Button disableElevation style={{color:'white', textTransform:'capitalize'}}
-                                        variant='outlined'
-                                        href="/creation">Create an account</Button>
                             </div>
                             <Snackbar open={this.state.error === true} autoHideDuration={6000}
                                       onClose={() => this.setState({error: false, errorMessage: null})}>
