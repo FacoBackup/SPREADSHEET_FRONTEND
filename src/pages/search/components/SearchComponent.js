@@ -8,7 +8,7 @@ import Avatar from '@material-ui/core/Avatar'
 import TextField from '@material-ui/core/TextField';
 import "../styles/SearchComponentStyle.css"
 import Host from '../../../Host'
-import ChatRoundedIcon from '@material-ui/icons/ChatRounded';
+// import ChatRoundedIcon from '@material-ui/icons/ChatRounded';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
 import Radio from '@material-ui/core/Radio';

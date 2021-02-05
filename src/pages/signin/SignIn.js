@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 import Cookies from 'universal-cookie';
-import localIpUrl from 'local-ip-url';
+// import localIpUrl from 'local-ip-url';
 import "./styles/SigninStyle.css"
 import Button from '@material-ui/core/Button';
 import Host from '../../Host'
@@ -24,7 +24,7 @@ class SignIn extends Component {
     PHONE;
     JWT;
     constructor() {
-        super(null)
+        super()
         this.state = {
             input: '',
             password: '',
@@ -68,7 +68,6 @@ class SignIn extends Component {
           await axios({
               method: 'post',
               url: Host() + 'api/sign_in',
-              // headers: {'Access-Control-Allow-Origin': '*'},
               data: {
                   email: this.state.input,
                   password:  this.state.password
@@ -110,7 +109,7 @@ class SignIn extends Component {
                             <div className="sign_input_container">
                                 <TextField
                                     variant="outlined"
-                                    label="Email, Phone or User name"
+                                    label="Email"
 
                                     multiline
 
