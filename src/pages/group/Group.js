@@ -1,5 +1,5 @@
 import React from 'react'
-import ProfileBar from "../profile/components/bar/ProfileBarComponent.js"
+import ProfileBar from "../shared/components/navigation/LeftBarComponent.js"
 import "../shared/styles/PageModel.css"
 import {Redirect} from 'react-router-dom'
 import Cookies from 'universal-cookie';

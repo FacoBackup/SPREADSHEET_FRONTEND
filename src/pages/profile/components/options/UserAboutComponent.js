@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-import "../../styles/ProfileBarStyle.css";
+import "../../../shared/styles/ProfileBarStyle.css";
 import {DefaultButton, PrimaryButton} from 'office-ui-fabric-react';
 // import { Persona, PersonaSize } from 'office-ui-fabric-react/lib/Persona';
 import {MaskedTextField, TextField} from 'office-ui-fabric-react/lib/TextField';

@@ -14,7 +14,7 @@ const theme = createMuiTheme({
     }
 });
 
-class SearchBarComponent extends React.Component {
+class TopBarComponent extends React.Component {
     constructor(params) {
         super(params)
         this.state = {
@@ -24,9 +24,10 @@ class SearchBarComponent extends React.Component {
         }
         this.handleChange = this.handleChange.bind(this)
     }
+
     componentDidMount() {
-        const profile = sessionStorage.getItem("PROFILE")
-        if(profile !== null)
+        const profile = localStorage.getItem("PROFILE")
+        if (profile !== null && typeof JSON.parse(profile) !== 'string')
             this.setState({
                 profile: JSON.parse(profile)
             })
@@ -42,15 +43,18 @@ class SearchBarComponent extends React.Component {
         return (
             <ThemeProvider theme={theme}>
                 <div className={"top_nav_bar_container"}>
-                    <div style={{width:'33.333334%'}} >
-                        <img style={{width:'9vw', float:'left'}}src='cafe' alt={"aeb"} />
+                    <div style={{width: '39vw', display: 'flex', alignItems: 'center'}}>
                     </div>
-                    <div style={{display:'flex', alignItems:'center', justifyContent: (this.state.profile !== null? "center": "flex-start"), width:(this.state.profile !== null? "33.333334%" : "66.666667%")}}>
-                        <TextField placeholder={"Search"} variant={"outlined"} color={'none'} style={{width:'90%', backgroundColor:'#272e38'}} onChange={this.handleChange}/>
-                        <Button href={"/search?="+this.state.searchInput+"/true"} style={{height:"56px", border:'#39adf6 2px solid', backgroundColor:'#272e38'}} variant={"outlined"}><SearchIcon/></Button >
+                    <div style={{display: 'flex', alignItems: 'center', marginLeft: '15vw', width: '50%'}}>
+                        <TextField placeholder={"Search"} variant={"outlined"} color={'none'}
+                                   style={{width: '90%', backgroundColor: '#272e38'}} onChange={this.handleChange}/>
+                        <Button
+                            href={this.state.searchInput !== null ? "/search/" + this.state.searchInput + "/true" : null}
+                            style={{height: "56px", border: '#39adf6 2px solid', backgroundColor: '#272e38'}}
+                            variant={"outlined"}><SearchIcon/></Button>
                     </div>
-                    {this.state.profile !== null?
-                        <div className="top_nav_bar_profile_container" >
+                    {typeof (new Cookies()).get("JWT") !== 'undefined' && this.state.profile !== null ?
+                        <div className="top_nav_bar_profile_container">
                             <p style={{
                                 marginRight: '1%',
                                 fontSize: '16px',
@@ -60,12 +64,13 @@ class SearchBarComponent extends React.Component {
                                 textTransform: 'capitalize'
                             }}>{("" + this.state.profile.name).substr(0, ("" + this.state.profile.name).indexOf(' '))}</p>
                             <Avatar
-                                style={{height: '45px', marginRight: '1%',width: '45px'}}
-                                src={this.state.profile.imageURL}
+                                style={{height: '45px', marginRight: '1%', width: '45px'}}
+                                src={this.state.profile.image}
                                 alt="user"
 
                             />
                         </div>:
+
                         null
                     }
 
@@ -75,4 +80,4 @@ class SearchBarComponent extends React.Component {
     }
 }
 
-export default SearchBarComponent
+export default TopBarComponent

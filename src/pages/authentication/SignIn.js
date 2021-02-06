@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
-import Cookies from 'universal-cookie';
-// import localIpUrl from 'local-ip-url';
+import ClearStorage from "./ClearStorage";
 import "./styles/SigninStyle.css"
 import Button from '@material-ui/core/Button';
 import Host from '../../Host'
 import TextField from '@material-ui/core/TextField'
-import MuiAlert from '@material-ui/lab/Alert'
 import {createMuiTheme} from "@material-ui/core/styles";
 import {ThemeProvider} from "@material-ui/styles";
 import Snackbar from '@material-ui/core/Snackbar'
+import SetStorage from "./SetStorage";
+import Cookies from "universal-cookie/lib";
+import Alert from "../shared/functions/Alert";
 
 const theme = createMuiTheme({
     palette: {
@@ -18,7 +19,7 @@ const theme = createMuiTheme({
     }
 });
 
-const cookies = new Cookies()
+
 class SignIn extends Component {
     EMAIL;
     PHONE;
@@ -32,35 +33,17 @@ class SignIn extends Component {
             error: false,
             errorMessage: null
         }
-        this.handleChangeInput = this.handleChangeInput.bind(this);
-        this.handleChangePassword = this.handleChangePassword.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this)
     }
-
-    Alert(props) {
-        return (<MuiAlert elevation={4} variant="filled" {...props}/>)
-    }
-
     componentDidMount() {
-        cookies.remove("JWT")
-        cookies.remove("ID")
-        cookies.remove("EMAIL")
-        cookies.remove("PHONE")
+        ClearStorage();
     }
 
-    handleChangeInput(event) {
-
+    handleChange(event) {
         this.setState({
-            input: event.target.value
+            [event.target.name]: event.target.value
         })
-        event.preventDefault();
-    }
-
-    handleChangePassword(event) {
-        this.setState({
-            password: event.target.value
-        })
-        event.preventDefault();
     }
 
     async handleSubmit() {
@@ -74,10 +57,7 @@ class SignIn extends Component {
               }
           })
           .then(response => {
-              cookies.set('JWT', response.data.JWT, {path: '/'});
-              cookies.set('ID', response.data.ID, {path: '/'});
-              cookies.set('EMAIL', response.data.EMAIL, {path: '/'});
-              cookies.set('PHONE', response.data.PHONE, {path: '/'});
+              SetStorage(response.data.JWT, response.data.EMAIL, response.data.ID, response.data.PHONE)
               this.setState({
                   accepted: true
               })
@@ -93,10 +73,11 @@ class SignIn extends Component {
           console.log(e)
       }
     }
+
     render() {
         if (this.state.accepted === true)
             return (
-                <Redirect to={'/profile/' +cookies.get("ID")}/>
+                <Redirect to={'/profile/' + (new Cookies()).get("ID")}/>
             );
         else {
             return (
@@ -110,17 +91,18 @@ class SignIn extends Component {
                                 <TextField
                                     variant="outlined"
                                     label="Email"
-
+                                    name={"email"}
                                     multiline
 
-                                    onChange={this.handleChangeInput}/>
+                                    onChange={this.handleChange}/>
                                 <TextField
-                                    variant="filled"
+                                    variant="outlined"
                                     type="password"
 
                                     autoComplete="current-password"
                                     label="Password"
-                                    onChange={this.handleChangePassword}/>
+                                    name={"password"}
+                                    onChange={this.handleChange}/>
                             </div>
 
                             <div className="sign_button_container">
@@ -132,7 +114,7 @@ class SignIn extends Component {
                             </div>
                             <Snackbar open={this.state.error === true} autoHideDuration={6000}
                                       onClose={() => this.setState({error: false, errorMessage: null})}>
-                                <this.Alert severity="error">Some error occurred ({this.state.errorMessage}).</this.Alert>
+                                <Alert severity="error">Some error occurred ({this.state.errorMessage}).</Alert>
                             </Snackbar>
                         </div>
                     </ThemeProvider>

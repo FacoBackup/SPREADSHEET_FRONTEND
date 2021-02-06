@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import ProfileBar from "../profile/components/bar/ProfileBarComponent.js"
+import ProfileBar from "../shared/components/navigation/LeftBarComponent.js"
 import "../shared/styles/PageModel.css"
-import {Redirect} from 'react-router-dom'
 import Cookies from 'universal-cookie';
 import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
 import SearchComponent from "./components/SearchComponent";
+import TopBarComponent from "../shared/components/navigation/TopBarComponent";
 
 const theme = createMuiTheme({
     palette: {
@@ -22,20 +22,20 @@ class Search extends Component {
 
     }
     render() {
-
-        if (typeof (new Cookies()).get("JWT") !== 'undefined') {
-            return (
-                <ThemeProvider theme={theme}>
-                    <div className="center_component">
-                        <SearchComponent token={new Cookies().get("JWT")} asUser={this.state.asUser} input={this.state.input}/>
-                    </div>
-                    <div className="left_components">
-                        <ProfileBar search={true}/>
-                    </div>
-                </ThemeProvider>
-            );
-        } else
-            return (<Redirect to="/authenticate"/>);
+        return (
+            <ThemeProvider theme={theme}>
+                <div>
+                    <TopBarComponent/>
+                </div>
+                <div className="center_component">
+                    <SearchComponent token={new Cookies().get("JWT")} asUser={this.state.asUser}
+                                     input={this.state.input}/>
+                </div>
+                <div className="left_components">
+                    <ProfileBar/>
+                </div>
+            </ThemeProvider>
+        );
     }
 }
 

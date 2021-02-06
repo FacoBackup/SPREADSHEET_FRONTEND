@@ -6,13 +6,14 @@
 
 .profile_background_image_container {
     position: fixed;
-    top:1vh;
+    top: 7.8vh;
     right: 0;
 
+    z-index: -1;
     display: grid;
     align-content: center;
     width: 90vw;
-    height: 35vh;
+    height: 28.5vh;
     overflow: hidden;
 }
 
@@ -27,8 +28,8 @@
     border-radius: 8px;
     /* max-height: 65.6vh; */
     margin-top: 27vh;
-    margin-left: 41vw;
-    width: 55vw;
+    margin-left: 37vw;
+    width: 45vw;
     padding-bottom: 2vh;
     /* overflow-x: hidden; */
     position: relative;
@@ -38,19 +39,17 @@
 .profile_container {
     position: fixed;
     top: 27vh;
-    right: 61vw;
+    left: 16.5vw;
 
     display: grid;
     box-shadow: 0 5px 5px #23282e;
     justify-content: center;
     align-content: space-between;
-    /* row-gap: vh; */
     border-radius: 8px;
-    /* grid-template-rows: 1fr 1fr 1fr; */
     overflow: hidden;
     background-color: #303741;
 
-    width: 20vw;
+    width: 17vw;
     height: 72vh;
 }
 

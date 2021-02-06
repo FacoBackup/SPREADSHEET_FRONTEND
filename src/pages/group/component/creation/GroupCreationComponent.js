@@ -1,11 +1,9 @@
 import axios from 'axios';
 import Button from '@material-ui/core/Button'
-import Modal from "@material-ui/core/Modal"
 import Avatar from '@material-ui/core/Avatar'
 import TextField from '@material-ui/core/TextField';
 import "../../styles/GroupOptionsStyle.css.css"
 import React from 'react'
-import GroupSearchComponent from '../../../shared/components/GroupSearchComponent'
 import Host from '../../../../Host'
 import Cookies from 'universal-cookie';
 import MuiAlert from "@material-ui/lab/Alert";

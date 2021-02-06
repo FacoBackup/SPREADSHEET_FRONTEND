@@ -8,6 +8,7 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import Host from '../../../../Host'
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
+import getFile from "../../../shared/functions/GetImage";
 
 const theme = createMuiTheme({
     palette: {
@@ -66,23 +67,14 @@ class ProfileSettingsComponent extends React.Component {
     }
 
     getFile(event, name) {
+        let image = getFile(event)
 
-        this.setState({
-            [name]: null,
-        })
-
-        let reader = new FileReader();
-
-        if (!event[0].name.match(/.(jpg|jpeg|png|gif|webp)$/i)) {
-            alert('not an image')
-        } else {
-            reader.readAsDataURL(event[0]);
-            reader.onload = () => {
-                this.setState({
-                    [name]: reader.result
-                })
-            }
-        }
+        if (image != null)
+            this.setState({
+                [name]: image
+            })
+        else
+            alert("Not an image")
     }
 
     render() {

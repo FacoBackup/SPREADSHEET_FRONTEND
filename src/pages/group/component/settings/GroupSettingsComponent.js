@@ -4,10 +4,11 @@ import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
 import {createMuiTheme} from "@material-ui/core/styles";
 import {ThemeProvider} from "@material-ui/styles";
-import axios from 'axios';
-import Cookies from 'universal-cookie';
-import Host from '../../../../Host'
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
+import getFile from "../../../shared/functions/GetImage";
+import updateGroup from "../../functions/UpdateGroup";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "../../../shared/functions/Alert";
 
 const theme = createMuiTheme({
     palette: {
@@ -21,16 +22,16 @@ class GroupSettingsComponent extends React.Component {
         this.state = {
             group: params.group,
             about: params.group.about,
-            // privacy: null,
             name: params.group.name,
-            backgroundImage: params.group.backgroundImageURL,
+            background: params.group.background,
             pic: params.group.imageURL,
+            error: false
         }
         this.handleChange = this.handleChange.bind(this)
+        this.updateGroup = this.updateGroup.bind(this)
+        this.getFile = this.getFile.bind(this)
     }
-    componentDidMount(){
-        console.log(this.state.category)
-    }
+
     handleChange(event) {
         this.setState({
             [event.target.name]: event.target.value
@@ -38,46 +39,24 @@ class GroupSettingsComponent extends React.Component {
     }
 
     async updateGroup() {
-        try {
-            await axios({
-                method: 'put',
-                url: Host() + 'api/update/group',
-                headers: {"Authorization": 'Bearer ' + (new Cookies()).get("JWT")},
-                data: {
-                    groupID: this.state.group.groupID,
-                    name: this.state.name !== null ? this.state.name.toLowerCase() : this.state.name,
-                    about: this.state.about,
-                    backgroundImageURL: this.state.backgroundImage,
-                    imageURL: this.state.pic
-                }
-            }).then(res => {
-                console.log(res)
-                window.location.reload()
+        let response = await updateGroup(this.state.group.id, this.state.name, this.state.about, this.state.background, this.state.pic)
+        if (response === true)
+            window.location.reload()
+        else
+            this.setState({
+                error: true
             })
-                .catch(error => console.log(error))
-        } catch (error) {
-            console.log(error)
-        }
     }
 
     getFile(event, name) {
+        let image = getFile(event)
 
-        this.setState({
-            [name]: null,
-        })
-
-        let reader = new FileReader();
-
-        if (!event[0].name.match(/.(jpg|jpeg|png|gif|webp)$/i)) {
-            alert('not an image')
-        } else {
-            reader.readAsDataURL(event[0]);
-            reader.onload = () => {
-                this.setState({
-                    [name]: reader.result
-                })
-            }
-        }
+        if (image != null)
+            this.setState({
+                [name]: image
+            })
+        else
+            alert("Not an image")
     }
 
     render() {
@@ -119,7 +98,7 @@ class GroupSettingsComponent extends React.Component {
                             </Button>
                         </label>
                         <input id="contained-button-file-background" type="file" style={{display: 'none'}}
-                               onChange={event => this.getFile(event.target.files, "backgroundImage")}/>
+                               onChange={event => this.getFile(event.target.files, "background")}/>
                         <label htmlFor="contained-button-file-background">
 
                             <Button
@@ -135,6 +114,7 @@ class GroupSettingsComponent extends React.Component {
                         </label>
 
                     </div>
+
                     {typeof this.state.pic !== 'undefined' && this.state.pic !== null ?
                         <div style={{
                             display: 'flex',
@@ -152,7 +132,7 @@ class GroupSettingsComponent extends React.Component {
                         </div> : null}
 
 
-                    {typeof this.state.backgroundImage !== 'undefined' && this.state.backgroundImage !== null ?
+                    {typeof this.state.background !== 'undefined' && this.state.background !== null ?
                         <div style={{
                             backgroundColor: '#3b424c',
                             borderRadius: '8px',
@@ -162,16 +142,20 @@ class GroupSettingsComponent extends React.Component {
                             <p style={{fontSize: '15px', fontWeight: '500', textAlign: 'center'}}>Selected Background
                                 Image</p>
                             <img alt="background" style={{maxWidth: '30vw', borderRadius: '8px'}}
-                                 src={this.state.backgroundImage}/>
+                                 src={this.state.background}/>
                             <Button variant="contained" style={{backgroundColor: 'red', color: 'white'}}
                                     disableElevation onClick={() => this.setState({
-                                backgroundImage: null
+                                background: null
                             })}> <DeleteRoundedIcon/> Remove</Button>
                         </div> : null}
 
                     <Button variant="contained" style={{textTransform: 'capitalize', width: '15vw', margin: 'auto'}}
                             color="primary" disableElevation onClick={() => this.updateGroup()}>save</Button>
                 </ThemeProvider>
+                <Snackbar open={this.state.error === true} autoHideDuration={6000}
+                          onClose={() => this.setState({error: false})}>
+                    <Alert severity="error">Some error occurred.</Alert>
+                </Snackbar>
             </div>
         )
     }
