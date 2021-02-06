@@ -9,7 +9,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import InfiniteScroll from "react-infinite-scroll-component";
-import RenderAsUser from '../functions/RenderAsUser'
+import RenderAsUser from '../../shared/components/RenderAsUser'
 import RenderAsGroup from '../functions/RenderAsGroup'
 
 const theme = createMuiTheme({
@@ -104,7 +104,7 @@ class SearchComponent extends React.Component {
                            loader={console.log("LOADING")}>
                            {this.state.subjects.map((subject) =>
                                <>
-                                   {this.state.asUser === true ? RenderAsUser(subject) : RenderAsGroup(subject)}
+                                   {this.state.asUser === true ? <RenderAsUser subject={subject}/> : RenderAsGroup(subject)}
                                </>
                            )}
                        </InfiniteScroll>

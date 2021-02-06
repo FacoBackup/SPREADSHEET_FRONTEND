@@ -27,8 +27,8 @@ class SignIn extends Component {
     constructor() {
         super()
         this.state = {
-            input: '',
-            password: '',
+            email: null,
+            password: null,
             accepted: null,
             error: false,
             errorMessage: null
@@ -52,7 +52,7 @@ class SignIn extends Component {
               method: 'post',
               url: Host() + 'api/sign_in',
               data: {
-                  email: this.state.input,
+                  email: this.state.email,
                   password:  this.state.password
               }
           })

@@ -4,8 +4,8 @@ import "../../styles/PageModel.css"
 import {createMuiTheme} from "@material-ui/core/styles";
 import {ThemeProvider} from "@material-ui/styles";
 import TextField from "@material-ui/core/TextField";
-import {Avatar, Button} from "@material-ui/core";
-import Cookies from "universal-cookie";
+import {Avatar, Button, IconButton, InputBase, Paper} from "@material-ui/core";
+import Cookies from "universal-cookie/lib";
 import SearchIcon from "@material-ui/icons/SearchRounded"
 
 const theme = createMuiTheme({
@@ -45,18 +45,23 @@ class TopBarComponent extends React.Component {
                 <div className={"top_nav_bar_container"}>
                     <div style={{width: '39vw', display: 'flex', alignItems: 'center'}}>
                     </div>
-                    <div style={{display: 'flex', alignItems: 'center', marginLeft: '15vw', width: '50%'}}>
-                        <TextField placeholder={"Search"} variant={"outlined"} color={'none'}
-                                   style={{width: '90%', backgroundColor: '#272e38'}} onChange={this.handleChange}/>
-                        <Button
-                            href={this.state.searchInput !== null ? "/search/" + this.state.searchInput + "/true" : null}
-                            style={{height: "56px", border: '#39adf6 2px solid', backgroundColor: '#272e38'}}
-                            variant={"outlined"}><SearchIcon/></Button>
+                    <div style={{display:'flex', alignItems:'center'}}>
+                        <Paper component="form" style={{backgroundColor: '#272e38',height:'6vh', width: '30vw', display: 'flex', alignItems: 'center', justifyContent:'space-between'}}>
+                            <InputBase
+                                style={{marginLeft:'1vw'}}
+                                placeholder="Search"
+                                onChange={this.handleChange}
+                            />
+                            <IconButton aria-label="search"  href={this.state.searchInput !== null ? "/search/" + this.state.searchInput + "/true" : null}>
+                                <SearchIcon />
+                            </IconButton>
+                        </Paper>
                     </div>
+
                     {typeof (new Cookies()).get("JWT") !== 'undefined' && this.state.profile !== null ?
                         <div className="top_nav_bar_profile_container">
                             <p style={{
-                                marginRight: '1%',
+                                marginRight: '1vw',
                                 fontSize: '16px',
                                 fontWeight: '400',
                                 lineBreak: 'auto',

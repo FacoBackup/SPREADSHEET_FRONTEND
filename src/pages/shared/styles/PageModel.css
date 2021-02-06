@@ -5,18 +5,31 @@
     align-items: center;
     border-bottom: #262d37 2px solid;
 }
+.render_as_user_content_container {
+    width: 29vw;
+    border-radius: 8px;
+    background-color: #3b424c;
+
+    margin-top: 2vh;
+    padding: 10px;
+    margin-bottom: 2vh;
+}
+div.render_as_user_content_container:hover {
+    border:#39adf6 2px solid;
+}
+
 .center_component {
     margin: 15vh auto 15vh 37vw;
-    width: 45vw;
-
+    width: 32vw;
+    min-height: 69vh;
     display: grid;
     justify-content: center;
     justify-items: center;
 
-    padding-right: 10px;
-    padding-left: 10px;
+
     border-radius: 8px;
 
+    position: relative;
     box-shadow: -1px 5px 5px #23282e;
     background-color: #303741;
 }

@@ -28,6 +28,9 @@ class LeftBarComponent extends Component {
             signOut: false,
         }
     }
+    componentDidMount() {
+        console.log(typeof cookies.get("JWT"))
+    }
 
     render() {
         if (this.state.signOut === false)
@@ -42,35 +45,40 @@ class LeftBarComponent extends Component {
                         </div>
                         <div className="profile_bar_buttons_container">
 
+                            {typeof cookies.get("JWT") !== 'undefined' ?
+                                <div className={this.state.home === true ? "clicked_button_style" : null}>
+                                    <Button style={{
+                                        textTransform: "capitalize",
+                                        color: (this.state.home === true ? "#39adf6" : '#ededed'),
+                                        fontSize: '16px',
+                                        width: '13vw',
+                                        marginLeft: '1.5vw',
+                                        justifyContent: 'flex-start'
+                                    }} href={"/profile/" + cookies.get("ID")}>
+                                        <HomeRounded style={{
+                                            marginRight: '10px',
+                                            fontSize: '27px',
+                                            color: (this.state.home === true ? "#39adf6" : '#62666f')
+                                        }}/>Home
+                                    </Button>
+                                </div>
+                                : null}
 
-                            <div className={this.state.home === true ? "clicked_button_style" : null}>
-                                <Button style={{
-                                    textTransform: "capitalize",
-                                    color: (this.state.home === true ? "#39adf6" : '#ededed'),
-                                    fontSize: '16px',
-                                    width: '13vw',
-                                    marginLeft: '1.5vw',
-                                    justifyContent: 'flex-start'
-                                }} href={"/profile/" + cookies.get("ID")}>
-                                    <HomeRounded style={{
-                                        marginRight: '10px',
-                                        fontSize: '27px',
-                                        color: (this.state.home === true ? "#39adf6" : '#62666f')
-                                    }}/>Home
-                                </Button>
-                            </div>
-                            <div className={this.state.archive === true ? "clicked_button_style" : null}>
-                                <Button style={{
-                                    textTransform: "capitalize",
-                                    color: (this.state.archive === true ? "#39adf6" : '#ededed'),
-                                    fontSize: '16px',
-                                    width: '13vw',
-                                    marginLeft: '1.5vw',
-                                    justifyContent: 'flex-start'
-                                }}>
-                                    <StorageRoundedIcon
-                                        style={{marginRight: '10px', fontSize: '27px', color: '#62666f'}}/>repositories</Button>
-                            </div>
+                            {typeof cookies.get("JWT") !== 'undefined' ?
+                                <div className={this.state.archive === true ? "clicked_button_style" : null}>
+                                    <Button style={{
+                                        textTransform: "capitalize",
+                                        color: (this.state.archive === true ? "#39adf6" : '#ededed'),
+                                        fontSize: '16px',
+                                        width: '13vw',
+                                        marginLeft: '1.5vw',
+                                        justifyContent: 'flex-start'
+                                    }}>
+                                        <StorageRoundedIcon
+                                            style={{marginRight: '10px', fontSize: '27px', color: '#62666f'}}/>repositories</Button>
+                                </div>
+                                : null}
+
 
 
                             <div className={this.state.extensions === true ? "clicked_button_style" : null}>
@@ -100,8 +108,9 @@ class LeftBarComponent extends Component {
                                 }}>
                                     <ExitToAppRoundedIcon
                                         style={{marginRight: '10px', fontSize: '27px', color: '#62666f'}}/>sign
-                                    out</Button>
+                                    {typeof cookies.get("JWT") !== 'undefined' ? " out" : " in"}</Button>
                             </div>
+
 
 
                         </div>
