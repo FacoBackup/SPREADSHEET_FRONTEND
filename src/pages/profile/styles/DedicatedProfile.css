@@ -23,15 +23,12 @@
     display: flex;
     justify-content: center;
     justify-items: center;
-    /* position:initial; */
 
     border-radius: 8px;
-    /* max-height: 65.6vh; */
     margin-top: 27vh;
-    margin-left: 37vw;
-    width: 45vw;
+    margin-left: 36vw;
+    width: 60vw;
     padding-bottom: 2vh;
-    /* overflow-x: hidden; */
     position: relative;
 
 }
@@ -49,10 +46,26 @@
     overflow: hidden;
     background-color: #303741;
 
-    width: 17vw;
-    height: 72vh;
+    width: 15vw;
+    height: 32vh;
 }
+.profile_commit_container {
+    position: fixed;
+    top: 63vh;
+    left: 16.5vw;
 
+    display: grid;
+    box-shadow: 0 5px 5px #23282e;
+    justify-content: center;
+    align-content: space-between;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #303741;
+
+    width: 15vw;
+    height: 37vh;
+
+}
 .options_container {
     position: fixed;
     top: 64vh;

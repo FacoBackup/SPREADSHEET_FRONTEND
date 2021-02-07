@@ -59,12 +59,16 @@ class SearchComponent extends React.Component {
         }
     }
 
-    async fetchData(input) {
+    async fetchData() {
+        let input = this.state.input
         this.setState({
             loading: true
         })
+        console.log("this is the input " + input)
+
         if (input.length > 0) {
             let response = await fetch(!this.state.asUser, this.state.maxID, input)
+            console.log(response)
             this.setState({
                 subjects: response.subjects,
                 maxID: response.max_id
@@ -84,16 +88,16 @@ class SearchComponent extends React.Component {
            <ThemeProvider theme={theme}>
                <div className="search_component">
 
-                   <div className="search_box_container">
-                       <FormControl component="fieldset">
-                           <RadioGroup aria-label="option" name="group"
-                                       value={this.state.asUser === false ? "group" : "user"}
-                                       onChange={this.handleChange}>
-                               <FormControlLabel value="user" control={<Radio/>} label="User"/>
-                               <FormControlLabel value="group" control={<Radio/>} label="group"/>
-                           </RadioGroup>
-                       </FormControl>
-                   </div>
+                   {/*<div className="search_box_container">*/}
+                   {/*    <FormControl component="fieldset">*/}
+                   {/*        <RadioGroup aria-label="option" name="group"*/}
+                   {/*                    value={this.state.asUser === false ? "group" : "user"}*/}
+                   {/*                    onChange={this.handleChange}>*/}
+                   {/*            <FormControlLabel value="user" control={<Radio/>} label="User"/>*/}
+                   {/*            <FormControlLabel value="group" control={<Radio/>} label="group"/>*/}
+                   {/*        </RadioGroup>*/}
+                   {/*    </FormControl>*/}
+                   {/*</div>*/}
                    <div>
                        <InfiniteScroll
                            dataLength={this.state.subjects.length}

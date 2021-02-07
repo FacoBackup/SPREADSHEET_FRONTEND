@@ -5,7 +5,7 @@ import Avatar from '@material-ui/core/Avatar'
 import {createMuiTheme} from "@material-ui/core/styles";
 import {ThemeProvider} from "@material-ui/styles";
 import axios from 'axios';
-import Cookies from 'universal-cookie';
+import Cookies from 'universal-cookie/lib';
 import Host from '../../../../Host'
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 import getFile from "../../../shared/functions/GetImage";
@@ -22,12 +22,12 @@ class ProfileSettingsComponent extends React.Component {
         this.state = {
             profile: params.profile,
             about: params.profile.about,
-            phoneNumber: params.profile.phoneNumber,
+            phone: params.profile.phone,
             nationality: params.profile.nationality,
             privacy: null,
             name: params.profile.name,
-            backgroundImage: params.profile.backgroundImageURL,
-            pic: params.profile.imageURL,
+            background: params.profile.backgroundURL,
+            pic: params.profile.pic,
             category: params.profile.category
         }
         this.handleChange = this.handleChange.bind(this)
@@ -46,15 +46,13 @@ class ProfileSettingsComponent extends React.Component {
             await axios({
                 method: 'put',
                 url: Host() + 'api/profile',
-                headers: {"Authorization": 'Bearer ' + (new Cookies()).get("JWT")},
+                headers: {"authorization": (new Cookies()).get("JWT")},
                 data: {
-                    name: this.state.name !== null ? this.state.name.toLowerCase() : this.state.name,
                     about: this.state.about,
                     nationality: this.state.nationality,
-                    phoneNumber: this.state.phoneNumber,
-                    backgroundImageURL: this.state.backgroundImage,
-                    imageURL: this.state.pic,
-                    category: this.state.category
+                    phone: this.state.phone,
+                    background: this.state.background,
+                    pic: this.state.pic
                 }
             }).then(res => {
                 console.log(res)
@@ -91,11 +89,6 @@ class ProfileSettingsComponent extends React.Component {
                         }}>Settings</p>
                     </div>
                     <div>
-                        <TextField variant="outlined" multiline defaultValue={this.state.name}
-                                   style={{width: '30vw'}} label="Name" name="name" onChange={this.handleChange}/>
-
-                    </div>
-                    <div>
                         <TextField variant="outlined" multiline defaultValue={this.state.about}
                                    style={{width: '30vw'}} label="About you" name="about" onChange={this.handleChange}/>
 
@@ -107,14 +100,8 @@ class ProfileSettingsComponent extends React.Component {
 
                     </div>
                     <div>
-                        <TextField variant="outlined" multiline defaultValue={this.state.phoneNumber}
-                                   style={{width: '30vw'}} label="Your Phone number" name="phoneNumber"
-                                   onChange={this.handleChange}/>
-
-                    </div>
-                    <div>
-                        <TextField variant="outlined" multiline defaultValue={this.state.category}
-                                   style={{width: '30vw'}} label="Where you work at" name="category"
+                        <TextField variant="outlined" multiline defaultValue={this.state.phone}
+                                   style={{width: '30vw'}} label="Your Phone number" name="phone"
                                    onChange={this.handleChange}/>
 
                     </div>
@@ -134,7 +121,7 @@ class ProfileSettingsComponent extends React.Component {
                             </Button>
                         </label>
                         <input id="contained-button-file-background" type="file" style={{display: 'none'}}
-                               onChange={event => this.getFile(event.target.files, "backgroundImage")}/>
+                               onChange={event => this.getFile(event.target.files, "background")}/>
                         <label htmlFor="contained-button-file-background">
 
                             <Button
@@ -167,7 +154,7 @@ class ProfileSettingsComponent extends React.Component {
                         </div> : null}
 
 
-                    {typeof this.state.backgroundImage !== 'undefined' && this.state.backgroundImage !== null ?
+                    {typeof this.state.background !== 'undefined' && this.state.background !== null ?
                         <div style={{
                             backgroundColor: '#3b424c',
                             borderRadius: '8px',
@@ -177,10 +164,10 @@ class ProfileSettingsComponent extends React.Component {
                             <p style={{fontSize: '15px', fontWeight: '500', textAlign: 'center'}}>Selected Background
                                 Image</p>
                             <img alt="background" style={{maxWidth: '30vw', borderRadius: '8px'}}
-                                 src={this.state.backgroundImage}/>
+                                 src={this.state.background}/>
                             <Button variant="contained" style={{backgroundColor: 'red', color: 'white'}}
                                     disableElevation onClick={() => this.setState({
-                                backgroundImage: null
+                                background: null
                             })}> <DeleteRoundedIcon/> Remove</Button>
                         </div> : null}
 

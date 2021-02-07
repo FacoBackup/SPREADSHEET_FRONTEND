@@ -19,7 +19,7 @@ class TopBarComponent extends React.Component {
         super(params)
         this.state = {
             redirect: false,
-            searchInput: null,
+            searchInput: typeof params.input === 'undefined'? null : params.input,
             profile: null
         }
         this.handleChange = this.handleChange.bind(this)
@@ -49,10 +49,10 @@ class TopBarComponent extends React.Component {
                         <Paper component="form" style={{backgroundColor: '#272e38',height:'6vh', width: '30vw', display: 'flex', alignItems: 'center', justifyContent:'space-between'}}>
                             <InputBase
                                 style={{marginLeft:'1vw'}}
-                                placeholder="Search"
+                                placeholder={this.state.searchInput === null ? "Search" : this.state.searchInput}
                                 onChange={this.handleChange}
                             />
-                            <IconButton aria-label="search"  href={this.state.searchInput !== null ? "/search/" + this.state.searchInput + "/true" : null}>
+                            <IconButton aria-label="search"  href={this.state.searchInput !== null ? "/search/{" + this.state.searchInput + "}/true" : null}>
                                 <SearchIcon />
                             </IconButton>
                         </Paper>
@@ -72,7 +72,6 @@ class TopBarComponent extends React.Component {
                                 style={{height: '45px', marginRight: '1%', width: '45px'}}
                                 src={this.state.profile.image}
                                 alt="user"
-
                             />
                         </div>:
 

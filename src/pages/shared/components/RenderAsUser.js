@@ -1,6 +1,6 @@
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import React, {useState} from "react";
+import React from "react";
 import MoreVertRoundedIcon from '@material-ui/icons/MoreVertRounded';
 
 export default class RenderAsUser extends React.Component{
@@ -16,7 +16,7 @@ export default class RenderAsUser extends React.Component{
 
     render() {
         return(
-            <div className={"render_as_user_content_container"} style={{height:(this.state.more !== true? "auto" :'22vh')}}>
+            <div className={"render_as_user_content_container"} key={this.state.subject.id} style={{height:(this.state.more !== true? "auto" :'22vh')}}>
                 <div style={{display: 'flex', alignContent: (this.state.more !== true? "center" :'flex-start'), alignItems:'center', justifyContent:'space-around'}}>
                     <div style={{display:'flex', alignItems:'center'}}>
                         <Avatar

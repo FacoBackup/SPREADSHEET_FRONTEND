@@ -5,6 +5,7 @@ import {Redirect} from 'react-router-dom'
 import Cookies from 'universal-cookie';
 import GroupComponent from './component/GroupComponent'
 import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
+import TopBarComponent from "../shared/components/navigation/TopBarComponent";
 
 const theme = createMuiTheme({
     palette: {
@@ -21,19 +22,18 @@ class Group extends React.Component {
     }
 
     render() {
-        if (typeof (new Cookies()).get("JWT") !== 'undefined') {
-            return (
-                <ThemeProvider theme={theme}>
-                    <div>
-                        <GroupComponent groupID={this.state.groupID} token={(new Cookies()).get("JWT")}/>
-                    </div>
-                    <div className="left_components">
-                        <ProfileBar/>
-                    </div>
-                </ThemeProvider>
-            );
-        } else
-            return (<Redirect to="/authenticate"/>);
+        return (
+            <ThemeProvider theme={theme}>
+                <TopBarComponent/>
+                <div>
+                    <GroupComponent groupID={this.state.groupID}/>
+                </div>
+                <div className="left_components">
+                    <ProfileBar/>
+                </div>
+            </ThemeProvider>
+        );
+
     }
 }
 

@@ -15,7 +15,7 @@ function AppRoutes() {
                     <Route path="/profile/:userID" exact component={Profile}/>
                     <Route path="/group/:id" exact component={Group}/>
                     <Route path={"/extensions"} exact component={Extensions}/>
-                    <Route path="/search/:input/:asUser" exact component={Search}/>
+                    <Route path="/search/{:input}/:asUser" exact component={Search}/>
                     <Route path="/authenticate" exact component={SignIn}/>
                 </Switch>
             </Router>

@@ -25,7 +25,7 @@ class Search extends Component {
         return (
             <ThemeProvider theme={theme}>
                 <div>
-                    <TopBarComponent/>
+                    <TopBarComponent input={this.state.input}/>
                 </div>
                 <div className="center_component">
                     <SearchComponent token={new Cookies().get("JWT")} asUser={this.state.asUser}
