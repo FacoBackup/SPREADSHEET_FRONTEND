@@ -2,6 +2,8 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import React from "react";
 import MoreVertRoundedIcon from '@material-ui/icons/MoreVertRounded';
+import {Modal} from "@material-ui/core";
+let QRCode = require('qrcode.react');
 
 export default class RenderAsUser extends React.Component{
     group_name;
@@ -10,8 +12,34 @@ export default class RenderAsUser extends React.Component{
         super(params);
         this.state={
             subject: params.subject,
-            more: false
+            more: false,
+            modal: false
         }
+        this.renderModal = this.renderModal.bind(this)
+    }
+
+    renderModal(){
+        if (this.state.modal === true){
+            return(
+                <Modal open={this.state.modal} onClose={() => this.setState({
+                    modal:false
+                })} style={{width:'fit-content', height:'fit-content', margin:'auto'}}>
+                    <div>
+                        <QRCode value= {"BEGIN:VCARD" +
+                                        "VERSION:4.0" +
+                                        "N:{profile.name}" +
+                                        "FN:"+ this.state.subject.name +
+                                        "TEL;TYPE#work,voice;VALUE#uri:tel:" + this.state.subject.phone +
+                                        "EMAIL:" + this.state.subject.email + "END:VCARD"}
+                                style={{width:'500px', height:'500px'}}
+                        />
+
+                    </div>
+                </Modal>
+            )
+        }
+        else
+            return null
     }
 
     render() {
@@ -40,6 +68,9 @@ export default class RenderAsUser extends React.Component{
                         more: !this.state.more
                     })}  variant="outlined" style={{color:'white', textTransform:'capitalize',border:(this.state.more === true? '#39adf6 2px solid' : null)}} disableElevation><MoreVertRoundedIcon/></Button>
                     <Button href={"/profile/" + this.state.subject.id } variant="outlined" style={{color:'white', textTransform:'capitalize'}} disableElevation>profile</Button>
+                    <Button onClick={() => this.setState({
+                        modal: true
+                    })} variant="outlined" style={{color:'white'}} disableElevation>QR</Button>
 
                 </div>
                 {this.state.more === true?
@@ -56,6 +87,7 @@ export default class RenderAsUser extends React.Component{
                     :
                     null
                 }
+                <this.renderModal/>
             </div>
         )
     }

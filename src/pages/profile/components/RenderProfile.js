@@ -21,12 +21,35 @@ export default class RenderProfile extends React.Component{
             profile:{},
             settings: false,
             branches: true,
-            qr: false
+            qr: false,
+            commits: []
         }
     }
 
     componentDidMount() {
         this.fetchData().catch(r => console.log(r))
+        this.fetchCommits().catch(r => console.log(r))
+    }
+
+    async fetchCommits(){
+        try {
+            await axios({
+                method: 'patch',
+                url: Host() + 'api/get/latest/commits',
+                data: {
+                    user_id: this.state.userID
+                }
+            }).then(res => {
+                this.setState({
+                    commits: res.data
+                })
+
+            }).catch(error => {
+                console.log(error)
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     async fetchData() {
@@ -35,7 +58,7 @@ export default class RenderProfile extends React.Component{
                 method: 'patch',
                 url: Host() + 'api/get/user/by_id',
                 data: {
-                    user_id: typeof this.state.userID !== "undefined" ? this.state.userID : (cookies).get("ID")
+                    user_id: this.state.userID
                 }
             }).then(res => {
                 console.log(this.state.userID === parseInt((cookies).get("ID")))
@@ -89,7 +112,7 @@ export default class RenderProfile extends React.Component{
                                     <PhoneRoundedIcon style={{marginRight: '10px'}}/>
                                     {this.state.profile.phone}
                                 </div>
-                                <div style={{marginTop:'6.7vh'}}>
+                                <div style={{marginTop:'50px'}}>
                                     <ButtonGroup size="large" variant="text">
                                         <Button style={{display: 'grid', lineHeight: '7px', fontSize: '15px',width:'3.9vw',textTransform:'capitalize',color:"#aaadb1"}} disableElevation>Branches</Button>
 
@@ -114,6 +137,13 @@ export default class RenderProfile extends React.Component{
                         </div>
                         <div className={"profile_commit_container"}>
                             <p style={{textAlign:"center"}}> Latest Commits</p>
+                            {this.state.commits.length > 0 ? this.state.commits.map((commit) => (
+                                <div style={{borderRadius:'8px', backgroundColor:'#'}}>
+
+                                </div>
+                            )):
+                            <p style={{color:'#aaadb1'}}>No recent commits</p>
+                            }
                         </div>
                     </div>
                 </div>
