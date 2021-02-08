@@ -58,7 +58,7 @@ class UserBranchesComponent extends React.Component {
         return (
             <ThemeProvider theme={theme}>
                  <div>
-                     <p style={{textAlign:'center'}}>Contributer in</p>
+                     <p style={{textAlign:'center'}}>Contributor in</p>
                     {this.state.branches.length > 0 ?
                         <InfiniteScroll
                             dataLength={this.state.branches.length}
@@ -71,7 +71,7 @@ class UserBranchesComponent extends React.Component {
                                 <RenderBranch user_id={this.state.userID} branch={branch} />
                             ))}
                         </InfiniteScroll>: 
-                        <p style={{textAlign:'center', color:'#aaadb1'}}>You're not a contributer in any repository</p>
+                        <p style={{textAlign:'center', color:'#aaadb1'}}>{this.state.userID === parseInt(cookies.get("ID")) ? "You're n" : "N"}ot a contributor in any repository</p>
                 }
                  </div>
             </ThemeProvider>

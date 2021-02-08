@@ -22,8 +22,8 @@ export default class RenderAsUser extends React.Component{
             return(
                 <Modal open={this.state.modal} onClose={() => this.setState({
                     modal:false
-                })} style={{width:'fit-content', height:'fit-content'}}>
-                    <div style={{display:'grid', justifyContent:'center', margin:'10% auto'}}>
+                })} style={{ display:'grid', justifyContent:'center', alignContent: "center"}}>
+                    <div style={{width:'600px', height:'600px',margin:'auto',display:'grid', justifyContent:'center', justifyItems:'center', alignContent: "center", backgroundColor:'white'}}>
                         <QRCode value= {"BEGIN:VCARD" +
                                         "VERSION:4.0" +
                                         "N:" + this.state.subject.name +
@@ -42,7 +42,9 @@ export default class RenderAsUser extends React.Component{
 
     render() {
         return(
-            <div className={"render_as_user_content_container"} key={this.state.subject.id} style={{height:(this.state.more !== true? "auto" :'22vh')}}>
+            <>
+                <this.renderModal/>
+                <div className={"render_as_user_content_container"} key={this.state.subject.id} style={{height:(this.state.more !== true? "auto" :'22vh')}}>
                 <div style={{display: 'flex', alignContent: (this.state.more !== true? "center" :'flex-start'), alignItems:'center', justifyContent:'space-around'}}>
                     <div style={{display:'flex', alignItems:'center'}}>
                         <Avatar
@@ -86,9 +88,12 @@ export default class RenderAsUser extends React.Component{
                     null
                 }
 
-                <this.renderModal/>
+
 
             </div>
+
+            </>
+
         )
     }
 }

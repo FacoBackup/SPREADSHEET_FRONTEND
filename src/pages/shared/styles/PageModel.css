@@ -5,6 +5,13 @@
     align-items: center;
     border-bottom: #262d37 2px solid;
 }
+.menu_container{
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto 7px auto;
+}
 .render_as_user_content_container {
     width: 29vw;
     border-radius: 8px;
