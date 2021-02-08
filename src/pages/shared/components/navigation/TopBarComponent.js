@@ -1,10 +1,8 @@
-// import axios from 'axios';
 import React from 'react'
 import "../../styles/PageModel.css"
 import {createMuiTheme} from "@material-ui/core/styles";
 import {ThemeProvider} from "@material-ui/styles";
-import TextField from "@material-ui/core/TextField";
-import {Avatar, Button, IconButton, InputBase, Paper} from "@material-ui/core";
+import {Avatar, IconButton, InputBase, Paper} from "@material-ui/core";
 import Cookies from "universal-cookie/lib";
 import SearchIcon from "@material-ui/icons/SearchRounded"
 
@@ -70,7 +68,7 @@ class TopBarComponent extends React.Component {
                             }}>{("" + this.state.profile.name).substr(0, ("" + this.state.profile.name).indexOf(' '))}</p>
                             <Avatar
                                 style={{height: '45px', marginRight: '1%', width: '45px'}}
-                                src={this.state.profile.image}
+                                src={this.state.profile.pic}
                                 alt="user"
                             />
                         </div>:

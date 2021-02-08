@@ -3,7 +3,6 @@ import TopBarComponent from "../shared/components/navigation/TopBarComponent";
 import ProfileBar from "../shared/components/navigation/LeftBarComponent";
 import fetchExtensions from "./functions/FetchData";
 import RenderAsUser from "../shared/components/RenderAsUser";
-import RenderAsGroup from "../search/functions/RenderAsGroup";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {Skeleton} from "@material-ui/lab";
 

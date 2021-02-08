@@ -15,20 +15,18 @@ const theme = createMuiTheme({
         type: "dark"
     }
 });
-
+let cookies = new Cookies()
 class ProfileSettingsComponent extends React.Component {
     constructor(params) {
         super(params)
         this.state = {
             profile: params.profile,
-            about: params.profile.about,
-            phone: params.profile.phone,
-            nationality: params.profile.nationality,
+            about: null,
+            phone: null,
             privacy: null,
-            name: params.profile.name,
-            background: params.profile.backgroundURL,
+            background: params.profile.background,
             pic: params.profile.pic,
-            category: params.profile.category
+            study: null
         }
         this.handleChange = this.handleChange.bind(this)
     }
@@ -45,14 +43,14 @@ class ProfileSettingsComponent extends React.Component {
         try {
             await axios({
                 method: 'put',
-                url: Host() + 'api/profile',
-                headers: {"authorization": (new Cookies()).get("JWT")},
+                url: Host() + 'api/update/profile',
                 data: {
+                    user_id: parseInt(cookies.get("ID")),
                     about: this.state.about,
-                    nationality: this.state.nationality,
                     phone: this.state.phone,
                     background: this.state.background,
-                    pic: this.state.pic
+                    pic: this.state.pic,
+                    study: this.state.study
                 }
             }).then(res => {
                 console.log(res)
@@ -64,8 +62,8 @@ class ProfileSettingsComponent extends React.Component {
         }
     }
 
-    getFile(event, name) {
-        let image = getFile(event)
+    async getFile(event, name) {
+        let image = await getFile(event)
 
         if (image != null)
             this.setState({
@@ -89,18 +87,18 @@ class ProfileSettingsComponent extends React.Component {
                         }}>Settings</p>
                     </div>
                     <div>
-                        <TextField variant="outlined" multiline defaultValue={this.state.about}
+                        <TextField variant="outlined" multiline defaultValue={this.state.profile.about}
                                    style={{width: '30vw'}} label="About you" name="about" onChange={this.handleChange}/>
 
                     </div>
                     <div>
-                        <TextField variant="outlined" multiline defaultValue={this.state.nationality}
-                                   style={{width: '30vw'}} label="Your nationality" name="nationality"
+                        <TextField variant="outlined" multiline defaultValue={this.state.profile.study}
+                                   style={{width: '30vw'}} label="Your study level" name="study"
                                    onChange={this.handleChange}/>
 
                     </div>
                     <div>
-                        <TextField variant="outlined" multiline defaultValue={this.state.phone}
+                        <TextField variant="outlined" multiline defaultValue={this.state.profile.phone}
                                    style={{width: '30vw'}} label="Your Phone number" name="phone"
                                    onChange={this.handleChange}/>
 
@@ -129,7 +127,7 @@ class ProfileSettingsComponent extends React.Component {
                                 variant="outlined"
 
                                 disableElevation
-                                style={{marginLeft: '10px', color:"white"}}
+                                style={{marginLeft: '10px', color:"white", textTransform:'capitalize'}}
                             >
 
                                 Background
@@ -171,8 +169,8 @@ class ProfileSettingsComponent extends React.Component {
                             })}> <DeleteRoundedIcon/> Remove</Button>
                         </div> : null}
 
-                    <Button variant="contained" style={{textTransform: 'capitalize', width: '15vw', margin: 'auto'}}
-                            color="primary" disableElevation onClick={() => this.updateProfile()}>save</Button>
+                    <Button variant="outlined" style={{textTransform: 'capitalize', width: '15vw', margin: 'auto', border:'#39adf6 2px solid'}}
+                            disableElevation onClick={() => this.updateProfile()}>save</Button>
                 </ThemeProvider>
             </div>
         )

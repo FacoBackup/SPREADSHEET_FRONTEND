@@ -6,7 +6,6 @@ import {Modal} from "@material-ui/core";
 let QRCode = require('qrcode.react');
 
 export default class RenderAsUser extends React.Component{
-    group_name;
     birth;
     constructor(params) {
         super(params);
@@ -23,13 +22,12 @@ export default class RenderAsUser extends React.Component{
             return(
                 <Modal open={this.state.modal} onClose={() => this.setState({
                     modal:false
-                })} style={{width:'fit-content', height:'fit-content', margin:'auto'}}>
-                    <div>
+                })} style={{width:'fit-content', height:'fit-content'}}>
+                    <div style={{display:'grid', justifyContent:'center', margin:'10% auto'}}>
                         <QRCode value= {"BEGIN:VCARD" +
                                         "VERSION:4.0" +
-                                        "N:{profile.name}" +
-                                        "FN:"+ this.state.subject.name +
-                                        "TEL;TYPE#work,voice;VALUE#uri:tel:" + this.state.subject.phone +
+                                        "N:" + this.state.subject.name +
+                                        "TEL:" + this.state.subject.phone +
                                         "EMAIL:" + this.state.subject.email + "END:VCARD"}
                                 style={{width:'500px', height:'500px'}}
                         />
@@ -49,7 +47,7 @@ export default class RenderAsUser extends React.Component{
                     <div style={{display:'flex', alignItems:'center'}}>
                         <Avatar
                             style={{height: '55px', width: '55px'}}
-                            src={this.state.subject.imageURL}
+                            src={this.state.subject.pic}
                             alt="user"
                         />
                         <div style={{lineHeight:'1vh', marginLeft:'1vw'}}>
@@ -87,7 +85,9 @@ export default class RenderAsUser extends React.Component{
                     :
                     null
                 }
+
                 <this.renderModal/>
+
             </div>
         )
     }

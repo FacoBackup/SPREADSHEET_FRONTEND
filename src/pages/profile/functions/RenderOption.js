@@ -1,6 +1,8 @@
+import Cookies from "universal-cookie/lib";
 import ProfileSettingsComponent from "../components/options/ProfileSettingsComponent";
+import UserBranchesComponent from "../components/options/UserBranchesComponent";
 
-export default function renderOption(settings, branches, qr, commits){
+export default function renderOption(user_id,settings, branches, qr, commits){
     switch(true){
         case qr:{
             return "qr"
@@ -9,13 +11,13 @@ export default function renderOption(settings, branches, qr, commits){
             return <ProfileSettingsComponent profile={JSON.parse(localStorage.getItem("PROFILE"))}/>
         }
         case branches:{
-            return "branches"
+            return <UserBranchesComponent user_id={user_id}/>
         }
         case commits:{
             return "commits"
         }
         default:{
-            return "Commits"
+            return <UserBranchesComponent user_id={user_id}/>
         }
     }
 }

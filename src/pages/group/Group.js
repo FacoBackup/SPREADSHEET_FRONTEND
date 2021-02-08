@@ -1,8 +1,6 @@
 import React from 'react'
 import ProfileBar from "../shared/components/navigation/LeftBarComponent.js"
 import "../shared/styles/PageModel.css"
-import {Redirect} from 'react-router-dom'
-import Cookies from 'universal-cookie';
 import GroupComponent from './component/GroupComponent'
 import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
 import TopBarComponent from "../shared/components/navigation/TopBarComponent";

@@ -4,10 +4,6 @@ import React from 'react'
 import "../../profile/styles/SocialStyle.css"
 import "../styles/SearchComponentStyle.css"
 import fetch from "../functions/FetchData";
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
 import InfiniteScroll from "react-infinite-scroll-component";
 import RenderAsUser from '../../shared/components/RenderAsUser'
 import RenderAsGroup from '../functions/RenderAsGroup'

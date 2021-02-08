@@ -7,9 +7,9 @@ import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import renderOption from "../functions/RenderOption";
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
+import Cookies from "universal-cookie/lib";
 import axios from "axios";
 import Host from "../../../Host";
-import Cookies from "universal-cookie/lib";
 
 const cookies = new Cookies()
 
@@ -18,14 +18,13 @@ export default class RenderProfile extends React.Component{
         super(params);
         this.state={
             userID: params.user_id,
-            profile:{},
+            profile: {},
             settings: false,
             branches: true,
             qr: false,
             commits: []
         }
     }
-
     componentDidMount() {
         this.fetchData().catch(r => console.log(r))
         this.fetchCommits().catch(r => console.log(r))
@@ -37,7 +36,7 @@ export default class RenderProfile extends React.Component{
                 method: 'patch',
                 url: Host() + 'api/get/latest/commits',
                 data: {
-                    user_id: this.state.userID
+                    user_id: (this.state.userID)
                 }
             }).then(res => {
                 this.setState({
@@ -53,12 +52,13 @@ export default class RenderProfile extends React.Component{
     }
 
     async fetchData() {
+
         try {
             await axios({
                 method: 'patch',
                 url: Host() + 'api/get/user/by_id',
                 data: {
-                    user_id: this.state.userID
+                    user_id: (this.state.userID)
                 }
             }).then(res => {
                 console.log(this.state.userID === parseInt((cookies).get("ID")))
@@ -66,10 +66,11 @@ export default class RenderProfile extends React.Component{
                     localStorage.removeItem("PROFILE")
                     localStorage.setItem("PROFILE", JSON.stringify(res.data))
                 }
-
+                console.log(res.data)
                 this.setState({
                     profile: res.data
                 })
+                console.log(this.state.profile)
 
             }).catch(error => {
                 console.log(error)
@@ -78,7 +79,6 @@ export default class RenderProfile extends React.Component{
             console.log(error)
         }
     }
-
 
     render() {
         return (
@@ -95,14 +95,14 @@ export default class RenderProfile extends React.Component{
                                 <Avatar
                                     style={{margin: 'auto', height: '4vw', width: '4vw', boxShadow:'0 0px 5px #23282e'}}
                                     src={this.state.profile.pic}
-                                    alt="user"
+                                    alt={this.state.profile.name}
                                 />
                                 <p style={{
-                                    fontSize: '18px',
-                                    fontWeight:'400',
+                                    fontSize: '17px',
+                                
                                     textTransform: 'capitalize'
                                 }}>{("" + this.state.profile.name)}</p>
-                                <p style={{fontSize: '17px',fontWeight: '350', color: '#888e97'}}>{this.state.profile.email}</p>
+                                <p style={{fontSize: '16px', color: '#888e97'}}>{this.state.profile.email}</p>
                                 <div style={{
                                     display: 'flex',
                                     justifyContent: 'center',
@@ -114,26 +114,26 @@ export default class RenderProfile extends React.Component{
                                 </div>
                                 <div style={{marginTop:'50px'}}>
                                     <ButtonGroup size="large" variant="text">
-                                        <Button style={{display: 'grid', lineHeight: '7px', fontSize: '15px',width:'3.9vw',textTransform:'capitalize',color:"#aaadb1"}} disableElevation>Branches</Button>
+                                        <Button onClick={() => this.setState({branches: true, settings: false})} style={{display: 'grid', lineHeight: '7px', fontSize: '14px',width:(parseInt((new Cookies()).get("ID")) === this.state.userID? '5vw': '7.5vw'),textTransform:'capitalize',color:(this.state.branches === true ? "#39a0f6" :"#aaadb1")}} disableElevation>Branches</Button>
 
-                                        <Button style={{display: 'grid', lineHeight: '7px', fontSize: '15px', width:'3.vw',textTransform:'none',color:"#aaadb1"}} disableElevation>QRCode</Button>
+                                        <Button style={{display: 'grid', lineHeight: '7px', fontSize: '14px',width:(parseInt((new Cookies()).get("ID")) === this.state.userID ? '5vw': '7.5vw'),textTransform:'capitalize',color:"#aaadb1"}} disableElevation href={"/group/"+this.state.profile.group_id}>Group</Button>
 
-                                        <Button style={{display: 'grid', lineHeight: '7px', fontSize: '15px',width:'3.5vw',textTransform:'capitalize',color:"#aaadb1"}} disableElevation href={"/group/"+this.state.profile.group_id}>Group</Button>
-
-
-
-                                        <Button style={{display: 'grid', lineHeight: '7px', fontSize: '15px',width:'2.5vw',textTransform:'capitalize',color:(this.state.settings === true ? "#39a0f6" :"#aaadb1")}} disableElevation
-                                            onClick={()=> this.setState({
-                                                settings:true,
-                                                branches:false
-                                            })}
-                                        ><SettingsRoundedIcon/></Button>
+                                        {parseInt((new Cookies()).get("ID") ) === this.state.userID ?
+                                            <Button style={{display: 'grid', lineHeight: '7px', fontSize: '15px',width:'5vw',textTransform:'capitalize',color:(this.state.settings === true ? "#39a0f6" :"#aaadb1")}} disableElevation
+                                                    onClick={()=> this.setState({
+                                                        settings:true,
+                                                        branches:false
+                                                    })}
+                                            ><SettingsRoundedIcon/></Button>
+                                            :
+                                            null
+                                        }
                                     </ButtonGroup>
                                 </div>
                             </div>
                         </div>
                         <div className="profile_content_container">
-                            {renderOption(this.state.settings,false,false,false)}
+                            {renderOption(this.state.userID,this.state.settings,false,false,false)}
                         </div>
                         <div className={"profile_commit_container"}>
                             <p style={{textAlign:"center"}}> Latest Commits</p>

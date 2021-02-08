@@ -14,10 +14,10 @@ class Profile extends React.Component {
     constructor({match}) {
         super({match})
         this.state = {
-            userID: match.params.userID,
+            userID: (match.params.userID),
             group: false,
             aboutOption: false,
-            settings: false
+            settings: false,
         }
     }
 
