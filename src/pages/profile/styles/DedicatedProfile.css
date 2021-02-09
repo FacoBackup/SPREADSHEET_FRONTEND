@@ -3,6 +3,37 @@
     width: 100%;
     padding-bottom: 5px;
 }
+.commit_container{
+    background-color: #3b424c;
+    border-radius: 8px;
+    width: 12vw;
+    padding-left: .5vw;
+    padding-right: .5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+div.commit_container:hover {
+    border:#39adf6 2px solid;
+}
+.profile_commit_container {
+    position: fixed;
+    top: 63vh;
+    left: 16.5vw;
+
+    display: grid;
+    box-shadow: 0 5px 5px #23282e;
+    justify-content: center;
+    align-content: flex-start;
+    row-gap: 1.5vh;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #303741;
+
+    width: 15vw;
+    height: 37vh;
+
+}
 
 .profile_background_image_container {
     position: fixed;
@@ -49,23 +80,7 @@
     width: 15vw;
     height: 300px;
 }
-.profile_commit_container {
-    position: fixed;
-    top: 63vh;
-    left: 16.5vw;
 
-    display: grid;
-    box-shadow: 0 5px 5px #23282e;
-    justify-content: center;
-    align-content: space-between;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: #303741;
-
-    width: 15vw;
-    height: 37vh;
-
-}
 .options_container {
     position: fixed;
     top: 64vh;

@@ -1,55 +1,67 @@
 import React, {Component} from 'react';
-// import "../shared/styles/PageModel.css"
-import Cookies from 'universal-cookie';
+import Cookies from 'universal-cookie/lib';
 import Host from '../../../Host'
 import axios from 'axios'
 import RenderCell from './RenderCell';
+import {AvatarGroup} from "@material-ui/lab";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import SaveAltRoundedIcon from "@material-ui/icons/SaveAltRounded";
+import fetchBranchData from "../functions/FetchData";
 
 const cookies = new Cookies()
 
 export default class BranchVisualization extends Component {
+    column_name;
     
     constructor(params) {
-        super(params);
+        super();
         this.state={
             branchID: params.branch_id,
-            content: []
+            content: [],
+            contributors: [],
+            modal: false
         }
         this.fetchData = this.fetchData.bind(this)
     }
+
     componentDidMount(){
-        this.fetchData()
-        
+        this.fetchData().catch(r => console.log(r))
         cookies.remove("CHANGES")
-        
     }
 
     async fetchData(){
-        try {
-            await axios({
-                method: 'patch',
-                url: Host() + 'api/get/branch/content',
-                headers:{'authorization':(new Cookies()).get("JWT")},
-                data: {
-                    branch_id: this.state.branchID
-                }
-            }).then(res => {
-                console.log(res)
-                
-                this.setState({
-                    content: res.data
-                })
-            })
-            .catch(error => console.log(error))
-        } catch (error) {
-            
-            console.log(error)
-        }
+        const response = await fetchBranchData(this.state.branchID)
+        this.setState({
+            content: response.content,
+            contributors: response.contributors
+        })
     }
     
     render() {    
         return (
             <div >
+                <div  className={"control_bar_container"}>
+                    <Button onClick={() => this.setState({
+                        modal: true
+                    })}>
+                        <AvatarGroup max={4}>
+                            {this.state.contributors.map((user) => (
+                                <Avatar key={user.id} alt={user.name} src={user.pic}/>
+                            ))}
+                        </AvatarGroup>
+                    </Button>
+                    <Button
+                        style={{textTransform:'none'}}
+                        variant="outlined"
+                        onClick={() => this.props.make_commit()}>
+                        <SaveAltRoundedIcon style={{marginRight:'10px'}}/> Commit
+                    </Button>
+                    <Button>cafe</Button>
+                    <Button>cafe</Button>
+                    <Button>cafe</Button>
+                    <Button>cafe</Button>
+                </div>
                 <div  className="table_container">
                     {this.state.content.map((column) => (
                         <div className="column_container" >

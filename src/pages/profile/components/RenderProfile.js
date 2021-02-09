@@ -10,10 +10,13 @@ import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import Cookies from "universal-cookie/lib";
 import axios from "axios";
 import Host from "../../../Host";
+import fetchProfileData from "../functions/FetchData";
+import {Link} from "react-router-dom";
 
-const cookies = new Cookies()
+
 
 export default class RenderProfile extends React.Component{
+    branch_name;
     constructor(params) {
         super(params);
         this.state={
@@ -27,57 +30,14 @@ export default class RenderProfile extends React.Component{
     }
     componentDidMount() {
         this.fetchData().catch(r => console.log(r))
-        this.fetchCommits().catch(r => console.log(r))
-    }
-
-    async fetchCommits(){
-        try {
-            await axios({
-                method: 'patch',
-                url: Host() + 'api/get/latest/commits',
-                data: {
-                    user_id: (this.state.userID)
-                }
-            }).then(res => {
-                this.setState({
-                    commits: res.data
-                })
-
-            }).catch(error => {
-                console.log(error)
-            })
-        } catch (error) {
-            console.log(error)
-        }
     }
 
     async fetchData() {
-
-        try {
-            await axios({
-                method: 'patch',
-                url: Host() + 'api/get/user/by_id',
-                data: {
-                    user_id: (this.state.userID)
-                }
-            }).then(res => {
-                console.log(this.state.userID === parseInt((cookies).get("ID")))
-                if (this.state.userID === parseInt(cookies.get("ID"))){
-                    localStorage.removeItem("PROFILE")
-                    localStorage.setItem("PROFILE", JSON.stringify(res.data))
-                }
-                console.log(res.data)
-                this.setState({
-                    profile: res.data
-                })
-                console.log(this.state.profile)
-
-            }).catch(error => {
-                console.log(error)
-            })
-        } catch (error) {
-            console.log(error)
-        }
+        const response = await fetchProfileData(this.state.userID)
+        this.setState({
+            profile: response.profile,
+            commits: response.commits
+        })
     }
 
     render() {
@@ -138,9 +98,22 @@ export default class RenderProfile extends React.Component{
                         <div className={"profile_commit_container"}>
                             <p style={{textAlign:"center"}}> Latest Commits</p>
                             {this.state.commits.length > 0 ? this.state.commits.map((commit) => (
-                                <div style={{borderRadius:'8px', backgroundColor:'#'}}>
-
-                                </div>
+                                <Link style={{textDecoration:'none', color:'white'}} to={"/branch/" + commit.branch_id}>
+                                    <div className={"commit_container"}>
+                                        <div style={{textAlign:'center'}}>
+                                            <p style={{color: '#aaadb1'}}>Changes</p>
+                                            <p>{commit.changes}</p>
+                                        </div>
+                                        <div style={{textAlign:'center'}}>
+                                            <p style={{color: '#aaadb1'}}>Branch</p>
+                                            <p>{commit.branch_name}</p>
+                                        </div>
+                                        <div style={{textAlign:'center'}}>
+                                            <p style={{color: '#aaadb1'}}>Date</p>
+                                            <p>{commit.message.slice(4, 11)}</p>
+                                        </div>
+                                    </div>
+                                </Link>
                             )):
                             <p style={{color:'#aaadb1'}}>No recent commits</p>
                             }

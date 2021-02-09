@@ -2,60 +2,40 @@ import {Button, Menu, MenuItem, Paper} from '@material-ui/core'
 import React from 'react'
 import Cookies from 'universal-cookie/lib'
 import "../../../shared/styles/PageModel.css"
+import mergeBranch from "../../functions/MergeBranch";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "../../functions/Alert";
+import {ThemeProvider} from "@material-ui/core/styles";
+import leaveBranch from "../../functions/LeaveBranch";
 class RenderBranch extends React.Component {
     is_master;
     repository_name;
+
     constructor(params) {
         super(params)
         this.state = {
             branch: params.branch,
             userID: params.user_id,
-            open_menu: false
+            open_menu: false,
+            error: null,
+            errorMessage: null
         }
     }
     
-    async removeBranch(){
-        // try {
-        //     await axios({
-        //         method: 'patch',
-        //         url: Host() + 'api/user/branches',
-        //         data: {
-        //             user_id: this.state.userID,
-        //             max_id: this.state.max_id
-        //         }
-        //     }).then(res => {
-        //         this.setState({
-        //             branches: res.data,
-        //             max_id: res.data.length > 0 ? res.data[0].id : null,
-        //             hasMore: res.data.length >= 10
-        //         })
-        //     })
-        //     .catch(error => console.log(error))
-        // } catch (error) {
-        //     console.log(error)
-        // }
+    async leaveBranch(){
+        const response = await leaveBranch(this.state.branch.id)
+        this.setState({
+            error: response.error,
+            errorMessage: response.error_message
+        })
     }
 
     async mergeBranch(){
-        // try {
-        //     await axios({
-        //         method: 'put',
-        //         url: Host() + 'api/merge',
-        //         data: {
-        //             user_id: this.state.userID,
-        //             branch_id: this.state.max_id
-        //         }
-        //     }).then(res => {
-        //         this.setState({
-        //             branches: res.data,
-        //             max_id: res.data.length > 0 ? res.data[0].id : null,
-        //             hasMore: res.data.length >= 10
-        //         })
-        //     })
-        //     .catch(error => console.log(error))
-        // } catch (error) {
-        //     console.log(error)
-        // }
+        const response = await mergeBranch(this.state.branch.id)
+        this.setState({
+            error: response.error,
+            errorMessage: response.error_message
+        })
     }
 
     render() {
@@ -79,8 +59,13 @@ class RenderBranch extends React.Component {
                         Visualize
                 </Button>
                 {this.state.branch.is_master !== true && parseInt(this.state.userID) === parseInt((new Cookies()).get("ID"))? <Button style={{textTransform:'none', border:'#39adf6 2px solid'}} onClick={() => this.mergeBranch()} >Merge to master</Button>: null}
-                {parseInt(this.state.userID) !== parseInt((new Cookies()).get("ID")) ? null : <Button onClick={() => this.removeBranch()} style={{textTransform:'none', border:'#e34f50 2px solid'}}>Give up as a contributer</Button>}
-                
+                {parseInt(this.state.userID) !== parseInt((new Cookies()).get("ID")) ? null : <Button onClick={() => this.leaveBranch()} style={{textTransform:'none', border:'#e34f50 2px solid'}}>Give up as a contributor</Button>}
+                <Snackbar open={this.state.error !== null} autoHideDuration={3000}
+                          onClose={() => this.setState({
+                              error: null, errorMessage: null
+                          })}>
+                    <Alert severity={this.state.error === true ? 'error': 'success'}>{this.state.error === true? ("Some error occurred "+ this.state.errorMessage) : "Success"}</Alert>
+                </Snackbar>
                 
             </div>
         )

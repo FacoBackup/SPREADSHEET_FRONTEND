@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ProfileBar from "../shared/components/navigation/LeftBarComponent.js"
 import "../shared/styles/PageModel.css"
-import Cookies from 'universal-cookie';
+import Cookies from 'universal-cookie/lib';
 import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
 import {Redirect} from 'react-router-dom'
 import TopBarComponent from "../shared/components/navigation/TopBarComponent";
@@ -11,7 +11,11 @@ import "./style/BranchStyles.css"
 import BranchVisualization from './components/RenderBranchVisualization.js';
 import axios from 'axios'
 import Host from "../../Host"
+import SaveAltRoundedIcon from '@material-ui/icons/SaveAltRounded';
 import Snackbar from '@material-ui/core/Snackbar'
+import Avatar from "@material-ui/core/Avatar";
+import {AvatarGroup} from "@material-ui/lab";
+
 const theme = createMuiTheme({
     palette: {
         type: "dark"
@@ -28,7 +32,7 @@ export default class Branch extends Component {
             branchID: parseInt(match.params.id),
             alert: false,
             error: null,
-            errorMessage: null
+            errorMessage: null,
         }
         this.makeCommit = this.makeCommit.bind(this)
     }
@@ -42,7 +46,7 @@ export default class Branch extends Component {
                     headers:{'authorization':(cookies).get("JWT")},
                     data: {
                         changes: parseInt(cookies.get("CHANGES")),
-                        message: (new Date()).getDate().toString(),
+                        message: (new Date((new Date()).getTime())).toString(),
                         branch_id: this.state.branchID
                     }
                 }).then(() => {
@@ -80,6 +84,7 @@ export default class Branch extends Component {
                 alert: false
             })
     }
+
     render() {
         if(typeof (new Cookies()).get("JWT") !== 'undefined')
             return (
@@ -88,10 +93,8 @@ export default class Branch extends Component {
                     <TopBarComponent input={this.state.input}/>
         
                     <div className="branch_container">
-                        <div style={{ height: 'fit-content'}}>
-                            <Button style={{textTransform:'none'}} variant="outlined" onClick={() => this.makeCommit()}>Make Commit</Button>
-                        </div>
-                        <BranchVisualization branch_id={this.state.branchID}/>
+
+                        <BranchVisualization branch_id={this.state.branchID} make_commit={this.makeCommit}/>
                         
                     </div>
                     <div className="left_components">
