@@ -38,6 +38,7 @@ class RenderBranch extends React.Component {
         })
     }
 
+
     render() {
         return (
             <div className="render_as_user_content_container" style={{width:'50vw',display:'flex', justifyContent:'space-around', alignItems:'center'}}>

@@ -1,13 +1,16 @@
 import React, {Component} from 'react';
 import Cookies from 'universal-cookie/lib';
-import Host from '../../../Host'
-import axios from 'axios'
+import AccountTreeRoundedIcon from '@material-ui/icons/AccountTreeRounded';
 import RenderCell from './RenderCell';
 import {AvatarGroup} from "@material-ui/lab";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import SaveAltRoundedIcon from "@material-ui/icons/SaveAltRounded";
+import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
 import fetchBranchData from "../functions/FetchData";
+import verifyMemberByBranch from "../../shared/functions/VerifyMemberByBranch";
+import GetAppRoundedIcon from '@material-ui/icons/GetAppRounded';
+import DeviceHubRoundedIcon from '@material-ui/icons/DeviceHubRounded';
+import MeetingRoomRoundedIcon from '@material-ui/icons/MeetingRoomRounded';
 
 const cookies = new Cookies()
 
@@ -20,13 +23,15 @@ export default class BranchVisualization extends Component {
             branchID: params.branch_id,
             content: [],
             contributors: [],
-            modal: false
+            modal: false,
+            visualization: false
         }
         this.fetchData = this.fetchData.bind(this)
     }
 
     componentDidMount(){
         this.fetchData().catch(r => console.log(r))
+        this.verifyMember().catch(r => console.log(r))
         cookies.remove("CHANGES")
     }
 
@@ -37,7 +42,12 @@ export default class BranchVisualization extends Component {
             contributors: response.contributors
         })
     }
-    
+
+    async verifyMember(){
+        const response = await verifyMemberByBranch(this.state.branchID)
+        this.setState({visualization: response})
+    }
+
     render() {    
         return (
             <div >
@@ -55,12 +65,12 @@ export default class BranchVisualization extends Component {
                         style={{textTransform:'none'}}
                         variant="outlined"
                         onClick={() => this.props.make_commit()}>
-                        <SaveAltRoundedIcon style={{marginRight:'10px'}}/> Commit
+                        <SaveRoundedIcon style={{marginRight:'10px'}}/> Commit
                     </Button>
-                    <Button>cafe</Button>
-                    <Button>cafe</Button>
-                    <Button>cafe</Button>
-                    <Button>cafe</Button>
+                    <Button ><GetAppRoundedIcon style={{marginRight:'10px'}}/>Download</Button>
+                    <Button><AccountTreeRoundedIcon style={{marginRight:'10px'}}/>Make Branch</Button>
+                    <Button><DeviceHubRoundedIcon style={{marginRight:'10px'}}/>Merge with master</Button>
+                    <Button><MeetingRoomRoundedIcon style={{marginRight:'10px'}}/>Give up as a contributor</Button>
                 </div>
                 <div  className="table_container">
                     {this.state.content.map((column) => (
@@ -71,12 +81,15 @@ export default class BranchVisualization extends Component {
                             <div style={{marginTop:'1vh'}}>
                                 {column.cells.map((cell, index) =>(
                                     <div key={cell.id}> 
-                                        <RenderCell column_id={column.column_id} cell={cell} index={index}/>
+                                        <RenderCell visualization={this.state.visualization} column_id={column.column_id} cell={cell} index={index}/>
                                     </div>
                                 ))}
-                                <div key={"new"+column.column_id}>
-                                    <RenderCell fetch={this.fetchData} column_id={column.column_id} cell={null} index={column.cells.length}/>
-                                </div>
+                                {this.state.visualization === false ?
+                                    <div key={"new"+column.column_id}>
+                                        <RenderCell fetch={this.fetchData} column_id={column.column_id} cell={null} index={column.cells.length}/>
+                                    </div>
+                                    : null}
+
                             </div>
                         </div>
                     ))}
