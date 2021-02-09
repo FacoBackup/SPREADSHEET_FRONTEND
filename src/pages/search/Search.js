@@ -12,23 +12,22 @@ const theme = createMuiTheme({
     }
 });
 
-class Search extends Component {
+export default class Search extends Component {
     constructor({match}) {
         super({match});
         this.state={
             input: match.params.input,
             asUser: match.params.asUser === "true"
         }
-
     }
     render() {
         return (
             <ThemeProvider theme={theme}>
-                <div>
-                    <TopBarComponent input={this.state.input}/>
-                </div>
+               
+                <TopBarComponent input={this.state.input}/>
+    
                 <div className="center_component">
-                    <SearchComponent token={new Cookies().get("JWT")} asUser={this.state.asUser}
+                    <SearchComponent token={(new Cookies()).get("JWT")} asUser={this.state.asUser}
                                      input={this.state.input}/>
                 </div>
                 <div className="left_components">
@@ -39,4 +38,3 @@ class Search extends Component {
     }
 }
 
-export default Search;

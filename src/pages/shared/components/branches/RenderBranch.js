@@ -70,24 +70,14 @@ class RenderBranch extends React.Component {
                         <li>Repository: {this.state.branch.repository_name}</li>
                     </ul>
                 </ul>
-                <Button style={{textTransform:'none', border:'#aaadb1 2px solid'}}>See repository</Button>
-                <Paper className={"menu_container"}>
-                    <Button aria-controls="simple-menu" aria-haspopup="true" onClick={() => this.setState({open_menu: true})}>
-                        Open Menu
-                    </Button>
-                    <Menu
-                        id="simple-menu"
-                        keepMounted
-                        open={this.state.open_menu}
-                        onClose={() => this.setState({open_menu: false})}
-                    >
-                        <MenuItem>Profile</MenuItem>
-                        <MenuItem>My account</MenuItem>
-                        <MenuItem>Logout</MenuItem>
-                    </Menu>
-                </Paper>
+                <Button style={{textTransform:'none'}} variant="outlined">See repository</Button>
 
-                {parseInt(this.state.userID) !== parseInt((new Cookies()).get("ID")) ? null : <Button style={{textTransform:'capitalize', border:'#aaadb1 2px solid'}}>Edit</Button>}
+                <Button 
+                    variant="outlined"
+                    style={{textTransform:'capitalize'}}  
+                    href={'/branch/'+this.state.branch.id}>
+                        Visualize
+                </Button>
                 {this.state.branch.is_master !== true && parseInt(this.state.userID) === parseInt((new Cookies()).get("ID"))? <Button style={{textTransform:'none', border:'#39adf6 2px solid'}} onClick={() => this.mergeBranch()} >Merge to master</Button>: null}
                 {parseInt(this.state.userID) !== parseInt((new Cookies()).get("ID")) ? null : <Button onClick={() => this.removeBranch()} style={{textTransform:'none', border:'#e34f50 2px solid'}}>Give up as a contributer</Button>}
                 
@@ -98,3 +88,19 @@ class RenderBranch extends React.Component {
 }
 
 export default RenderBranch
+
+    //    {/* <Paper className={"menu_container"}>
+    //                 <Button aria-controls="simple-menu" aria-haspopup="true" onClick={() => this.setState({open_menu: true})}>
+    //                     Open Menu
+    //                 </Button>
+    //                 <Menu
+    //                     id="simple-menu"
+    //                     keepMounted
+    //                     open={this.state.open_menu}
+    //                     onClose={() => this.setState({open_menu: false})}
+    //                 >
+    //                     <MenuItem>Profile</MenuItem>
+    //                     <MenuItem>My account</MenuItem>
+    //                     <MenuItem>Logout</MenuItem>
+    //                 </Menu>
+    //             </Paper> */}

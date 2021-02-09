@@ -1,16 +1,12 @@
 import React from 'react'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import Avatar from '@material-ui/core/Avatar'
 import {createMuiTheme} from "@material-ui/core/styles";
 import {ThemeProvider} from "@material-ui/styles";
 import axios from 'axios';
 import Cookies from 'universal-cookie/lib';
 import Host from '../../../../Host'
-import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
-import getFile from "../../../shared/functions/GetImage";
 import InfiniteScroll from 'react-infinite-scroll-component'
 import RenderBranch from '../../../shared/components/branches/RenderBranch'
+
 const theme = createMuiTheme({
     palette: {
         type: "dark"

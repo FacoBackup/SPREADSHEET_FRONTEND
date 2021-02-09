@@ -5,12 +5,14 @@ import Group from "./pages/group/Group"
 import Search from "./pages/search/Search";
 import SignIn from "./pages/authentication/SignIn"
 import Profile from "./pages/profile/Profile"
+import Branch from './pages/branch/Branch';
 
 function AppRoutes() {
     return (
         <div>
             <Router>
                 <Switch>
+                    <Route path={'/branch/:id'} exact component={Branch}/>
                     <Route path={"/"} exact component={Profile}/>
                     <Route path="/profile/:userID" exact component={Profile}/>
                     <Route path="/group/:id" exact component={Group}/>
