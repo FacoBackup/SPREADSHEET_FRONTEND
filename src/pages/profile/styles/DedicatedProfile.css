@@ -9,9 +9,10 @@
     width: 12vw;
     padding-left: .5vw;
     padding-right: .5vw;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    line-height: 13px;
+    display: grid;
+    justify-content: center;
+    align-content: space-around;
 }
 div.commit_container:hover {
     border:#39adf6 2px solid;

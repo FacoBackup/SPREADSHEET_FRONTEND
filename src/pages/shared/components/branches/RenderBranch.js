@@ -51,7 +51,7 @@ class RenderBranch extends React.Component {
                         <li>Repository: {this.state.branch.repository_name}</li>
                     </ul>
                 </ul>
-                <Button style={{textTransform:'none'}} variant="outlined">See repository</Button>
+                <Button style={{textTransform:'none'}} variant="outlined" href={"/repository/"+this.state.branch.repository_id}>See repository</Button>
 
                 <Button 
                     variant="outlined"

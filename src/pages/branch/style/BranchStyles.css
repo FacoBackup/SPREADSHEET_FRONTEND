@@ -1,6 +1,9 @@
 .branch_container{
-    margin: 11vh auto 11vh 15.5vw;
+
     width: 82vw;
+    top:11vh;
+    left:15.5vw;
+    position: fixed;
 
     display: grid;
     justify-content: center;
@@ -9,23 +12,24 @@
     position: relative;
     box-shadow: -1px 5px 5px #23282e;
     background-color: #303741;
-
-
+    
+    height:89vh;
 }
+
 .table_container{
     background-color:#3b424c;
     border-radius: 8px;
     margin-top: 2vh;
-    margin-bottom: 2vh;
 
     padding: 3vh;
     width: 76vw;
     overflow-x: auto;
     display:flex;
     gap: 25px;
-    /*flex-direction: row;*/
-
-    /*justify-content: space-around;*/
+    
+    overflow-y: auto;
+    height:69vh;
+    
 }
 .column_title_container{
     border-bottom: #262d37 2px solid;
@@ -42,11 +46,12 @@
 }
 .column_container{
     min-width: 10vw;
-    /*margin-right: 50px;*/
     padding-left: 15px;
     padding-right: 15px;
     background-color:#484c55;
     border-radius: 8px;
+    height: fit-content;
+    
 }
 
 .control_bar_container{

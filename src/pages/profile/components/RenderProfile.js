@@ -100,18 +100,19 @@ export default class RenderProfile extends React.Component{
                             {this.state.commits.length > 0 ? this.state.commits.map((commit) => (
                                 <Link style={{textDecoration:'none', color:'white'}} to={"/branch/" + commit.branch_id}>
                                     <div className={"commit_container"}>
-                                        <div style={{textAlign:'center'}}>
-                                            <p style={{color: '#aaadb1'}}>Changes</p>
-                                            <p>{commit.changes}</p>
+                                        <div style={{display:'flex', gap:'10px', textAlign:'center'}}>
+                                            <div >
+                                                <p style={{color: '#aaadb1'}}>Changes</p>
+                                                <p>{commit.changes}</p>
+                                            </div>
+                                            <div>
+                                                <p style={{color: '#aaadb1'}}>Branch</p>
+                                                <p>{commit.branch_name}</p>
+                                            </div>
                                         </div>
-                                        <div style={{textAlign:'center'}}>
-                                            <p style={{color: '#aaadb1'}}>Branch</p>
-                                            <p>{commit.branch_name}</p>
-                                        </div>
-                                        <div style={{textAlign:'center'}}>
-                                            <p style={{color: '#aaadb1'}}>Date</p>
-                                            <p>{commit.message.slice(4, 11)}</p>
-                                        </div>
+                                        
+                                        <p  style={{textAlign:'center', fontSize:'11px'}}>{commit.message.slice(4, 11)}</p>
+                                        
                                     </div>
                                 </Link>
                             )):

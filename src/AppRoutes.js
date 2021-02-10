@@ -6,12 +6,14 @@ import Search from "./pages/search/Search";
 import SignIn from "./pages/authentication/SignIn"
 import Profile from "./pages/profile/Profile"
 import Branch from './pages/branch/Branch';
+import Repository from './pages/repository/Repository'
 
 function AppRoutes() {
     return (
         <div>
             <Router>
                 <Switch>
+                    <Route path={'/repository/:id'} exact component={Repository}/>
                     <Route path={'/branch/:id'} exact component={Branch}/>
                     <Route path={"/"} exact component={Profile}/>
                     <Route path="/profile/:userID" exact component={Profile}/>

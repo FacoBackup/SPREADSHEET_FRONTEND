@@ -1,10 +1,13 @@
-import axios from "axios";
-import Host from "../../../Host";
-import Cookies from "universal-cookie/lib";
+import axios from 'axios'
+import Host from '../../../Host'
+import Cookies from 'universal-cookie/lib'
 
-export default async function fetchBranchData(branch_id){
-    let content = []
-    let contributors = []
+const cookies = new Cookies()
+
+export default async function fetchRepositoryData(repository_id){
+    let repository = {}
+    let branches = []
+
     try {
         await axios({
             method: 'patch',
@@ -14,32 +17,27 @@ export default async function fetchBranchData(branch_id){
                 branch_id: branch_id
             }
         }).then(res => {
-            console.log(res.data)
-            content = res.data
+            repository = res.data
         })
             .catch(error => console.log(error))
     } catch (error) {
         console.log(error)
     }
 
-    if(content.length > 0)
+    if(repository !== {})
         try {
             await axios({
                 method: 'patch',
-                url: Host() + 'api/get/branch/contributors',
+                url: Host() + 'api/get/branch/content',
+                headers:{'authorization':(new Cookies()).get("JWT")},
                 data: {
-                    branch_id: branch_id
+                    repository_id: repository_id
                 }
             }).then(res => {
-                contributors = res.data
+                branches = res.data
             })
                 .catch(error => console.log(error))
         } catch (error) {
             console.log(error)
         }
-
-    return {
-        contributors: contributors,
-        content: content
-    }
 }

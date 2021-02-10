@@ -65,7 +65,7 @@ class TopBarComponent extends React.Component {
                                 lineBreak: 'auto',
                                 wordBreak: 'break-all',
                                 textTransform: 'capitalize'
-                            }}>{("" + this.state.profile.name).substr(0, ("" + this.state.profile.name).indexOf(' '))}</p>
+                            }}>{this.state.profile.name}</p>
                             <Avatar
                                 style={{height: '45px', marginRight: '1%', width: '45px'}}
                                 src={this.state.profile.pic}

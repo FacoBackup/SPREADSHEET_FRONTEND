@@ -88,7 +88,7 @@ export default class Branch extends Component {
     render() {
         if(typeof (new Cookies()).get("JWT") !== 'undefined')
             return (
-                <ThemeProvider theme={theme}>
+                <ThemeProvider theme={theme} >
                     
                     <TopBarComponent input={this.state.input}/>
         

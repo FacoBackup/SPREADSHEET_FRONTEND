@@ -17,7 +17,8 @@ export default class RenderCell extends Component {
             content: '',
             changed: false,
             index: params.index,
-            visualization: params.visualization
+            canMakeBranch: params.canMakeBranch,
+            canEdit: params.canEdit
         }
         this.handleChange = this.handleChange.bind(this);
         this.saveData = this.saveData.bind(this)
@@ -40,7 +41,8 @@ export default class RenderCell extends Component {
                         headers:{'authorization':(cookies).get("JWT")},
                         data: {
                             column_id: this.state.column_id,
-                            content: this.state.content
+                            content: this.state.content,
+                            row: this.props.index
                         }
                     }).then(res => {
                         console.log(res)
@@ -104,14 +106,15 @@ export default class RenderCell extends Component {
     render() {    
         return (
             <div className="cell_container">
-                <p style={{marginRight:'.5vw'}}>{this.props.index}</p>
+                <p style={{marginRight:'.5vw'}}>{this.props.cell !== null ? this.props.cell.row: this.props.index}</p>
                 
                 <TextField 
                     id={this.props.cell !== null? ""+this.props.cell.id : ""+(this.state.column_id+this.state.index)}
                     value={this.props.cell !== null? (this.state.content.length > 0 ? this.state.content:this.state.cell.content): this.state.content}
+                    placeHolder={this.props.cell !== null? "New": null}
                     onChange={this.handleChange} 
                     onKeyDown={key => this.saveData(key)}
-                    disabled={this.state.visualization}
+                    disabled={this.state.canEdit}
                     variant="outlined"
                     style={{border:(this.state.changed === true && this.state.cell !== null? "#39adf6 4px solid": null), borderRadius:(this.state.changed === true && this.state.cell !== null? "8px": null)}}
                 />
