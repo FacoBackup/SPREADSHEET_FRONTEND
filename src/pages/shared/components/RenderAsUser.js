@@ -24,11 +24,16 @@ export default class RenderAsUser extends React.Component{
                     modal:false
                 })} style={{ display:'grid', justifyContent:'center', alignContent: "center"}}>
                     <div style={{width:'600px', height:'600px',margin:'auto',display:'grid', justifyContent:'center', justifyItems:'center', alignContent: "center", backgroundColor:'white'}}>
-                        <QRCode value= {"BEGIN:VCARD" +
-                                        "VERSION:4.0" +
-                                        "N:" + this.state.subject.name +
-                                        "TEL:" + this.state.subject.phone +
-                                        "EMAIL:" + this.state.subject.email + "END:VCARD"}
+                        <QRCode value={
+                                    "BEGIN:VCARD"+
+                                    "VERSION:3.0"+
+                                    "N:"+this.state.subject.name+
+                                    "FN:"+this.state.subject.name+
+                                    "ORG:AEB"+
+                                    "EMAIL:"+this.state.subject.email+
+                                    "TEL;TYPE=voice,work,pref:"+this.state.subject.phone+
+                                    "END:VCARD"
+                                }
                                 style={{width:'500px', height:'500px'}}
                         />
 

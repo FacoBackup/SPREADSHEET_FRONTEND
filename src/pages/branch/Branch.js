@@ -74,17 +74,6 @@ export default class Branch extends Component {
             })
     }
 
-    finish(){
-        if (this.state.error === false && this.state.alert === false)
-            window.location.reload()
-        else
-            this.setState({
-                error: null,
-                errorMessage: null,
-                alert: false
-            })
-    }
-
     render() {
         if(typeof (new Cookies()).get("JWT") !== 'undefined')
             return (
@@ -101,7 +90,11 @@ export default class Branch extends Component {
                         <ProfileBar/>
                     </div>
                     <Snackbar open={this.state.error !== null} autoHideDuration={2000}
-                                      onClose={() => this.finish()}>
+                                      onClose={() => this.setState({
+                                          error: null,
+                                          errorMessage: null,
+                                          alert: false
+                                      })}>
                                 <Alert severity={this.state.error === true? "error" : this.state.alert === true ?"warning": "success"}>{this.state.error === true ? ("Some error occurred "+ this.state.errorMessage) : (this.state.alert === true ? "No changes were made": "Commited with success")}</Alert>
                      </Snackbar>
                 </ThemeProvider>

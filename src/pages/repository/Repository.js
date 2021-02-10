@@ -26,7 +26,7 @@ export default class Repository extends Component {
     }
 
     async fetchData(){
-        const response = await fetchRepositoryData(this.state.repository_id)
+        // const response = await fetchRepositoryData(this.state.repository_id)
     }
 
     render() {
