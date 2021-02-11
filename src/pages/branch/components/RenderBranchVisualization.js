@@ -13,6 +13,10 @@ import DeviceHubRoundedIcon from '@material-ui/icons/DeviceHubRounded';
 import MeetingRoomRoundedIcon from '@material-ui/icons/MeetingRoomRounded';
 import RenderAsUser from '../../shared/components/RenderAsUser'
 import Modal from '@material-ui/core/Modal'
+import {TextField} from "@material-ui/core";
+import axios from "axios";
+import Host from "../../../Host";
+import RenderColumn from "./RenderColumn";
 
 const cookies = new Cookies()
 
@@ -27,11 +31,13 @@ export default class BranchVisualization extends Component {
             contributors: [],
             modal: false,
             canMakeBranch: false,
-            canEdit: false
+            canEdit: false,
+            branch_name: params.branch_name
         }
         this.renderModal = this.renderModal.bind(this)
         this.fetchData = this.fetchData.bind(this)
     }
+
 
     componentDidMount(){
         this.fetchData().catch(r => console.log(r))
@@ -74,14 +80,14 @@ export default class BranchVisualization extends Component {
                 </Modal>
             )
         else
-            return (null)
+            return null
     }
     render() {    
         return (
             <div >
                 <this.renderModal/>
                 <div  className={"control_bar_container"}>
-                    {/* <ButtonGro */}
+                    <p>{this.state.branch_name}</p>
                     <Button onClick={() => this.setState({
                         modal: true
                     })}>
@@ -106,17 +112,17 @@ export default class BranchVisualization extends Component {
                     {this.state.content.map((column) => (
                         <div className="column_container" >
                             <div className="column_title_container">
-                                <p>{column.column_name}</p>
+                                <RenderColumn fetch={this.fetchData} canEdit={this.state.canEdit} column_id={column.column_id} column_name={column.column_name}/>
                             </div>
                             <div style={{marginTop:'1vh'}}>
                                 {column.cells.map((cell, index) =>(
                                     <div key={cell.id}> 
-                                        <RenderCell canMakeBranch={this.state.canMakeBranch} column_id={column.column_id} cell={cell} index={index}/>
+                                        <RenderCell deletable={index === (column.cells.length - 1)} canEdit={this.state.canEdit} canMakeBranch={this.state.canMakeBranch} column_id={column.column_id} cell={cell} index={index}/>
                                     </div>
                                 ))}
                                 {this.state.canEdit === true ?
                                     <div key={"new"+column.column_id}>
-                                        <RenderCell fetch={this.fetchData} column_id={column.column_id} cell={null} index={column.cells.length}/>
+                                        <RenderCell fetch={this.fetchData} canEdit={true} column_id={column.column_id} cell={null} index={column.cells.length}/>
                                     </div>
                                     : null}
 

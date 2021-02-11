@@ -7,7 +7,8 @@ import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "../../functions/Alert";
 import {ThemeProvider} from "@material-ui/core/styles";
 import leaveBranch from "../../functions/LeaveBranch";
-class RenderBranch extends React.Component {
+
+export default class RenderAsBranch extends React.Component {
     is_master;
     repository_name;
 
@@ -56,7 +57,7 @@ class RenderBranch extends React.Component {
                 <Button 
                     variant="outlined"
                     style={{textTransform:'capitalize'}}  
-                    href={'/branch/'+this.state.branch.id}>
+                    href={'/branch/{'+this.state.branch.name+"}/"+this.state.branch.id}>
                         Visualize
                 </Button>
                 {this.state.branch.is_master !== true && parseInt(this.state.userID) === parseInt((new Cookies()).get("ID"))? <Button style={{textTransform:'none', border:'#39adf6 2px solid'}} onClick={() => this.mergeBranch()} >Merge to master</Button>: null}
@@ -73,7 +74,7 @@ class RenderBranch extends React.Component {
     }
 }
 
-export default RenderBranch
+
 
     //    {/* <Paper className={"menu_container"}>
     //                 <Button aria-controls="simple-menu" aria-haspopup="true" onClick={() => this.setState({open_menu: true})}>

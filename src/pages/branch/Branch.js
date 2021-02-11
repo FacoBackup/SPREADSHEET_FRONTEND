@@ -28,7 +28,7 @@ export default class Branch extends Component {
     constructor({match}) {
         super({match});
         this.state={
-            edit: match.params.edit === 'true',
+            branch_name: match.params.branch_name,
             branchID: parseInt(match.params.id),
             alert: false,
             error: null,
@@ -83,7 +83,7 @@ export default class Branch extends Component {
         
                     <div className="branch_container">
 
-                        <BranchVisualization branch_id={this.state.branchID} make_commit={this.makeCommit}/>
+                        <BranchVisualization branch_name={this.state.branch_name} branch_id={this.state.branchID} make_commit={this.makeCommit}/>
                         
                     </div>
                     <div className="left_components">
