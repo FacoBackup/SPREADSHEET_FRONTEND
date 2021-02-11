@@ -1,11 +1,10 @@
-import {Button, Menu, MenuItem, Paper} from '@material-ui/core'
+import {Button} from '@material-ui/core'
 import React from 'react'
 import Cookies from 'universal-cookie/lib'
 import "../../../shared/styles/PageModel.css"
 import mergeBranch from "../../functions/MergeBranch";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "../../functions/Alert";
-import {ThemeProvider} from "@material-ui/core/styles";
 import leaveBranch from "../../functions/LeaveBranch";
 
 export default class RenderAsBranch extends React.Component {
@@ -42,22 +41,17 @@ export default class RenderAsBranch extends React.Component {
 
     render() {
         return (
-            <div className="render_as_user_content_container" style={{width:'50vw',display:'flex', justifyContent:'space-around', alignItems:'center'}}>
-          
-                <ul style={{listStyle:'none'}}>
-                    <li>
-                    {this.state.branch.name}
-                    </li>
-                    <ul style={{color:'#aaadb1', lineBreak:'auto'}}>
-                        <li>Repository: {this.state.branch.repository_name}</li>
-                    </ul>
-                </ul>
-                <Button style={{textTransform:'none'}} variant="outlined" href={"/repository/"+this.state.branch.repository_id}>See repository</Button>
-
+            <div className="render_as_user_content_container" style={{width:'30vw',display:'flex', justifyContent:'space-around', alignItems:'center'}}>
+                <div
+                    style={{display:'flex', height:'3vh', alignItems:'center', fontSize:'16px'}}>
+                    <p style={{fontWeight:'600'}}>{this.state.branch.repository_name}/</p>
+                    <p style={{color:'#aaadb1'}}> {this.state.branch.name}</p>    
+                </div>
+         
                 <Button 
                     variant="outlined"
                     style={{textTransform:'capitalize'}}  
-                    href={'/branch/{'+this.state.branch.name+"}/"+this.state.branch.id}>
+                    href={'/branch/' + this.state.branch.id}>
                         Visualize
                 </Button>
                 {this.state.branch.is_master !== true && parseInt(this.state.userID) === parseInt((new Cookies()).get("ID"))? <Button style={{textTransform:'none', border:'#39adf6 2px solid'}} onClick={() => this.mergeBranch()} >Merge to master</Button>: null}

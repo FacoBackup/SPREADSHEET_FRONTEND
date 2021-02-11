@@ -15,7 +15,7 @@ class Group extends React.Component {
     constructor({match}) {
         super()
         this.state = {
-            groupID: match.params.id
+            group_id: match.params.id
         }
     }
 
@@ -24,7 +24,7 @@ class Group extends React.Component {
             <ThemeProvider theme={theme}>
                 <TopBarComponent/>
                 <div>
-                    <GroupComponent groupID={this.state.groupID}/>
+                    <GroupComponent group_id={this.state.group_id}/>
                 </div>
                 <div className="left_components">
                     <ProfileBar/>

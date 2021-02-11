@@ -13,10 +13,9 @@ import DeviceHubRoundedIcon from '@material-ui/icons/DeviceHubRounded';
 import MeetingRoomRoundedIcon from '@material-ui/icons/MeetingRoomRounded';
 import RenderAsUser from '../../shared/components/RenderAsUser'
 import Modal from '@material-ui/core/Modal'
-import {TextField} from "@material-ui/core";
-import axios from "axios";
-import Host from "../../../Host";
 import RenderColumn from "./RenderColumn";
+import RenderRepositoryBranches from '../../shared/components/RenderRepositoryBranches'
+
 
 const cookies = new Cookies()
 
@@ -26,27 +25,29 @@ export default class BranchVisualization extends Component {
     constructor(params) {
         super();
         this.state={
-            branchID: params.branch_id,
+            branch_id: params.branch_id,
+            repository: {},
+            branch:{},
             content: [],
             contributors: [],
             modal: false,
             canMakeBranch: false,
             canEdit: false,
-            branch_name: params.branch_name
+            branches: false
         }
-        this.renderModal = this.renderModal.bind(this)
+        this.renderContributorsModal = this.renderContributorsModal.bind(this)
         this.fetchData = this.fetchData.bind(this)
+        this.renderBranches = this.renderBranches.bind(this)
     }
 
 
     componentDidMount(){
         this.fetchData().catch(r => console.log(r))
         this.verifyMember().catch(r => console.log(r))
-        cookies.remove("CHANGES")
     }
 
     async fetchData(){
-        const response = await fetchBranchData(this.state.branchID)
+        const response = await fetchBranchData(this.state.branch_id, this.state.repositoryID)
         for(let i =0; i< response.contributors.length; i++){
             if (response.contributors[i].id === parseInt(cookies.get("ID")))
                 this.setState({
@@ -56,16 +57,18 @@ export default class BranchVisualization extends Component {
 
         this.setState({
             content: response.content,
-            contributors: response.contributors
+            contributors: response.contributors,
+            repository: response.repository,
+            branch: response.branch
         })
     }
 
     async verifyMember(){
-        const response = await verifyMemberByBranch(this.state.branchID)
+        const response = await verifyMemberByBranch(this.state.branch_id)
 
         this.setState({canMakeBranch: response})
     }
-    renderModal(){
+    renderContributorsModal(){
         if(this.state.modal === true)
             return(
                 <Modal open={this.state.modal} onClose={() => this.setState({
@@ -82,12 +85,43 @@ export default class BranchVisualization extends Component {
         else
             return null
     }
+
+    renderBranches(){
+        if(this.state.branches === true){
+            return (
+            <Modal open={this.state.branches} onClose={() => this.setState({
+                branches:false
+            })} style={{ display:'grid', justifyContent:'center', alignContent: "center"}}>
+                <div style={{width:'600px', height:'600px',margin:'auto',display:'grid', justifyContent:'center', justifyItems:'center', alignContent: "flex-start", backgroundColor:'#303741'}}>
+                    <RenderRepositoryBranches repository_id={this.state.repository.id}/>
+                </div>
+            </Modal>)
+            
+        }
+        else
+            return null
+    }
     render() {    
         return (
             <div >
-                <this.renderModal/>
+                <this.renderBranches/>
+                <this.renderContributorsModal/>
                 <div  className={"control_bar_container"}>
-                    <p>{this.state.branch_name}</p>
+                    <div>
+                        {this.state.branches === true ? null: 
+                            <Button 
+                                onClick={() => this.setState({
+                                    branches:true
+                                })}
+                                style={{display:'flex', height:'3vh', alignItems:'center', fontSize:'17px'}}>
+                                <p style={{fontWeight:'600'}}>{this.state.repository.name}/</p>
+                                <p style={{color:'#aaadb1'}}> {this.state.branch.name}</p>                            
+                            </Button>
+                            
+                        }
+                     
+                    </div>
+                    
                     <Button onClick={() => this.setState({
                         modal: true
                     })}>
@@ -104,8 +138,8 @@ export default class BranchVisualization extends Component {
                         <SaveRoundedIcon style={{marginRight:'10px'}}/> Commit
                     </Button>
                     <Button disabled><GetAppRoundedIcon style={{marginRight:'10px'}}/>Download</Button>
-                    <Button disabled><AccountTreeRoundedIcon style={{marginRight:'10px'}}/>Make Branch</Button>
-                    <Button disabled><DeviceHubRoundedIcon style={{marginRight:'10px'}}/>Merge with master</Button>
+                    <Button disabled><AccountTreeRoundedIcon style={{marginRight:'10px'}}/>Branch</Button>
+                    <Button disabled><DeviceHubRoundedIcon style={{marginRight:'10px'}}/>Merge</Button>
                     <Button disabled><MeetingRoomRoundedIcon style={{marginRight:'10px'}}/>Give up as a contributor</Button>
                 </div>
                 <div  className="table_container">

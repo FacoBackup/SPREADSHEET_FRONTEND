@@ -12,11 +12,12 @@ export default class RenderAsUser extends React.Component{
         this.state={
             subject: params.subject,
             more: false,
-            modal: false
+            modal: false,
+            is_group: params.is_group
         }
         this.renderModal = this.renderModal.bind(this)
     }
-
+    
     renderModal(){
         if (this.state.modal === true){
             return(
@@ -87,14 +88,11 @@ export default class RenderAsUser extends React.Component{
                                 <li>{(new Date(this.state.subject.birth)).toString().slice(3, 15)}</li>
                             </ul>
                         </div>
-                        <Button style={{textTransform:'capitalize', color:'white', border:'#39adf6 2px solid'}} variant={"outlined"} href={"/group/"+this.state.subject.group_id} disabled={this.state.subject.group_id === null}>see group</Button>
+                        {this.state.is_group !== true ? <Button style={{textTransform:'capitalize', color:'white', border:'#39adf6 2px solid'}} variant={"outlined"} href={"/group/"+this.state.subject.group_id} disabled={this.state.subject.group_id === null}>see group</Button>: null}
                     </div>
                     :
                     null
                 }
-
-
-
             </div>
 
             </>

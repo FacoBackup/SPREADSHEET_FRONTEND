@@ -1,13 +1,9 @@
 import React, {Component} from 'react';
-// import "../shared/styles/PageModel.css"
 import Cookies from 'universal-cookie/lib';
 import Host from '../../../Host'
 import axios from 'axios'
-import TextField from '@material-ui/core/TextField'
-import Button from "@material-ui/core/Button";
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 import {IconButton, InputBase, Paper} from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/SearchRounded";
 
 const cookies = new Cookies()
 
@@ -28,6 +24,7 @@ export default class RenderCell extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.saveData = this.saveData.bind(this);
     }
+    
     async deleteCell(){
         try {
             await axios({

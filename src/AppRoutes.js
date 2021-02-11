@@ -14,7 +14,7 @@ function AppRoutes() {
             <Router>
                 <Switch>
                     <Route path={'/repository/:id'} exact component={Repository}/>
-                    <Route path={'/branch/{:branch_name}/:id'} exact component={Branch}/>
+                    <Route path={'/branch/:id'} exact component={Branch}/>
                     <Route path={"/"} exact component={Profile}/>
                     <Route path="/profile/:userID" exact component={Profile}/>
                     <Route path="/group/:id" exact component={Group}/>

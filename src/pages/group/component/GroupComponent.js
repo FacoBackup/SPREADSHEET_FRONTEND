@@ -11,7 +11,7 @@ import Host from '../../../Host'
 import GroupUsersComponent from './users/GroupUsersComponent'
 import SubjectRoundedIcon from '@material-ui/icons/SubjectRounded';
 import Cookies from "universal-cookie/lib";
-
+import GroupRepositories from './repository/GroupRepositoriesComponent'
 const cookies = new Cookies()
 
 class GroupComponent extends React.Component {
@@ -20,7 +20,7 @@ class GroupComponent extends React.Component {
         super()
         this.state = {
             group: {},
-            groupID: params.groupID,
+            group_id: params.group_id,
             members: false,
             repositories: true,
         }
@@ -38,7 +38,7 @@ class GroupComponent extends React.Component {
               url: Host() + 'api/get/group',
               headers: {"Authorization": cookies.get("JWT")},
               data: {
-                  group_id: parseInt(this.state.groupID)
+                  group_id: parseInt(this.state.group_id)
               }
           }).then(res => {
               this.setState({
@@ -59,13 +59,18 @@ class GroupComponent extends React.Component {
 
                 return (
 
-                    <GroupUsersComponent token={cookies} role={this.state.group.role}
-                                         groupID={this.state.groupID} options={1}/>
+                    <GroupUsersComponent group_id={this.state.group_id}/>
+                )
+               
+            }
+            case (this.state.repositories):{
+                return(
+                    <GroupRepositories group_id={this.state.group_id}/>
                 )
             }
             default: {
                 return (
-                    "OK"
+                    "ERROR"
                 )
             }
         }
@@ -85,11 +90,7 @@ class GroupComponent extends React.Component {
                         <div className="profile_content_container">
                             <div className='profile_container'>
                                 <div style={{marginTop: '1vh', textAlign: 'center'}}>
-                                    <Avatar
-                                        style={{margin: 'auto', height: '4vw', width: '4vw'}}
-                                        src={this.state.group.pic}
-                                        alt={(""+this.state.group.name).toUpperCase()}
-                                    />
+                                
                                     <p style={{fontSize: '18px', fontWeight: '400', textTransform:'capitalize'}}>{this.state.group.name}</p>
                                     <div style={{
                                         display: 'flex',

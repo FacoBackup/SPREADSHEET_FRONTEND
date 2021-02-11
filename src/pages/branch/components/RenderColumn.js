@@ -40,13 +40,6 @@ export default class RenderColumn extends Component {
                         name: this.state.name,
                     }
                 }).then(()=>{
-                    if(typeof cookies.get("CHANGES") !== 'undefined'){
-                        const changes = parseInt(cookies.get("CHANGES"))
-                        cookies.set("CHANGES", changes + 1)
-                    }
-                    else
-                        cookies.set("CHANGES", 1)
-
                     this.setState({
                         changed:true
                     })

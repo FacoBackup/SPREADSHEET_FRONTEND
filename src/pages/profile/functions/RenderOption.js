@@ -1,4 +1,3 @@
-import Cookies from "universal-cookie/lib";
 import ProfileSettingsComponent from "../components/options/ProfileSettingsComponent";
 import UserBranchesComponent from "../components/options/UserBranchesComponent";
 
