@@ -92,7 +92,7 @@ export default class BranchVisualization extends Component {
             <Modal open={this.state.branches} onClose={() => this.setState({
                 branches:false
             })} style={{ display:'grid', justifyContent:'center', alignContent: "center"}}>
-                <div style={{width:'600px', height:'600px',margin:'auto',display:'grid', justifyContent:'center', justifyItems:'center', alignContent: "flex-start", backgroundColor:'#303741'}}>
+                <div style={{width:'700px', height:'600px',margin:'auto',display:'grid', justifyContent:'center', justifyItems:'center', alignContent: "flex-start", backgroundColor:'#303741'}}>
                     <RenderRepositoryBranches repository_id={this.state.repository.id}/>
                 </div>
             </Modal>)
@@ -132,6 +132,7 @@ export default class BranchVisualization extends Component {
                         </AvatarGroup>
                     </Button>
                     <Button
+                        disabled={!this.state.canEdit}
                         style={{textTransform:'none'}}
                         variant="outlined"
                         onClick={() => this.props.make_commit()}>

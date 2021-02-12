@@ -15,6 +15,8 @@ import {Link} from "react-router-dom";
 
 export default class RenderProfile extends React.Component{
     branch_name;
+    changes;
+    commit_time;
     constructor(params) {
         super(params);
         this.state={

@@ -137,7 +137,7 @@ export default class RenderCell extends Component {
                 }}>
                     <InputBase
                         id={this.props.cell !== null? ""+this.props.cell.id : ""+(this.state.column_id+this.state.index)}
-                        value={this.props.cell !== null? (this.state.content.length > 0 ? this.state.content:this.state.cell.content): this.state.content}
+                        value={this.props.cell !== null? (this.state.content.length > 0 ? this.state.content: this.props.cell.content): this.state.content}
                         placeholder={this.props.cell === null? "New": null}
                         onChange={this.handleChange}
                         onKeyDown={key => this.saveData(key)}
@@ -145,7 +145,7 @@ export default class RenderCell extends Component {
                         variant="outlined"
                         style={{marginLeft:'10px'}}
                     />
-                    {this.props.deletable === true?
+                    {this.props.deletable === true && this.state.canEdit === true?
                         <IconButton aria-label="search"  onClick={()=> this.deleteCell()}>
                             <DeleteRoundedIcon/>
                         </IconButton>:

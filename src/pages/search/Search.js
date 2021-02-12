@@ -20,6 +20,10 @@ export default class Search extends Component {
             asUser: match.params.asUser === "true"
         }
     }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        window.location.reload()
+    }
+
     render() {
         return (
             <ThemeProvider theme={theme}>

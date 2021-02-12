@@ -26,7 +26,7 @@ div.render_as_user_content_container:hover {
 }
 
 .center_component {
-    margin: 15vh auto 15vh 37vw;
+    margin: 15vh auto 15vh 36.66666667vw;
     width: 32vw;
     min-height: 69vh;
     display: grid;
@@ -35,7 +35,7 @@ div.render_as_user_content_container:hover {
 
 
     border-radius: 8px;
-
+    z-index: -1;
     position: relative;
     box-shadow: -1px 5px 5px #23282e;
     background-color: #303741;

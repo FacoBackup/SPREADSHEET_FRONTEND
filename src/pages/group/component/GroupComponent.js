@@ -21,8 +21,8 @@ class GroupComponent extends React.Component {
         this.state = {
             group: {},
             group_id: params.group_id,
-            members: false,
-            repositories: true,
+            membersOption: false,
+            repositoriesOption: true,
         }
     }
 
@@ -42,7 +42,9 @@ class GroupComponent extends React.Component {
               }
           }).then(res => {
               this.setState({
-                  group: res.data
+                  group: res.data.group,
+                  members: res.data.members,
+                  repositories: res.data.repositories
               })
           })
               .catch(error => console.log(error))
@@ -55,7 +57,7 @@ class GroupComponent extends React.Component {
 
     optionSelect() {
         switch (true) {
-            case (this.state.members): {
+            case (this.state.membersOption): {
 
                 return (
 
@@ -63,7 +65,7 @@ class GroupComponent extends React.Component {
                 )
                
             }
-            case (this.state.repositories):{
+            case (this.state.repositoriesOption):{
                 return(
                     <GroupRepositories group_id={this.state.group_id}/>
                 )
@@ -81,10 +83,10 @@ class GroupComponent extends React.Component {
         return (
             <div>
                 <div className="profile_center_component">
-                    <div className='profile_background_image_container'>
-                        <img className='profile_background_image' alt="BACKGROUD"
-                             src={(typeof this.state.group.background !== 'undefined' && this.state.group.background !== null) ? this.state.group.background : "https://www.beautycolorcode.com/2f2f2f-1440x900.png"}/>
-                    </div>
+                    {/*<div className='profile_background_image_container'>*/}
+                    {/*    <img className='profile_background_image' alt="BACKGROUD"*/}
+                    {/*         src={(typeof this.state.group.background !== 'undefined' && this.state.group.background !== null) ? this.state.group.background : "https://www.beautycolorcode.com/2f2f2f-1440x900.png"}/>*/}
+                    {/*</div>*/}
                     <div className="dedicated_component_container">
 
                         <div className="profile_content_container">
@@ -104,24 +106,24 @@ class GroupComponent extends React.Component {
                                 </div>
                                 <div>
                                     <ButtonGroup size="medium" variant="text">
-                                        <Button style={{display: 'grid', lineHeight: '7px', fontSize: '15px', width:'7vw',textTransform:'capitalize',color:(this.state.repositories === true? "#39adf6": "#aaadb1")}}
-                                                color={this.state.repositories === true ? "primary" : "default"}
+                                        <Button style={{display: 'grid', lineHeight: '7px', fontSize: '15px', width:'7vw',textTransform:'capitalize',color:(this.state.repositoriesOption === true? "#39adf6": "#aaadb1")}}
+                                                color={this.state.repositoriesOption === true ? "primary" : "default"}
                                                 onClick={() => this.setState({
-                                                    repositories: true,
-                                                    members: false,
+                                                    repositoriesOption: true,
+                                                    membersOption: false,
                                                     settings:false
                                                 })}
-                                        >Repositories <p style={{color: 'white'}}>{this.state.group.repositories}</p></Button>
+                                        >Repositories <p style={{color: 'white'}}>{this.state.repositories}</p></Button>
 
 
-                                        <Button style={{display: 'grid', lineHeight: '7px', fontSize: '15px', width:'7vw',textTransform:'capitalize',color:(this.state.members === true? "#39adf6": "#aaadb1")}}
-                                                color={this.state.members === true ? "primary" : "default"}
+                                        <Button style={{display: 'grid', lineHeight: '7px', fontSize: '15px', width:'7vw',textTransform:'capitalize',color:(this.state.membersOption === true? "#39adf6": "#aaadb1")}}
+                                                color={this.state.membersOption === true ? "primary" : "default"}
                                                 onClick={() => this.setState({
-                                                    repositories: false,
-                                                    members: true,
+                                                    repositoriesOption: false,
+                                                    membersOption: true,
                                                     settings:false
                                                 })}
-                                        >Members<p style={{color: 'white'}}>{this.state.group.members}</p></Button>
+                                        >Members<p style={{color: 'white'}}>{this.state.members}</p></Button>
                                     </ButtonGroup>
                                 </div>
                             </div>

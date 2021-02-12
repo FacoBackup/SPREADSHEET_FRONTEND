@@ -4,36 +4,41 @@ import Host from '../../../../Host'
 import axios from 'axios'
 import TextField from '@material-ui/core/TextField'
 import RenderBranch from '../../../shared/components/branches/RenderBranch'
+import {Button} from "@material-ui/core";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "../../../shared/functions/Alert";
 const cookies = new Cookies()
 
 export default class GroupRepositories extends Component {
+    master_branch_id;
 
     constructor(params) {
         super(params);
         this.state={
-            repository_id: params.repository_id,
-            branches: []
+            group_id: params.group_id,
+            repositories: []
         }
     }
     
     componentDidMount(){
-        this.fetchData()
+        this.fetchData().catch(error => console.log(error))
     }
 
     async fetchData(){
             try {
                 await axios({
                     method: 'patch',
-                    url: Host() + 'api/get/repository/branches',
+                    url: Host() + 'api/get/group/repositories',
                     headers:{'authorization':(cookies).get("JWT")},
                     data: {
-                        repository_id: this.state.repository_id
+                        group_id: this.state.group_id
                     }
                 }).then(res=>{
+                    console.log(res)
                     this.setState({
-                        branches:res.data
+                        repositories:res.data
                     })
-                }) .catch(error => {
+                }).catch(error => {
                         console.log(error)})
             } catch (error) {
                 console.log(error)
@@ -44,9 +49,23 @@ export default class GroupRepositories extends Component {
     render() {
         return (
             <div>
-                <p style={{textAlign:'center'}}>Branches</p>
-                {this.state.branches.map((branch) => (
-                    <RenderBranch branch={branch} user_id={parseInt(cookies.get("ID"))}/>
+                <p style={{textAlign:'center'}}>Repositories</p>
+                {this.state.repositories.map((rep) => (
+                    <div key={rep.master_branch_id} className="render_as_user_content_container" style={{width:'30vw',display:'flex', justifyContent:'space-around', alignItems:'center'}}>
+                        <div style={{lineHeight:'8px'}}>
+                            <p style={{fontWeight:'600'}}>{rep.repository.name}</p>
+                            <p style={{color:'#aaadb1', fontSize:'14px'}}>About: {rep.repository.about}</p>
+                            <p style={{color:'#aaadb1', fontSize:'14px'}}>Branches: {rep.branches}</p>
+                        </div>
+
+                        <Button
+                            variant="outlined"
+                            style={{textTransform:'capitalize'}}
+                            href={'/branch/' + rep.master_branch_id}>
+                            Visualize
+                        </Button>
+                    </div>
+
                 ))}
             </div>
         )
