@@ -66,12 +66,6 @@ export default class RenderCell extends Component {
                     }).then(() => {
 
                         this.props.fetch()
-                        if(typeof cookies.get("CHANGES") !== 'undefined'){
-                            const changes = parseInt(cookies.get("CHANGES"))
-                            cookies.set("CHANGES", changes + 1)
-                        }
-                        else
-                            cookies.set("CHANGES", 1)
                         this.setState({
                             content: '',
                             changed:true
@@ -94,14 +88,6 @@ export default class RenderCell extends Component {
                             content: this.state.content,
                         }
                     }).then(res => {
-                        console.log(res)
-                        if(typeof cookies.get("CHANGES") !== 'undefined'){
-                            const changes = parseInt(cookies.get("CHANGES"))
-                            cookies.set("CHANGES", changes + 1)
-                        }
-                        else
-                            cookies.set("CHANGES", 1)
-                        
                         this.setState({
                             changed:true
                         })
@@ -124,7 +110,7 @@ export default class RenderCell extends Component {
 
     render() {    
         return (
-            <div className="cell_container">
+            <div className="cell_container" key={this.state.cell === null? ""+ "new-container-"+this.state.index+"-column-"+this.state.column_id : this.state.cell.id+"-container"}>
                 <p style={{marginRight:'.5vw'}}>{this.props.cell !== null ? this.props.cell.row: this.props.index}</p>
                 <Paper style={{
                     backgroundColor: '#272e38',
@@ -136,7 +122,7 @@ export default class RenderCell extends Component {
                     border:(this.state.changed === true && this.state.cell !== null? "#39adf6 3px solid": null), borderRadius:(this.state.changed === true && this.state.cell !== null? "8px": null)
                 }}>
                     <InputBase
-                        id={this.props.cell !== null? ""+this.props.cell.id : ""+(this.state.column_id+this.state.index)}
+                        id={this.props.cell !== null? ""+this.props.cell.id : ""+ "new-input-"+this.state.index+"-column-"+this.state.column_id}
                         value={this.props.cell !== null? (this.state.content.length > 0 ? this.state.content: this.props.cell.content): this.state.content}
                         placeholder={this.props.cell === null? "New": null}
                         onChange={this.handleChange}

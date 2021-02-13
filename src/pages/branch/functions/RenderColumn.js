@@ -56,7 +56,7 @@ export default class RenderColumn extends Component {
     render() {
         return (
             <TextField
-                        key={this.state.column_id}
+                        key={this.state.column_id + "-column"}
                         variant={"outlined"}
                        disabled={!this.state.canEdit}
                        style={{border:(this.state.changed === true ? "#39adf6 3px solid": null),

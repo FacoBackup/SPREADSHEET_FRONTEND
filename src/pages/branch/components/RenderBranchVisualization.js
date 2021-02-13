@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Cookies from 'universal-cookie/lib';
 import AccountTreeRoundedIcon from '@material-ui/icons/AccountTreeRounded';
-import RenderCell from './RenderCell';
+import RenderCell from '../functions/RenderCell';
 import {AvatarGroup} from "@material-ui/lab";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -13,8 +13,9 @@ import DeviceHubRoundedIcon from '@material-ui/icons/DeviceHubRounded';
 import MeetingRoomRoundedIcon from '@material-ui/icons/MeetingRoomRounded';
 import RenderAsUser from '../../shared/components/RenderAsUser'
 import Modal from '@material-ui/core/Modal'
-import RenderColumn from "./RenderColumn";
+import RenderColumn from "../functions/RenderColumn";
 import RenderRepositoryBranches from '../../shared/components/RenderRepositoryBranches'
+import RenderCommits from "../functions/RenderCommits";
 
 
 const cookies = new Cookies()
@@ -33,11 +34,13 @@ export default class BranchVisualization extends Component {
             modal: false,
             canMakeBranch: false,
             canEdit: false,
-            branches: false
+            branches: false,
+            commits: false
         }
-        this.renderContributorsModal = this.renderContributorsModal.bind(this)
+        this.renderContributors = this.renderContributors.bind(this)
         this.fetchData = this.fetchData.bind(this)
         this.renderBranches = this.renderBranches.bind(this)
+        this.renderCommits = this.renderCommits.bind(this)
     }
 
 
@@ -68,7 +71,7 @@ export default class BranchVisualization extends Component {
 
         this.setState({canMakeBranch: response})
     }
-    renderContributorsModal(){
+    renderContributors(){
         if(this.state.modal === true)
             return(
                 <Modal open={this.state.modal} onClose={() => this.setState({
@@ -85,7 +88,22 @@ export default class BranchVisualization extends Component {
         else
             return null
     }
-
+    renderCommits(){
+        if(this.state.commits === true){
+            return(
+                <Modal open={this.state.commits} onClose={() => this.setState({
+                    commits:false
+                })} style={{ display:'grid', justifyContent:'center', alignContent: "center"}}>
+                    <div style={{width:'700px', height:'600px',margin:'auto',display:'grid', justifyContent:'center', justifyItems:'center', alignContent: "flex-start", backgroundColor:'#303741'}}>
+                        <p>Commits</p>
+                        <RenderCommits branch_id={this.state.branch.id}/>
+                    </div>
+                </Modal>
+            )
+        }
+        else
+            return null
+    }
     renderBranches(){
         if(this.state.branches === true){
             return (
@@ -104,8 +122,9 @@ export default class BranchVisualization extends Component {
     render() {    
         return (
             <div >
+                <this.renderCommits/>
                 <this.renderBranches/>
-                <this.renderContributorsModal/>
+                <this.renderContributors/>
                 <div  className={"control_bar_container"}>
                     <div>
                         {this.state.branches === true ? null: 
@@ -117,7 +136,6 @@ export default class BranchVisualization extends Component {
                                 <p style={{fontWeight:'600'}}>{this.state.repository.name}/</p>
                                 <p style={{color:'#aaadb1'}}> {this.state.branch.name}</p>                            
                             </Button>
-                            
                         }
                      
                     </div>
@@ -138,6 +156,9 @@ export default class BranchVisualization extends Component {
                         onClick={() => this.props.make_commit()}>
                         <SaveRoundedIcon style={{marginRight:'10px'}}/> Commit
                     </Button>
+                    <Button style={{textTransform:'none'}} onClick={()=> this.setState({
+                        commits: true
+                    })}>Commits</Button>
                     <Button disabled><GetAppRoundedIcon style={{marginRight:'10px'}}/>Download</Button>
                     <Button disabled><AccountTreeRoundedIcon style={{marginRight:'10px'}}/>Branch</Button>
                     <Button disabled><DeviceHubRoundedIcon style={{marginRight:'10px'}}/>Merge</Button>
@@ -156,7 +177,7 @@ export default class BranchVisualization extends Component {
                                     </div>
                                 ))}
                                 {this.state.canEdit === true ?
-                                    <div key={"new"+column.column_id}>
+                                    <div key={"cell/"+column.cells.length+" - column/"+column.column_id}>
                                         <RenderCell fetch={this.fetchData} canEdit={true} column_id={column.column_id} cell={null} index={column.cells.length}/>
                                     </div>
                                     : null}
