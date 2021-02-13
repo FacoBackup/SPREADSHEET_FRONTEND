@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-// import "../shared/styles/PageModel.css"
 import Cookies from 'universal-cookie/lib';
-import Host from '../../../Host'
+import Host from '../../../../Host'
 import axios from 'axios'
 import TextField from '@material-ui/core/TextField'
 
@@ -40,6 +39,7 @@ export default class RenderColumn extends Component {
                         name: this.state.name,
                     }
                 }).then(()=>{
+                    this.props.registerChange()
                     this.setState({
                         changed:true
                     })

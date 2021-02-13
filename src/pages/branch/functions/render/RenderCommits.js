@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import Cookies from 'universal-cookie/lib';
-import Host from '../../../Host'
+import Host from '../../../../Host'
 import axios from 'axios'
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 import {Button, IconButton, InputBase, Paper} from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "../../shared/functions/Alert";
+import Alert from "../../../shared/functions/Alert";
 
 const cookies = new Cookies()
 

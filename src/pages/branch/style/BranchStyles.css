@@ -9,7 +9,6 @@
     justify-content: center;
     justify-items: center;
     border-radius: 8px;
-    position: relative;
     box-shadow: -1px 5px 5px #23282e;
     background-color: #303741;
     
@@ -55,13 +54,16 @@
 }
 
 .control_bar_container{
-    margin-top:2vh;
+    margin: 2vh auto auto;
     padding: 1vh;
     width: 78vw;
     background-color:#3b424c;
     border-radius: 8px;
 
+}
+.half_control_bar_container{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    gap: 1vw;
     align-items: center;
 }

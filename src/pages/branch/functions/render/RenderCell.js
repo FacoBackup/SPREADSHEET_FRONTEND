@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Cookies from 'universal-cookie/lib';
-import Host from '../../../Host'
+import Host from '../../../../Host'
 import axios from 'axios'
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 import {IconButton, InputBase, Paper} from "@material-ui/core";
@@ -35,14 +35,14 @@ export default class RenderCell extends Component {
                     cell_id: this.state.cell.id
                 }
             }).then(() => {
-                window.location.reload()
+                this.props.registerDeletion()
             }).catch(error => {
                 console.log(error)})
         } catch (error) {
             console.log(error)
         }
-
     }
+
     handleChange(event){
         this.setState({
             content: event.target.value
@@ -64,7 +64,7 @@ export default class RenderCell extends Component {
                             row: this.props.index
                         }
                     }).then(() => {
-
+                        this.props.registerChange()
                         this.props.fetch()
                         this.setState({
                             content: '',
@@ -87,7 +87,8 @@ export default class RenderCell extends Component {
                             cell_id: this.state.cell.id,
                             content: this.state.content,
                         }
-                    }).then(res => {
+                    }).then(() => {
+                        this.props.registerChange()
                         this.setState({
                             changed:true
                         })

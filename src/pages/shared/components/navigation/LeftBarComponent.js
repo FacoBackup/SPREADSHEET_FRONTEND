@@ -9,6 +9,7 @@ import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
 import {Redirect} from 'react-router-dom'
 import {HomeRounded} from "@material-ui/icons";
 import PhoneRoundedIcon from "@material-ui/icons/PhoneRounded";
+import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
 
 const theme = createMuiTheme({
     palette: {
@@ -63,23 +64,6 @@ class LeftBarComponent extends Component {
                                     </Button>
                                 </div>
                                 : null}
-
-                            {typeof cookies.get("JWT") !== 'undefined' ?
-                                <div className={this.state.archive === true ? "clicked_button_style" : null}>
-                                    <Button style={{
-                                        textTransform: "capitalize",
-                                        color: (this.state.archive === true ? "#39adf6" : '#ededed'),
-                                        fontSize: '16px',
-                                        width: '13vw',
-                                        marginLeft: '1.5vw',
-                                        justifyContent: 'flex-start'
-                                    }}>
-                                        <StorageRoundedIcon
-                                            style={{marginRight: '10px', fontSize: '27px', color: '#62666f'}}/>repositories</Button>
-                                </div>
-                                : null}
-
-
 
                             <div className={this.state.extensions === true ? "clicked_button_style" : null}>
                                 <Button style={{

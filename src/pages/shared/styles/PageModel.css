@@ -1,3 +1,15 @@
+.modal_style{
+    width: 700px;
+    height: 600px;
+    margin: auto;
+    display: grid;
+    overflow-y: auto;
+    justify-content: center;
+    justify-items: center;
+    align-content: flex-start;
+    background-color: #303741
+}
+
 .component_title_container{
     display: flex;
     justify-content: space-between;
