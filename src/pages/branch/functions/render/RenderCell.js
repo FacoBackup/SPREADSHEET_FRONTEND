@@ -35,7 +35,8 @@ export default class RenderCell extends Component {
                     cell_id: this.state.cell.id
                 }
             }).then(() => {
-                this.props.registerDeletion()
+                this.props.registerChange()
+                this.props.registerDeletion(this.props.columnIndex)
             }).catch(error => {
                 console.log(error)})
         } catch (error) {
@@ -63,13 +64,9 @@ export default class RenderCell extends Component {
                             content: this.state.content,
                             row: this.props.index
                         }
-                    }).then(() => {
+                    }).then(res => {
                         this.props.registerChange()
-                        this.props.fetch()
-                        this.setState({
-                            content: '',
-                            changed:true
-                        })
+                        this.props.registerCreation(this.props.columnIndex, res.data)
                     })
                     .catch(error => console.log(error))
                 } catch (error) {
@@ -111,7 +108,7 @@ export default class RenderCell extends Component {
 
     render() {    
         return (
-            <div className="cell_container" key={this.state.cell === null? ""+ "new-container-"+this.state.index+"-column-"+this.state.column_id : this.state.cell.id+"-container"}>
+            <div className="cell_container" key={this.props.cell !== null ? this.props.cell.id : this.props.column_id+"new cell"+this.props.index}>
                 <p style={{marginRight:'.5vw'}}>{this.props.cell !== null ? this.props.cell.row: this.props.index}</p>
                 <Paper style={{
                     backgroundColor: '#272e38',
@@ -123,7 +120,6 @@ export default class RenderCell extends Component {
                     border:(this.state.changed === true && this.state.cell !== null? "#39adf6 3px solid": null), borderRadius:(this.state.changed === true && this.state.cell !== null? "8px": null)
                 }}>
                     <InputBase
-                        id={this.props.cell !== null? ""+this.props.cell.id : ""+ "new-input-"+this.state.index+"-column-"+this.state.column_id}
                         value={this.props.cell !== null? (this.state.content.length > 0 ? this.state.content: this.props.cell.content): this.state.content}
                         placeholder={this.props.cell === null? "New": null}
                         onChange={this.handleChange}

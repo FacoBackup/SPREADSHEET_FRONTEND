@@ -24,6 +24,8 @@ export default class RenderAsBranch extends React.Component {
     
     async leaveBranch(){
         const response = await leaveBranch(this.state.branch.id)
+        if(!response.error)
+            window.location.reload()
         this.setState({
             error: response.error,
             errorMessage: response.error_message
@@ -32,10 +34,12 @@ export default class RenderAsBranch extends React.Component {
 
     async mergeBranch(){
         const response = await mergeBranch(this.state.branch.id)
+
         this.setState({
             error: response.error,
             errorMessage: response.error_message
         })
+
     }
 
 
@@ -67,21 +71,3 @@ export default class RenderAsBranch extends React.Component {
         )
     }
 }
-
-
-
-    //    {/* <Paper className={"menu_container"}>
-    //                 <Button aria-controls="simple-menu" aria-haspopup="true" onClick={() => this.setState({open_menu: true})}>
-    //                     Open Menu
-    //                 </Button>
-    //                 <Menu
-    //                     id="simple-menu"
-    //                     keepMounted
-    //                     open={this.state.open_menu}
-    //                     onClose={() => this.setState({open_menu: false})}
-    //                 >
-    //                     <MenuItem>Profile</MenuItem>
-    //                     <MenuItem>My account</MenuItem>
-    //                     <MenuItem>Logout</MenuItem>
-    //                 </Menu>
-    //             </Paper> */}

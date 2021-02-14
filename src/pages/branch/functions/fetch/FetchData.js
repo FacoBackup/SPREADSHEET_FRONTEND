@@ -8,6 +8,8 @@ export default async function fetchBranchData(branch_id){
     let repository = {}
     let branch = {}
     let canMakeBranch = false
+    let open_commit = false
+    let can_edit = false
 
     try {
         await axios({
@@ -74,16 +76,45 @@ export default async function fetchBranchData(branch_id){
         } catch (error) {
             console.log(error)
         }
+        try {
+            await axios({
+                method: 'patch',
+                url: Host() + 'api/get/open/commit',
+                headers:{'authorization':(new Cookies()).get("JWT")},
+                data: {
+                    branch_id: branch_id
+                }
+            }).then(res => {
+                if(res.data.open_commit === true && res.data.user_id === parseInt((new Cookies()).get("ID"))){
+                    open_commit = true
+                    can_edit = true
+                }
+                else if(res.data.open_commit === true && res.data.user_id !== parseInt((new Cookies()).get("ID"))){
+                    open_commit = true
+                    can_edit = false
+                }
+                else{
+                    open_commit = false
+                    can_edit = true
+                }
+
+            })
+                .catch(error => console.log(error))
+        } catch (error) {
+            console.log(error)
+        }
     } catch (error) {
         console.log(error)
     }
 
 
     return {
+        canEdit: can_edit,
         contributors: contributors,
         content: content,
         repository: repository,
         branch: branch,
-        canMakeBranch: canMakeBranch
+        canMakeBranch: canMakeBranch,
+        openCommit: open_commit
     }
 }

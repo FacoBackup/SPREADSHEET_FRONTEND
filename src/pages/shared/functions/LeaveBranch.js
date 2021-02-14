@@ -30,7 +30,7 @@ export default async function leaveBranch(branch_id){
     }
 
     return {
-        error: error,
-        error_message: errorMessage
+        "error": error,
+        "error_message": errorMessage
     }
 }

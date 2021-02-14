@@ -15,8 +15,8 @@ import Modal from '@material-ui/core/Modal'
 import RenderColumn from "../functions/render/RenderColumn";
 import RenderRepositoryBranches from '../../shared/components/RenderRepositoryBranches'
 import RenderCommits from "../functions/render/RenderCommits";
-import fetchBranchContent from "../functions/fetch/FetchBranchContent";
 import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
+import BranchCreation from "../functions/render/RenderBranchCreation";
 
 const cookies = new Cookies()
 
@@ -31,19 +31,27 @@ export default class BranchVisualization extends Component {
             branch:{},
             content: [],
             contributors: [],
+
+            openCommit: false,
             canMakeBranch: false,
             canEdit: false,
+            changed: false,
+
             contributorsOption: false,
             branchesOption: false,
             commitsOption: false,
-            changed: false
+            createBranchOption: false
+
         }
-        this.registerCommit = this.registerCommit.bind(this)
+
         this.renderModal = this.renderModal.bind(this)
+
         this.fetchData = this.fetchData.bind(this)
+
+        this.registerCommit = this.registerCommit.bind(this)
         this.registerDeletion = this.registerDeletion.bind(this)
         this.registerChange = this.registerChange.bind(this)
-        this.fetchContent = this.fetchContent.bind(this)
+        this.registerCreation = this.registerCreation.bind(this)
     }
 
     //FETCH
@@ -51,29 +59,25 @@ export default class BranchVisualization extends Component {
         this.fetchData().catch(r => console.log(r))
     }
 
-    async fetchContent(){
-        const response = await fetchBranchContent(this.state.branch_id)
-        this.setState({
-            content: response.content
-        })
-    }
-
     async fetchData(){
         const response = await fetchBranchData(this.state.branch_id)
-        for(let i =0; i< response.contributors.length; i++){
-            if (response.contributors[i].id === parseInt(cookies.get("ID")))
-                this.setState({
-                    canEdit: true,
-                })
-        }
-
         this.setState({
             content: response.content,
             contributors: response.contributors,
             repository: response.repository,
             branch: response.branch,
-            canMakeBranch: response.canMakeBranch
+            canMakeBranch: response.canMakeBranch,
+            canEdit: response.canEdit,
+            openCommit: response.openCommit,
+            changed: response.openCommit && response.canEdit
         })
+
+        for(let i =0; i< response.contributors.length; i++){
+            if (response.contributors[i].id === parseInt(cookies.get("ID")))
+                this.setState({
+                    canEdit: !!this.state.canEdit,
+                })
+        }
     }
 
     registerChange(){
@@ -83,12 +87,22 @@ export default class BranchVisualization extends Component {
             })
     }
 
-    registerDeletion(){
-        this.fetchContent().catch(error => console.log(error))
-        if(!this.state.changed)
-            this.setState({
-                changed: true
-            })
+    registerCreation(column_index, new_cell){
+        let new_array = this.state.content
+        new_array[column_index].cells.push(new_cell)
+
+        this.setState({
+            content: new_array
+        })
+    }
+
+    registerDeletion(column_index){
+
+        let new_array = this.state.content
+        new_array[column_index].cells.pop()
+        this.setState({
+            content: new_array
+        })
     }
 
     registerCommit(){
@@ -100,10 +114,12 @@ export default class BranchVisualization extends Component {
 
     renderModal(){
         return(
-            <Modal open={this.state.branchesOption || this.state.commitsOption || this.state.contributorsOption} onClose={() => this.setState({
+            <Modal open={this.state.branchesOption || this.state.openCommit || this.state.commitsOption || this.state.contributorsOption || this.state.createBranchOption} onClose={() => this.setState({
                 branchesOption:false,
                 commitsOption: false,
-                contributorsOption: false
+                contributorsOption: false,
+                createBranchOption: false,
+                openCommit: false
             })} style={{ display:'grid', justifyContent:'center', alignContent: "center", textAlign:'center'}}>
                 <div className={"modal_style"}>
                     {this.state.branchesOption ? <RenderRepositoryBranches repository_id={this.state.repository.id}/> : null}
@@ -125,6 +141,21 @@ export default class BranchVisualization extends Component {
                         :
                         null
                     }
+                    {this.state.createBranchOption ?
+                        <div>
+                            <p>Create Branch</p>
+                            <BranchCreation targetBranchId={this.state.branch_id}/>
+                        </div>
+                        :
+                        null
+                    }
+                    {this.state.openCommit ?
+                        <div>
+                            <h3>This branch has changes not yet finalized.</h3>
+                        </div>
+                        :
+                        null
+                    }
                 </div>
             </Modal>
         )
@@ -132,7 +163,7 @@ export default class BranchVisualization extends Component {
 
     render() {    
         return (
-            <div >
+            <div>
                 <this.renderModal/>
                 <div  className={"control_bar_container half_control_bar_container"}>
                     <div className={"half_control_bar_container"}>
@@ -172,32 +203,34 @@ export default class BranchVisualization extends Component {
                         })} variant={"outlined"}
                         ><StorageRoundedIcon style={{marginRight:'10px'}}/>Commits</Button>
                         <Button disabled><GetAppRoundedIcon style={{marginRight:'10px'}}/>Download</Button>
-                        <Button disabled><AccountTreeRoundedIcon style={{marginRight:'10px'}}/>Branch</Button>
+                        <Button onClick={() => this.setState({createBranchOption: true})} style={{textTransform:'none'}} variant={"outlined"}>
+                            <AccountTreeRoundedIcon style={{marginRight:'10px'}}/>Branch
+                        </Button>
                         {this.state.branch.is_master ? null : <Button disabled><DeviceHubRoundedIcon style={{marginRight: '10px'}}/>Merge</Button>}
                         <Button disabled><MeetingRoomRoundedIcon style={{marginRight:'10px'}}/>Give up as a contributor</Button>
                     </div>
                 </div>
                 <div  className="table_container">
-                    {this.state.content.map((column) => (
-                        <div className="column_container" >
+                    {this.state.content !== undefined ? this.state.content.map((column, column_index) => (
+                        <div className="column_container" key={column.column_id}>
                             <div className="column_title_container">
                                 <RenderColumn  registerChange={this.registerChange} fetch={this.fetchData} canEdit={this.state.canEdit} column_id={column.column_id} column_name={column.column_name}/>
                             </div>
                             <div style={{marginTop:'1vh'}}>
-                                {column.cells.map((cell, index) =>(
-                                    <div key={cell.id}> 
-                                        <RenderCell registerDeletion={this.registerDeletion} registerChange={this.registerChange} deletable={index === (column.cells.length - 1)} canEdit={this.state.canEdit} canMakeBranch={this.state.canMakeBranch} column_id={column.column_id} cell={cell} index={index}/>
+                                {column.cells.map((cell, cell_index) =>(
+                                    <div key={cell.id}>
+                                        <RenderCell registerDeletion={this.registerDeletion} columnIndex={column_index} registerChange={this.registerChange} deletable={cell_index === (column.cells.length - 1)} canEdit={this.state.canEdit} canMakeBranch={this.state.canMakeBranch} column_id={column.column_id} cell={cell} index={cell_index}/>
                                     </div>
                                 ))}
                                 {this.state.canEdit ?
-                                    <div key={"cell/"+column.cells.length+" - column/"+column.column_id}>
-                                        <RenderCell registerChange={this.registerChange} fetch={this.fetchData} canEdit={true} column_id={column.column_id} cell={null} index={column.cells.length}/>
+                                    <div key={column.cells.length+" - column - "+column.column_id}>
+                                        <RenderCell columnIndex={column_index}  registerCreation={this.registerCreation} registerChange={this.registerChange} fetch={this.fetchData} canEdit={true} column_id={column.column_id} cell={null} index={column.cells.length}/>
                                     </div>
                                     : null}
 
                             </div>
                         </div>
-                    ))}
+                    )) : null}
                 </div>
                 
             </div>   

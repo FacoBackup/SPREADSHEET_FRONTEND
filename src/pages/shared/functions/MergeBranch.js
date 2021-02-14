@@ -28,7 +28,7 @@ export default async function mergeBranch(current_branch){
     }
 
     return {
-        error: error,
-        error_message: errorMessage
+        "error": error,
+        "error_message": errorMessage
     }
 }
