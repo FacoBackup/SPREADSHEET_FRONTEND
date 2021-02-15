@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Cookies from 'universal-cookie/lib';
 import Host from '../../../../Host'
 import axios from 'axios'
-import {Redirect} from 'react-router-dom'
 import {TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 

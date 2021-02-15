@@ -5,6 +5,13 @@ import fetchExtensions from "./functions/FetchData";
 import RenderAsUser from "../shared/components/RenderAsUser";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {Skeleton} from "@material-ui/lab";
+import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
+
+const theme = createMuiTheme({
+    palette: {
+        type: "dark"
+    }
+});
 
 export default class Extensions extends React.Component{
     max_id;
@@ -38,7 +45,7 @@ export default class Extensions extends React.Component{
 
     render() {
         return(
-            <div>
+            <ThemeProvider theme={theme}>
                 <TopBarComponent/>
                 <div className="profile_center_component">
                     <div className='profile_background_image_container'>
@@ -74,7 +81,7 @@ export default class Extensions extends React.Component{
                 <div className="left_components">
                     <ProfileBar extensions={true}/>
                 </div>
-            </div>
+            </ThemeProvider>
         )
     }
 }

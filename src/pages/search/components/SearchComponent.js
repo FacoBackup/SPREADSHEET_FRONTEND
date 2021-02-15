@@ -1,12 +1,18 @@
 import {createMuiTheme} from "@material-ui/core/styles";
 import {ThemeProvider} from "@material-ui/styles";
 import React from 'react'
-import "../../profile/styles/SocialStyle.css"
 import "../styles/SearchComponentStyle.css"
-import fetch from "../functions/FetchData";
+import fetchForwardSearchData from "../functions/FetchSearchForwardData";
 import InfiniteScroll from "react-infinite-scroll-component";
 import RenderAsUser from '../../shared/components/RenderAsUser'
 import RenderAsGroup from '../functions/RenderAsGroup'
+import Cookies from "universal-cookie/lib";
+import RenderAsBranch from "../../shared/components/branches/RenderBranch";
+import {ButtonGroup} from "@material-ui/core";
+import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded';
+import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
+import Button from "@material-ui/core/Button";
+import fetchBackwardSearchData from "../functions/FetchSearchBackwardData";
 
 const theme = createMuiTheme({
     palette: {
@@ -20,60 +26,59 @@ class SearchComponent extends React.Component {
         super(params)
         this.state = {
             token: params.token,
-            subjects: [],
-            maxID: null,
+            users: [],
+            groups: [],
+            branches:[],
+            userMaxID: null,
+            groupMaxID: null,
+            branchMaxID: null,
             input: params.input,
-            asUser: params.asUser
+            asUser: params.asUser,
+            page: -1
 
         }
         this.fetchData = this.fetchData.bind(this)
-        this.handleChange = this.handleChange.bind(this)
     }
 
     componentDidMount() {
-        this.fetchData().catch(r => console.log(r))
+        this.fetchData(true).catch(r => console.log(r))
     }
 
-    handleChange(event) {
-        if(event.target.name === "group"){
-            console.log(event)
-            this.setState({
-                group: event.target.value === "group",
-                subjects: [],
-                maxID: null
-            })
-
-            this.fetchData(event.target.value).catch(r => console.log(r));
-        }
-        else{
-            if(event.target.value.length === 0)
-                this.setState({
-                    subjects: [],
-                    maxID: null
-                })
-            this.fetchData(event.target.value).catch(r => console.log(r));
-        }
-    }
-
-    async fetchData() {
+    async fetchData(forward) {
         let input = this.state.input
         this.setState({
-            loading: true
+            loading: true,
         })
-        console.log("this is the input " + input)
 
-        if (input.length > 0) {
-            let response = await fetch(!this.state.asUser, this.state.maxID, input)
-            console.log(response)
+        if (input.length > 0 && forward) {
+            let response = await fetchForwardSearchData(this.state.userMaxID, this.state.groupMaxID, this.state.branchMaxID, input)
+
             this.setState({
-                subjects: response.subjects,
-                maxID: response.max_id
+                users: response.users.users,
+                userMaxID: response.users.max_id,
+                groups: response.groups.groups,
+                groupMaxID: response.groups.max_id,
+                branches: response.branches.branches,
+                branchMaxID: response.branches.max_id,
+                page: this.state.page + 1
             })
-        } else
+        }
+        else if (input.length > 0){
+            const userMinID = (this.state.users.length > 0 ? this.state.users[0].id : null)
+            const groupMinID = (this.state.groups.length > 0 ? this.state.groups[0].id : null)
+            const branchMinID = (this.state.branches.length > 0 ? this.state.branches[0].id : null)
+            let response = await fetchBackwardSearchData(userMinID, groupMinID, branchMinID, input)
+
             this.setState({
-                subjects: [],
-                maxID: null
+                users: response.users.users,
+                userMaxID: response.users.max_id,
+                groups: response.groups.groups,
+                groupMaxID: response.groups.max_id,
+                branches: response.branches.branches,
+                branchMaxID: response.branches.max_id,
+                page: this.state.page - 1
             })
+        }
         this.setState({
             loading: false
         })
@@ -82,34 +87,54 @@ class SearchComponent extends React.Component {
     render() {
         return (
            <ThemeProvider theme={theme}>
-               <div className="search_component">
-
-                   {/*<div className="search_box_container">*/}
-                   {/*    <FormControl component="fieldset">*/}
-                   {/*        <RadioGroup aria-label="option" name="group"*/}
-                   {/*                    value={this.state.asUser === false ? "group" : "user"}*/}
-                   {/*                    onChange={this.handleChange}>*/}
-                   {/*            <FormControlLabel value="user" control={<Radio/>} label="User"/>*/}
-                   {/*            <FormControlLabel value="group" control={<Radio/>} label="group"/>*/}
-                   {/*        </RadioGroup>*/}
-                   {/*    </FormControl>*/}
-                   {/*</div>*/}
-                   <div>
-                       <InfiniteScroll
-                           dataLength={this.state.subjects.length}
-                           next={() => this.fetchData()}
-
-                           inverse={true}
-                           hasMore={this.state.maxID > 1}
-                           loader={console.log("LOADING")}>
-                           {this.state.subjects.map((subject) =>
-                               <>
-                                   {this.state.asUser === true ? <RenderAsUser subject={subject}/> : RenderAsGroup(subject)}
-                               </>
-                           )}
-                       </InfiniteScroll>
-
+               <div className="search_component"  style={{textAlign:'center'}}>
+                   <div style={{display: 'flex', justifyContent: "space-between", marginTop:'1vh', width:'36vw'}}>
+                       <Button onClick={() => this.fetchData(false)} disabled={this.state.page === 0}><ArrowBackRoundedIcon style={{fontSize:'35px'}}/></Button>
+                       <p>{this.state.page}</p>
+                       <Button onClick={() => this.fetchData(true)} disabled={this.state.users.length < 3 && this.state.groups.length < 3 && (typeof (new Cookies()).get("JWT") !== 'undefined' ? this.state.branches.length < 3 : true)}><ArrowForwardRoundedIcon style={{fontSize:'35px'}}/></Button>
                    </div>
+                   <div style={{borderBottom:'#262d37 2px solid'}}>
+                       <p>Users</p>
+                       {this.state.users.length > 0 ?
+                           this.state.users.map((user) =>
+                               <>
+                                   <RenderAsUser subject={user}/>
+                               </>
+                           )
+                           :
+                           <p style={{color:'#aaadb1'}}>Nothing found</p>
+                       }
+                   </div>
+
+                   <div style={{borderBottom:'#262d37 2px solid'}}>
+                       <p>Groups</p>
+                       {this.state.groups.length > 0 ?
+                           this.state.groups.map((group) =>
+                               <>
+                                   {RenderAsGroup(group)}
+                               </>
+                           )
+                           :
+                           <p style={{color:'#aaadb1'}}>Nothing found</p>
+                       }
+                   </div>
+
+                   {typeof (new Cookies()).get("JWT") !== undefined ?
+                       <div style={{borderBottom:'#262d37 2px solid'}}>
+                           <p>Branches</p>
+                           {this.state.branches.length > 0 ?
+                               this.state.branches.map((branch) =>
+                                    <>
+                                        <RenderAsBranch branch={branch} user_id={parseInt((new Cookies()).get("ID"))}/>
+                                    </>
+                                )
+                               :
+                               <p style={{color:'#aaadb1'}}>Nothing found</p>
+                           }
+                       </div>
+                   :
+                        null
+                   }
                </div>
             </ThemeProvider> 
         )

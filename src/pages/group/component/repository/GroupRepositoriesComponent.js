@@ -2,11 +2,7 @@ import React, {Component} from 'react';
 import Cookies from 'universal-cookie/lib';
 import Host from '../../../../Host'
 import axios from 'axios'
-import TextField from '@material-ui/core/TextField'
-import RenderBranch from '../../../shared/components/branches/RenderBranch'
 import {Button} from "@material-ui/core";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "../../../shared/functions/Alert";
 const cookies = new Cookies()
 
 export default class GroupRepositories extends Component {
@@ -51,7 +47,7 @@ export default class GroupRepositories extends Component {
             <div>
                 <p style={{textAlign:'center'}}>Repositories</p>
                 {this.state.repositories.map((rep) => (
-                    <div key={rep.master_branch_id} className="render_as_user_content_container" style={{width:'30vw',display:'flex', justifyContent:'space-around', alignItems:'center'}}>
+                    <div key={rep.master_branch_id} className="render_as_content_container" style={{width:'30vw',display:'flex', justifyContent:'space-around', alignItems:'center'}}>
                         <div style={{lineHeight:'8px'}}>
                             <p style={{fontWeight:'600'}}>{rep.repository.name}</p>
                             <p style={{color:'#aaadb1', fontSize:'14px'}}>About: {rep.repository.about}</p>

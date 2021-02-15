@@ -33,7 +33,7 @@ export default class RenderRepositoryBranches extends Component {
                     this.setState({
                         branches:res.data
                     })
-                }) .catch(error => {
+                }).catch(error => {
                         console.log(error)})
             } catch (error) {
                 console.log(error)

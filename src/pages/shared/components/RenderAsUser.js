@@ -50,7 +50,7 @@ export default class RenderAsUser extends React.Component{
         return(
             <>
                 <this.renderModal/>
-                <div className={"render_as_user_content_container"} key={this.state.subject.id} style={{height:(this.state.more !== true? "auto" :'22vh')}}>
+                <div className={"render_as_content_container"} key={this.state.subject.id} style={{height:(this.state.more !== true? "auto" :'22vh')}}>
                 <div style={{display: 'flex', alignContent: (this.state.more !== true? "center" :'flex-start'), alignItems:'center', justifyContent:'space-around'}}>
                     <div style={{display:'flex', alignItems:'center'}}>
                         <Avatar
@@ -72,7 +72,7 @@ export default class RenderAsUser extends React.Component{
 
                     <Button onClick={() => this.setState({
                         more: !this.state.more
-                    })}  variant="outlined" style={{color:'white', textTransform:'capitalize',border:(this.state.more === true? '#39adf6 2px solid' : null)}} disableElevation><MoreVertRoundedIcon/></Button>
+                    })}  variant="outlined" style={{color:'white', textTransform:'capitalize',border:(this.state.more === true? '#39adf6 2px solid' : null)}} ><MoreVertRoundedIcon/></Button>
                     <Button href={"/profile/" + this.state.subject.id } variant="outlined" style={{color:'white', textTransform:'capitalize'}} disableElevation>profile</Button>
                     <Button onClick={() => this.setState({
                         modal: true

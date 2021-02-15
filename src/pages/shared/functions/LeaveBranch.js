@@ -21,7 +21,7 @@ export default async function leaveBranch(branch_id){
         .catch(errorResponse => {
             error = true
             errorMessage = errorResponse.message
-            console.log(error)
+            console.log(errorResponse)
         })
     } catch (errorResponse) {
         error = true

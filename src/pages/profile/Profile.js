@@ -7,8 +7,15 @@ import {Redirect} from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "../shared/functions/Alert";
 import RenderProfile from "./components/RenderProfile";
+import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
 
 const cookies = new Cookies()
+
+const theme = createMuiTheme({
+    palette: {
+        type: "dark"
+    }
+});
 
 class Profile extends React.Component {
     constructor({match}) {
@@ -25,7 +32,9 @@ class Profile extends React.Component {
 
         if ((typeof this.state.userID !== 'undefined' || typeof (cookies).get("JWT") !== 'undefined'))
             return (
-                <RenderProfile user_id={typeof this.state.userID !== 'undefined' ? parseInt(this.state.userID): parseInt(cookies.get("ID"))}/>
+                <ThemeProvider theme={theme}>
+                    <RenderProfile user_id={typeof this.state.userID !== 'undefined' ? parseInt(this.state.userID): parseInt(cookies.get("ID"))}/>
+                </ThemeProvider>
             )
         else if (typeof this.state.userID === 'undefined' && (typeof (cookies).get("JWT") === 'undefined' || this.state.profile === null))
             return (

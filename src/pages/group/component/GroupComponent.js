@@ -4,7 +4,6 @@ import "../../profile/styles/DedicatedProfile.css"
 import "../../shared/styles/DedicatedPagesStyle.css"
 import axios from 'axios';
 import ProfileBar from '../../shared/components/navigation/LeftBarComponent'
-import Avatar from '@material-ui/core/Avatar'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Button from '@material-ui/core/Button'
 import Host from '../../../Host'

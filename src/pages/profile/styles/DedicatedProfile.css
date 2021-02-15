@@ -7,12 +7,14 @@
     background-color: #3b424c;
     border-radius: 8px;
     width: 12vw;
+    height:7vh;
+    line-height: .5vh;
     padding-left: .5vw;
     padding-right: .5vw;
-    line-height: 13px;
     display: grid;
+    overflow: hidden;
     justify-content: center;
-    align-content: space-around;
+    align-content: center;
 }
 div.commit_container:hover {
     border:#39adf6 2px solid;
@@ -32,7 +34,7 @@ div.commit_container:hover {
     background-color: #303741;
 
     width: 15vw;
-    height: 37vh;
+    height: 32.5vh;
 
 }
 

@@ -11,6 +11,7 @@ import BranchVisualization from './components/RenderBranchVisualization.js';
 import axios from 'axios'
 import Host from "../../Host"
 import Snackbar from '@material-ui/core/Snackbar'
+import mergeBranch from "../shared/functions/MergeBranch";
 
 const theme = createMuiTheme({
     palette: {
@@ -30,6 +31,7 @@ export default class Branch extends Component {
             errorMessage: null,
         }
         this.makeCommit = this.makeCommit.bind(this)
+        this.merge = this.merge.bind(this)
     }
     
     async makeCommit(){
@@ -63,6 +65,14 @@ export default class Branch extends Component {
         }
     }
 
+    async merge(){
+        const response = await mergeBranch(this.state.branch_id)
+        this.setState({
+            error: response.error,
+            errorMessage: response.error_message
+        })
+    }
+
     render() {
         if(typeof (new Cookies()).get("JWT") !== 'undefined')
             return (
@@ -72,7 +82,7 @@ export default class Branch extends Component {
         
                     <div className="branch_container">
 
-                        <BranchVisualization branch_name={this.state.branch_name} branch_id={this.state.branch_id} repository_id={this.state.repository_id} make_commit={this.makeCommit}/>
+                        <BranchVisualization merge={this.merge} branch_name={this.state.branch_name} branch_id={this.state.branch_id} repository_id={this.state.repository_id} make_commit={this.makeCommit}/>
                         
                     </div>
                     <div className="left_components">
@@ -83,7 +93,7 @@ export default class Branch extends Component {
                                           error: null,
                                           errorMessage: null
                                       })}>
-                                <Alert severity={this.state.error === true? "error" : "success"}>{this.state.error === true ? ("Some error occurred "+ this.state.errorMessage) : "Commited with success"}</Alert>
+                                <Alert severity={this.state.error === true? "error" : "success"}>{this.state.error === true ? ("Some error occurred "+ this.state.errorMessage) : "Success"}</Alert>
                      </Snackbar>
                 </ThemeProvider>
             );

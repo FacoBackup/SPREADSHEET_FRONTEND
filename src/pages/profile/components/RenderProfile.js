@@ -10,7 +10,7 @@ import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import Cookies from "universal-cookie/lib";
 import fetchProfileData from "../functions/FetchData";
 import {Link} from "react-router-dom";
-
+import "../../shared/styles/PageModel.css"
 
 
 export default class RenderProfile extends React.Component{
@@ -72,7 +72,7 @@ export default class RenderProfile extends React.Component{
                                     <PhoneRoundedIcon style={{marginRight: '10px'}}/>
                                     {this.state.profile.phone}
                                 </div>
-                                <div style={{marginTop:'50px'}}>
+                                <div style={{marginTop:'5.6vh'}}>
                                     <ButtonGroup size="large" variant="text">
                                         <Button onClick={() => this.setState({branches: true, settings: false})} style={{display: 'grid', lineHeight: '7px', fontSize: '14px',width:(parseInt((new Cookies()).get("ID")) === this.state.userID? '5vw': '7.5vw'),textTransform:'capitalize',color:(this.state.branches === true ? "#39a0f6" :"#aaadb1")}} disableElevation>Branches</Button>
 
@@ -101,17 +101,15 @@ export default class RenderProfile extends React.Component{
                                 <Link style={{textDecoration:'none', color:'white'}} to={"/branch/"+commit.branch_id}>
                                     <div className={"commit_container"}>
                                         <div style={{display:'flex', gap:'10px', textAlign:'center'}}>
-                                            <div >
-                                                <p style={{color: '#aaadb1'}}>Changes</p>
-                                                <p>{commit.changes}</p>
+                                            <div className={"render_as_text_container"} style={{display:'flex', width:'6vw'}}>
+                                                <p style={{fontWeight:'550'}}>{commit.repository_name}/</p>
+                                                <p style={{color:'#aaadb1'}}>{commit.branch_name}</p>
+
                                             </div>
-                                            <div>
-                                                <p style={{color: '#aaadb1'}}>Branch</p>
-                                                <p>{commit.branch_name}</p>
-                                            </div>
+                                            <p style={{color: '#aaadb1'}}>Changes: {commit.changes}</p>
                                         </div>
                                         
-                                        <p  style={{textAlign:'center', fontSize:'11px'}}>{new Date(commit.commit_time).toString().slice(4, 11)}</p>
+                                        <p  style={{textAlign:'right', fontSize:'11px'}}>{new Date(commit.commit_time).toString().slice(4, 11)}</p>
                                         
                                     </div>
                                 </Link>

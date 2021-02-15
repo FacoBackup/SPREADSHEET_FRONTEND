@@ -5,11 +5,9 @@ import Button from '@material-ui/core/Button';
 import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 import {ThemeProvider} from "@material-ui/styles";
 import {createMuiTheme} from "@material-ui/core/styles";
-import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
 import {Redirect} from 'react-router-dom'
 import {HomeRounded} from "@material-ui/icons";
 import PhoneRoundedIcon from "@material-ui/icons/PhoneRounded";
-import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
 
 const theme = createMuiTheme({
     palette: {
@@ -60,7 +58,7 @@ class LeftBarComponent extends Component {
                                             marginRight: '10px',
                                             fontSize: '27px',
                                             color: (this.state.home === true ? "#39adf6" : '#62666f')
-                                        }}/>Home
+                                        }}/>Profile
                                     </Button>
                                 </div>
                                 : null}

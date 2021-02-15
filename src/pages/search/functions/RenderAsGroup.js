@@ -1,42 +1,19 @@
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import React from "react";
 
-export default function renderAsGroup(subject){
+export default function renderAsGroup(group){
     return(
-        <div className={"center_component"}>
+        <div className={"render_as_content_container"}>
             <div style={{
-                display: 'flex',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                alignContent: 'center',
+                display: 'flex'
 
             }}>
-                <Avatar
-                    style={{height: '55px', width: '55px'}}
-                    src={subject.imageURL}
-                    alt="group"
+                <p style={{fontWeight:'550', textTransform: 'uppercase'}}>{group.name}/</p>
+                <p style={{color:'#aaadb1', fontSize:'15px'}}>{group.about}</p>
 
-                />
-                <ul>
-                    <li style={{fontSize: '17px', fontWeight: '400'}}>
-                        {subject.name}
-                    </li>
+                <Button href={"/group/" + group.id } variant="outlined" style={{textTransform:'none', marginLeft:'auto'}}>See</Button>
+            </div>
 
-                    <li style={{fontSize: '17px', fontWeight: '400', color: '#aaadb1'}}>
-                        {typeof subject.role !== 'undefined' && subject.role !== null ? "Your role: " + subject.role : subject.about}
-                    </li>
-                </ul>
-            </div>
-            <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                justifyItems:'space-between',
-                width:'100%',
-                marginBottom:'1vh'
-            }}>
-                <Button href={"/component/" + subject.groupID } variant="contained" disableElevation style={{textTransform:'capitalize'}}>See</Button>
-            </div>
         </div>
     )
 }

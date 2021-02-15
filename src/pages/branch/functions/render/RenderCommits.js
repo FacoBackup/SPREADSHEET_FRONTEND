@@ -2,10 +2,6 @@ import React, {Component} from 'react';
 import Cookies from 'universal-cookie/lib';
 import Host from '../../../../Host'
 import axios from 'axios'
-import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
-import {Button, IconButton, InputBase, Paper} from "@material-ui/core";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "../../../shared/functions/Alert";
 
 const cookies = new Cookies()
 
@@ -45,7 +41,7 @@ export default class RenderCommits extends Component {
         return (
             <div>
                 {this.state.commits.map((commit)=>(
-                    <div className="render_as_user_content_container" style={{width:'30vw',display:'flex', justifyContent:'space-around', alignItems:'center', textAlign:'center'}}>
+                    <div className="render_as_content_container" style={{width:'30vw',display:'flex', justifyContent:'space-around', alignItems:'center', textAlign:'center'}}>
 
                         <div>
                             <p>Changes</p>

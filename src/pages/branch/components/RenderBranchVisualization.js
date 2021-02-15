@@ -17,6 +17,7 @@ import RenderRepositoryBranches from '../../shared/components/RenderRepositoryBr
 import RenderCommits from "../functions/render/RenderCommits";
 import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
 import BranchCreation from "../functions/render/RenderBranchCreation";
+import checkAccess from "../../shared/functions/CheckAccessBranch";
 
 const cookies = new Cookies()
 
@@ -41,13 +42,10 @@ export default class BranchVisualization extends Component {
             branchesOption: false,
             commitsOption: false,
             createBranchOption: false
-
         }
 
         this.renderModal = this.renderModal.bind(this)
-
         this.fetchData = this.fetchData.bind(this)
-
         this.registerCommit = this.registerCommit.bind(this)
         this.registerDeletion = this.registerDeletion.bind(this)
         this.registerChange = this.registerChange.bind(this)
@@ -61,13 +59,15 @@ export default class BranchVisualization extends Component {
 
     async fetchData(){
         const response = await fetchBranchData(this.state.branch_id)
+        const access = await checkAccess(this.state.branch_id)
+
         this.setState({
             content: response.content,
             contributors: response.contributors,
             repository: response.repository,
             branch: response.branch,
             canMakeBranch: response.canMakeBranch,
-            canEdit: response.canEdit,
+            canEdit: response.canEdit && access,
             openCommit: response.openCommit,
             changed: response.openCommit && response.canEdit
         })
@@ -206,7 +206,10 @@ export default class BranchVisualization extends Component {
                         <Button onClick={() => this.setState({createBranchOption: true})} style={{textTransform:'none'}} variant={"outlined"}>
                             <AccountTreeRoundedIcon style={{marginRight:'10px'}}/>Branch
                         </Button>
-                        {this.state.branch.is_master ? null : <Button disabled><DeviceHubRoundedIcon style={{marginRight: '10px'}}/>Merge</Button>}
+                        {this.state.branch.is_master ? null : <Button onClick={() => this.props.merge()} style={{textTransform:'none'}} variant={"outlined"}>
+                            <DeviceHubRoundedIcon style={{marginRight: '10px'}}/>
+                            Merge
+                        </Button>}
                         <Button disabled><MeetingRoomRoundedIcon style={{marginRight:'10px'}}/>Give up as a contributor</Button>
                     </div>
                 </div>
