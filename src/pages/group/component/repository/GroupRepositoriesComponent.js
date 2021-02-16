@@ -23,10 +23,10 @@ export default class GroupRepositories extends Component {
     async fetchData(){
             try {
                 await axios({
-                    method: 'patch',
-                    url: Host() + 'api/get/group/repositories',
+                    method: 'get',
+                    url: Host() + 'api/group/repositories',
                     headers:{'authorization':(cookies).get("JWT")},
-                    data: {
+                    params: {
                         group_id: this.state.group_id
                     }
                 }).then(res=>{

@@ -36,10 +36,10 @@ export default class BranchCreation extends Component {
         let canCreate = false
         try {
             await axios({
-                method: 'patch',
+                method: 'get',
                 url: Host() + 'api/verify/branch/name',
                 headers:{'authorization':(cookies).get("JWT")},
-                data: {
+                params: {
                     name: this.state.name.replace(" ", '').toUpperCase()
                 }
             }).then(() => {

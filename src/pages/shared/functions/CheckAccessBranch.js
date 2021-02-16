@@ -8,10 +8,10 @@ export default async function checkAccess(branch_id){
     let response = false
     try {
         await axios({
-            method: 'patch',
+            method: 'get',
             url: Host() + 'api/check/access/to/branch',
             headers: {'authorization': cookies.get("JWT")},
-            data:{
+            params:{
                 branch_id: branch_id
             }
         }).then(res => {

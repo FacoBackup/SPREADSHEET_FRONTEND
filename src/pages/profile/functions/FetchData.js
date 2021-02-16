@@ -34,9 +34,9 @@ export default async function fetchProfileData(user_id){
     if(profile !== {})
         try {
             await axios({
-                method: 'patch',
-                url: Host() + 'api/get/latest/commits',
-                data: {
+                method: 'get',
+                url: Host() + 'api/latest/commits',
+                params: {
                     user_id: user_id
                 }
             }).then(res => {

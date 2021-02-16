@@ -31,9 +31,9 @@ class UserBranchesComponent extends React.Component {
     async fetchData() {
         try {
             await axios({
-                method: 'patch',
+                method: 'get',
                 url: Host() + 'api/user/branches',
-                data: {
+                params: {
                     user_id: this.state.userID,
                     max_id: this.state.max_id
                 }

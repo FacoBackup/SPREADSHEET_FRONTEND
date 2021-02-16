@@ -19,7 +19,7 @@ import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
 import BranchCreation from "../functions/render/RenderBranchCreation";
 import checkAccess from "../../shared/functions/CheckAccessBranch";
 import CsvDownload from 'react-json-to-csv'
-import RenderDownloadCsv from "../functions/render/RenderDownloadCsv";
+import RenderDownloadCSV from "../functions/render/RenderDownloadCSV";
 
 const cookies = new Cookies()
 
@@ -162,7 +162,7 @@ export default class BranchVisualization extends Component {
                     }
                     {this.state.downloadOption ?
                         <div>
-                            <RenderDownloadCsv branch_id={this.state.branch_id} branch_name={this.state.branch.name}/>
+                            <RenderDownloadCSV branch_id={this.state.branch_id} branch_name={this.state.branch.name}/>
                         </div>
                         :
                         null

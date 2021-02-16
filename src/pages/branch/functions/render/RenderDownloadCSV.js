@@ -2,8 +2,9 @@ import CsvDownload from "react-json-to-csv";
 import React, {Component} from "react";
 import axios from "axios";
 import Host from "../../../../Host";
+import Cookies from "universal-cookie/es6";
 
-export default class RenderDownloadCsv extends Component {
+export default class RenderDownloadCSV extends Component {
 
     constructor(params) {
         super(params);
@@ -22,9 +23,10 @@ export default class RenderDownloadCsv extends Component {
     async fetchData(){
             try {
                 await axios({
-                    method: 'patch',
+                    method: 'get',
                     url: Host() + 'api/export',
-                    data: {
+                    headers: {'authorization': (new Cookies()).get("JWT")},
+                    params: {
                         branch_id: this.state.branch_id
                     }
                 }).then(res => {

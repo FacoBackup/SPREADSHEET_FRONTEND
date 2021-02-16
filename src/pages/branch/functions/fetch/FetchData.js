@@ -25,10 +25,10 @@ export default async function fetchBranchData(branch_id){
         if(branch !== {}){
         
                 await axios({
-                    method: 'patch',
-                    url: Host() + 'api/get/branch/content',
+                    method: 'get',
+                    url: Host() + 'api/branch/content',
                     headers:{'authorization':(new Cookies()).get("JWT")},
-                    data: {
+                    params: {
                         branch_id: branch_id
                     }
                 }).then(res => {
@@ -38,10 +38,10 @@ export default async function fetchBranchData(branch_id){
                 
                 
                 await axios({
-                    method: 'patch',
-                    url: Host() + 'api/get/repository',
+                    method: 'get',
+                    url: Host() + 'api/repository',
                     headers:{'authorization':(new Cookies()).get("JWT")},
-                    data: {
+                    params: {
                         repository_id: branch.repository_id
                     }
                 }).then(res => {
@@ -50,10 +50,10 @@ export default async function fetchBranchData(branch_id){
                 }).catch(error => console.log(error))
         
                 await axios({
-                    method: 'patch',
-                    url: Host() + 'api/get/branch/contributors',
+                    method: 'get',
+                    url: Host() + 'api/branch/contributors',
                     headers:{'authorization':(new Cookies()).get("JWT")},
-                    data: {
+                    params: {
                         branch_id: branch_id
                     }
                 }).then(res => {
@@ -78,10 +78,10 @@ export default async function fetchBranchData(branch_id){
         }
         try {
             await axios({
-                method: 'patch',
-                url: Host() + 'api/get/open/commit',
+                method: 'get',
+                url: Host() + 'api/verify/open/commit',
                 headers:{'authorization':(new Cookies()).get("JWT")},
-                data: {
+                params: {
                     branch_id: branch_id
                 }
             }).then(res => {
