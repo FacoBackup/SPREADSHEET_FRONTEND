@@ -4,6 +4,8 @@ import Host from '../../../../Host'
 import axios from 'axios'
 import {TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import Alert from "../../../shared/functions/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const cookies = new Cookies()
 
@@ -15,7 +17,9 @@ export default class BranchCreation extends Component {
             name: '',
             targetBranchId: props.targetBranchId,
             redirect: false,
-            newId: null
+            newId: null,
+            error: null,
+            errorMessage: null
         }
         this.handleChange = this.handleChange.bind(this);
         this.saveData = this.saveData.bind(this);
@@ -29,23 +33,64 @@ export default class BranchCreation extends Component {
     }
 
     async saveData(){
+        let canCreate = false
         try {
             await axios({
-                method: 'post',
-                url: Host() + 'api/branch',
+                method: 'patch',
+                url: Host() + 'api/verify/branch/name',
                 headers:{'authorization':(cookies).get("JWT")},
                 data: {
-                    name: this.state.name,
-                    target_branch_id: this.state.targetBranchId
+                    name: this.state.name.replace(" ", '').toUpperCase()
                 }
-            }).then(res => {
+            }).then(() => {
+                canCreate = true
+            }).catch(error => {
+                console.log(error)
                 this.setState({
-                    redirect: true,
-                    newId: res.data
+                    error: true,
+                    errorMessage: "Name "+this.state.name+ " already in used."
                 })
-            }).catch(error => console.log(error))
+            })
         } catch (error) {
+            this.setState({
+                error: true,
+                errorMessage: "Name "+this.state.name+ " already in used."
+            })
             console.log(error)
+        }
+
+        if(canCreate){
+            try {
+                await axios({
+                    method: 'post',
+                    url: Host() + 'api/branch',
+                    headers:{'authorization':(cookies).get("JWT")},
+                    data: {
+                        name: this.state.name,
+                        target_branch_id: this.state.targetBranchId
+                    }
+                }).then(res => {
+                    this.setState({
+                        redirect: true,
+                        newId: res.data,
+                        error: false
+
+                    })
+
+                }).catch(error => {
+                    console.log(error)
+                    this.setState({
+                        error: true,
+                        errorMessage: error.message
+                    })
+                })
+            } catch (error) {
+                this.setState({
+                    error: true,
+                    errorMessage: error.message
+                })
+                console.log(error)
+            }
         }
     }
 
@@ -55,8 +100,15 @@ export default class BranchCreation extends Component {
 
                 {this.state.redirect ? null: <TextField style={{width:'600px'}} onChange={this.handleChange} variant={"outlined"} placeholder={"Name"} name={"name"}/>}
                 {this.state.redirect ? null: <Button onClick={() => this.saveData()} style={{textTransform:'none', border:"#39adf6 2px solid", width:'200px'}}>Create</Button>}
-
                 {this.state.redirect ? <Button href={"/branch/"+this.state.newId} variant={"outlined"} style={{textTransform:'none'}}>See new branch</Button>: null}
+
+                <Snackbar open={this.state.error !== null} autoHideDuration={3000}
+                          onClose={() => this.setState({
+                              error: null,
+                              errorMessage: null
+                          })}>
+                    <Alert severity={this.state.error === true? "error" : "success"}>{this.state.error === true ? ("Some error occurred "+ this.state.errorMessage) : "Success"}</Alert>
+                </Snackbar>
             </div>
         );
     }

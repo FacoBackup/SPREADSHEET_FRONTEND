@@ -18,6 +18,8 @@ import RenderCommits from "../functions/render/RenderCommits";
 import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
 import BranchCreation from "../functions/render/RenderBranchCreation";
 import checkAccess from "../../shared/functions/CheckAccessBranch";
+import CsvDownload from 'react-json-to-csv'
+import RenderDownloadCsv from "../functions/render/RenderDownloadCsv";
 
 const cookies = new Cookies()
 
@@ -38,6 +40,7 @@ export default class BranchVisualization extends Component {
             canEdit: false,
             changed: false,
 
+            downloadOption: false,
             contributorsOption: false,
             branchesOption: false,
             commitsOption: false,
@@ -114,14 +117,15 @@ export default class BranchVisualization extends Component {
 
     renderModal(){
         return(
-            <Modal open={this.state.branchesOption || this.state.openCommit || this.state.commitsOption || this.state.contributorsOption || this.state.createBranchOption} onClose={() => this.setState({
+            <Modal open={this.state.downloadOption || this.state.branchesOption || this.state.openCommit || this.state.commitsOption || this.state.contributorsOption || this.state.createBranchOption} onClose={() => this.setState({
                 branchesOption:false,
                 commitsOption: false,
                 contributorsOption: false,
                 createBranchOption: false,
-                openCommit: false
+                openCommit: false,
+                downloadOption: false
             })} style={{ display:'grid', justifyContent:'center', alignContent: "center", textAlign:'center'}}>
-                <div className={"modal_style"}>
+                <div className={"modal_style"} style={{width:(this.state.downloadOption ? "13vw" : null), height: (this.state.downloadOption || this.state.openCommit ? "10vh": null),alignContent:(this.state.downloadOption || this.state.openCommit ? "center" : null)}}>
                     {this.state.branchesOption ? <RenderRepositoryBranches repository_id={this.state.repository.id}/> : null}
                     {this.state.contributorsOption ?
                         <div>
@@ -152,6 +156,13 @@ export default class BranchVisualization extends Component {
                     {this.state.openCommit ?
                         <div>
                             <h3>This branch has changes not yet finalized.</h3>
+                        </div>
+                        :
+                        null
+                    }
+                    {this.state.downloadOption ?
+                        <div>
+                            <RenderDownloadCsv branch_id={this.state.branch_id} branch_name={this.state.branch.name}/>
                         </div>
                         :
                         null
@@ -202,7 +213,11 @@ export default class BranchVisualization extends Component {
                             commitsOption: true
                         })} variant={"outlined"}
                         ><StorageRoundedIcon style={{marginRight:'10px'}}/>Commits</Button>
-                        <Button disabled><GetAppRoundedIcon style={{marginRight:'10px'}}/>Download</Button>
+                        <Button variant={"outlined"} style={{textTransform:'none'}} onClick={() => this.setState({
+                            downloadOption: true
+                        })}>
+                            <GetAppRoundedIcon style={{marginRight:'10px'}}/>Download
+                        </Button>
                         <Button onClick={() => this.setState({createBranchOption: true})} style={{textTransform:'none'}} variant={"outlined"}>
                             <AccountTreeRoundedIcon style={{marginRight:'10px'}}/>Branch
                         </Button>

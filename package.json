@@ -27,6 +27,7 @@
     "react-http-status-code": "^1.0.1",
     "react-i18next": "^11.8.5",
     "react-infinite-scroll-component": "^5.1.0",
+    "react-json-to-csv": "^1.0.4",
     "react-qr-code": "^1.0.5",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",

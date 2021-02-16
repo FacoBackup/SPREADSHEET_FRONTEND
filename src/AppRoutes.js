@@ -7,12 +7,14 @@ import SignIn from "./pages/authentication/SignIn"
 import Profile from "./pages/profile/Profile"
 import Branch from './pages/branch/Branch';
 import Repository from './pages/repository/Repository'
+import AsyncTest from "./pages/AsyncTest";
 
 function AppRoutes() {
     return (
         <div>
             <Router>
                 <Switch>
+                    <Route path={"/async"} exact component={AsyncTest}/>
                     <Route path={'/repository/:id'} exact component={Repository}/>
                     <Route path={'/branch/:id'} exact component={Branch}/>
                     <Route path={"/"} exact component={Profile}/>
