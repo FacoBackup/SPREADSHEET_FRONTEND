@@ -74,12 +74,14 @@ div.commit_container:hover {
     left: 16.5vw;
 
     display: grid;
-    box-shadow: 0 5px 5px #23282e;
+    grid-template-rows: 85% 10%;
     justify-content: center;
-    align-content: space-between;
-    border-radius: 8px;
+
     overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 5px 5px #23282e;
     background-color: #303741;
+    text-align: center;
 
     width: 15vw;
     height: 300px;

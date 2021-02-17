@@ -17,9 +17,9 @@ export default async function fetchForwardSearchData(user_max_id, group_max_id, 
     }
 
     await axios({
-        method: 'patch',
+        method: 'get',
         url: Host() + ('api/search/user'),
-        data: {
+        params: {
             max_id: user_max_id,
             search_input: input
         }
@@ -34,9 +34,9 @@ export default async function fetchForwardSearchData(user_max_id, group_max_id, 
     })
 
     await axios({
-        method: 'patch',
+        method: 'get',
         url: Host() + ('api/search/group'),
-        data: {
+        params: {
             max_id: group_max_id,
             search_input: input
         }
@@ -51,10 +51,10 @@ export default async function fetchForwardSearchData(user_max_id, group_max_id, 
 
     if(typeof (new Cookies().get("JWT")) !== "undefined"){
         await axios({
-            method: 'patch',
+            method: 'get',
             url: Host() + ('api/search/branch'),
             headers: {'authorization': (new Cookies()).get("JWT")},
-            data: {
+            params: {
                 max_id: branch_max_id,
                 search_input: input
             }

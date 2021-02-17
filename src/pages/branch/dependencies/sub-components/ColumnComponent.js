@@ -2,9 +2,7 @@ import React, {Component} from 'react';
 import Cookies from 'universal-cookie/lib';
 import Host from '../../../../Host'
 import axios from 'axios'
-import TextField from '@material-ui/core/TextField'
-import {IconButton, InputBase, Paper} from "@material-ui/core";
-import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
+import {InputBase, Paper} from "@material-ui/core";
 
 const cookies = new Cookies()
 

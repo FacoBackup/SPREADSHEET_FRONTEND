@@ -3,12 +3,10 @@ import {ThemeProvider} from "@material-ui/styles";
 import React from 'react'
 import "../styles/SearchComponentStyle.css"
 import fetchForwardSearchData from "../functions/FetchSearchForwardData";
-import InfiniteScroll from "react-infinite-scroll-component";
 import RenderAsUser from '../../shared/components/RenderAsUser'
 import RenderAsGroup from '../functions/RenderAsGroup'
 import Cookies from "universal-cookie/lib";
 import RenderAsBranch from "../../shared/components/branches/RenderBranch";
-import {ButtonGroup} from "@material-ui/core";
 import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import Button from "@material-ui/core/Button";

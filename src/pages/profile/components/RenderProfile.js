@@ -51,28 +51,29 @@ export default class RenderProfile extends React.Component{
                     </div>
                     <div className="dedicated_component_container">
                         <div className='profile_container'>
-                            <div style={{marginTop: '1vh', textAlign: 'center'}}>
-                                <Avatar
-                                    style={{margin: 'auto', height: '4vw', width: '4vw', boxShadow:'0 0px 5px #23282e'}}
-                                    src={this.state.profile.pic}
-                                    alt={this.state.profile.name}
-                                />
-                                <p style={{
-                                    fontSize: '17px',
-                                
-                                    textTransform: 'capitalize'
-                                }}>{("" + this.state.profile.name)}</p>
-                                <p style={{fontSize: '16px', color: '#888e97'}}>{this.state.profile.email}</p>
-                                <div style={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    color: '#888e97'
-                                }}>
-                                    <PhoneRoundedIcon style={{marginRight: '10px'}}/>
-                                    {this.state.profile.phone}
+                                <div style={{marginTop: '1vh',  gridRow: '1'}}>
+                                    <Avatar
+                                        style={{margin: 'auto', height: '4vw', width: '4vw', boxShadow:'0 0px 5px #23282e'}}
+                                        src={this.state.profile.pic}
+                                        alt={this.state.profile.name}
+                                    />
+                                    <p style={{
+                                        fontSize: '17px',
+
+                                        textTransform: 'capitalize'
+                                    }}>{("" + this.state.profile.name)}</p>
+                                    <p style={{fontSize: '16px', color: '#888e97'}}>{this.state.profile.email}</p>
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        color: '#888e97'
+                                    }}>
+                                        <PhoneRoundedIcon style={{marginRight: '10px'}}/>
+                                        {this.state.profile.phone}
+                                    </div>
                                 </div>
-                                <div style={{marginTop:'5.6vh'}}>
+                                <div style={{gridRow:'2'}}>
                                     <ButtonGroup size="large" variant="text">
                                         <Button onClick={() => this.setState({branches: true, settings: false})} style={{display: 'grid', lineHeight: '7px', fontSize: '14px',width:(parseInt((new Cookies()).get("ID")) === this.state.userID? '5vw': '7.5vw'),textTransform:'capitalize',color:(this.state.branches === true ? "#39a0f6" :"#aaadb1")}} disableElevation>Branches</Button>
 
@@ -90,7 +91,6 @@ export default class RenderProfile extends React.Component{
                                         }
                                     </ButtonGroup>
                                 </div>
-                            </div>
                         </div>
                         <div className="profile_content_container">
                             {renderOption(this.state.userID,this.state.settings,false,false,false)}

@@ -45,7 +45,6 @@ div.render_as_content_container:hover {
 }
 
 .center_component {
-    /*margin: 12vh auto 15vh 31vw;*/
     top: 12vh;
     left: 31vw;
     width: 43vw;
@@ -56,7 +55,6 @@ div.render_as_content_container:hover {
 
     overflow: hidden;
     border-radius: 8px;
-    z-index: auto;
     position: fixed;
     box-shadow: -1px 5px 5px #23282e;
     background-color: #303741;

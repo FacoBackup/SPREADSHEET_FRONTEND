@@ -1,0 +1,22 @@
+.group_options_buttons {
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    padding-bottom: 1vh;
+    padding-top: 1vh;
+    border-radius: 8px;
+    margin: auto auto 1vh;
+}
+
+.group_info_container{
+    box-shadow: -1px 5px 5px #23282e;
+    background-color: #303741;
+    border-radius: 8px;
+
+    position: fixed;
+    top: 10vh;
+    left: 31vw;
+    width: 43vw;
+    height: 14vh;
+    overflow: hidden;
+}

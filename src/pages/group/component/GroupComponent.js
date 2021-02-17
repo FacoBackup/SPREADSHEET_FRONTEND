@@ -2,6 +2,7 @@ import React from 'react';
 import "../../shared/styles/PageModel.css"
 import "../../profile/styles/DedicatedProfile.css"
 import "../../shared/styles/DedicatedPagesStyle.css"
+import "../styles/GroupStyles.css"
 import axios from 'axios';
 import ProfileBar from '../../shared/components/navigation/LeftBarComponent'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
@@ -70,8 +71,8 @@ class GroupComponent extends React.Component {
                 )
             }
             default: {
-                return (
-                    "ERROR"
+                return(
+                    <GroupRepositories group_id={this.state.group_id}/>
                 )
             }
         }
@@ -82,47 +83,36 @@ class GroupComponent extends React.Component {
         return (
             <div>
                 <div className="profile_center_component">
-                    {/*<div className='profile_background_image_container'>*/}
-                    {/*    <img className='profile_background_image' alt="BACKGROUD"*/}
-                    {/*         src={(typeof this.state.group.background !== 'undefined' && this.state.group.background !== null) ? this.state.group.background : "https://www.beautycolorcode.com/2f2f2f-1440x900.png"}/>*/}
-                    {/*</div>*/}
                     <div className="dedicated_component_container">
 
-                        <div className="profile_content_container">
-                            <div className='profile_container'>
-                                <div style={{marginTop: '1vh', textAlign: 'center'}}>
-                                
-                                    <p style={{fontSize: '18px', fontWeight: '400', textTransform:'capitalize'}}>{this.state.group.name}</p>
-                                    <div style={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        color: '#aaadb1'
-                                    }}>
-                                        <SubjectRoundedIcon/>
-                                        {this.state.group.about}
-                                    </div>
+                        <div className="center_component" style={{top:'27vh', height:'73vh'}}>
+                            <div className='group_info_container'>
+                                <div style={{display:'flex', justifyContent: 'center'}}>
+                                    <p style={{fontWeight: '550', textTransform:'uppercase'}}>{this.state.group.name}/</p>
+                                    <p style={{color:'#aaadb1', fontSize: '15px'}}>{this.state.group.about}</p>
                                 </div>
-                                <div>
-                                    <ButtonGroup size="medium" variant="text">
-                                        <Button style={{display: 'grid', lineHeight: '7px', fontSize: '15px', width:'7vw',textTransform:'capitalize',color:(this.state.repositoriesOption === true? "#39adf6": "#aaadb1")}}
-                                                color={this.state.repositoriesOption === true ? "primary" : "default"}
+                                <div >
+                                    <ButtonGroup size="medium" variant="text" >
+                                        <Button style={{width:'21.5vw',height: '7.5vh', display:'grid', lineHeight: '0', textTransform:'none',color:(this.state.repositoriesOption === true? "#39adf6": "#aaadb1")}}
                                                 onClick={() => this.setState({
                                                     repositoriesOption: true,
                                                     membersOption: false,
                                                     settings:false
                                                 })}
-                                        >Repositories <p style={{color: 'white'}}>{this.state.repositories}</p></Button>
-
-
-                                        <Button style={{display: 'grid', lineHeight: '7px', fontSize: '15px', width:'7vw',textTransform:'capitalize',color:(this.state.membersOption === true? "#39adf6": "#aaadb1")}}
-                                                color={this.state.membersOption === true ? "primary" : "default"}
+                                        >
+                                            <p>Repositories</p>
+                                            <p style={{color: 'white'}}>{this.state.repositories}</p>
+                                        </Button>
+                                        <Button style={{width:'21.5vw',height: '7.5vh',display:'grid', lineHeight: '0', textTransform:'none',color:(this.state.membersOption === true? "#39adf6": "#aaadb1")}}
                                                 onClick={() => this.setState({
                                                     repositoriesOption: false,
                                                     membersOption: true,
                                                     settings:false
                                                 })}
-                                        >Members<p style={{color: 'white'}}>{this.state.members}</p></Button>
+                                        >
+                                            <p>Members</p>
+                                            <p style={{color: 'white'}}>{this.state.members}</p>
+                                        </Button>
                                     </ButtonGroup>
                                 </div>
                             </div>

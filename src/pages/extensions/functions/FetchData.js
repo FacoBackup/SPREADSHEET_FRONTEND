@@ -4,9 +4,9 @@ import Host from "../../../Host";
 export default async function fetchExtensions(max_id){
     let response = {}
     await axios({
-        method: 'patch',
+        method: 'get',
         url: Host() + 'api/get/users',
-        data: {
+        params: {
             max_id: max_id
         }
     }).then(res => {

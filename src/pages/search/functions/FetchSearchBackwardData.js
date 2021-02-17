@@ -17,9 +17,9 @@ export default async function fetchBackwardSearchData(user_min_id, group_min_id,
     }
 
     await axios({
-        method: 'patch',
+        method: 'get',
         url: Host() + ('api/search/user/backward'),
-        data: {
+        params: {
             min_id: user_min_id,
             search_input: input
         }
@@ -34,9 +34,9 @@ export default async function fetchBackwardSearchData(user_min_id, group_min_id,
     })
 
     await axios({
-        method: 'patch',
+        method: 'get',
         url: Host() + ('api/search/group/backward'),
-        data: {
+        params: {
             min_id: group_min_id,
             search_input: input
         }
@@ -51,10 +51,10 @@ export default async function fetchBackwardSearchData(user_min_id, group_min_id,
 
     if(typeof (new Cookies().get("JWT")) !== "undefined"){
         await axios({
-            method: 'patch',
+            method: 'get',
             url: Host() + ('api/search/branch/backward'),
             headers: {'authorization': (new Cookies()).get("JWT")},
-            data: {
+            params: {
                 min_id: branch_min_id,
                 search_input: input
             }
