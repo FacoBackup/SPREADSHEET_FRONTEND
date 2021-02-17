@@ -19,9 +19,9 @@ class GroupUsersComponent extends React.Component {
     async fetchData() {
         try{
             await axios({
-                method: 'patch',
+                method: 'get',
                 url: Host() + 'api/get/group/members',
-                data: {
+                params: {
                     group_id: this.state.group_id
                 }
             }).then(res => {

@@ -34,10 +34,10 @@ class GroupComponent extends React.Component {
     async fetchData() {
       try{
           await axios({
-              method: 'patch',
+              method: 'get',
               url: Host() + 'api/get/group',
               headers: {"Authorization": cookies.get("JWT")},
-              data: {
+              params: {
                   group_id: parseInt(this.state.group_id)
               }
           }).then(res => {
