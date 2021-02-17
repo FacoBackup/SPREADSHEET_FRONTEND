@@ -63,10 +63,10 @@ export default async function fetchBranchData(branch_id){
         }
         try {
             await axios({
-                method: 'patch',
+                method: 'get',
                 url: Host() + 'api/member/by/branch',
                 headers:{'authorization':(new Cookies()).get("JWT")},
-                data: {
+                params: {
                     branch_id: branch_id
                 }
             }).then(res => {

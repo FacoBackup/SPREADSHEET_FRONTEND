@@ -21,10 +21,10 @@ export default class CommitComponent extends Component {
     async fetchData(){
         try {
             await axios({
-                method: 'patch',
+                method: 'get',
                 url: Host() + 'api/get/branch/commits',
                 headers:{'authorization':(cookies).get("JWT")},
-                data: {
+                params: {
                     branch_id: this.state.branch_id
                 }
             }).then(res => {
