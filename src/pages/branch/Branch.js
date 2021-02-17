@@ -7,7 +7,7 @@ import {Redirect} from 'react-router-dom'
 import TopBarComponent from "../shared/components/navigation/TopBarComponent";
 import Alert from "../shared/functions/Alert";
 import "./style/BranchStyles.css"
-import BranchVisualization from './components/RenderBranchVisualization.js';
+import BranchComponent from './components/BranchComponent.js';
 import axios from 'axios'
 import Host from "../../Host"
 import Snackbar from '@material-ui/core/Snackbar'
@@ -82,7 +82,7 @@ export default class Branch extends Component {
         
                     <div className="branch_container">
 
-                        <BranchVisualization merge={this.merge} branch_name={this.state.branch_name} branch_id={this.state.branch_id} repository_id={this.state.repository_id} make_commit={this.makeCommit}/>
+                        <BranchComponent merge={this.merge} branch_name={this.state.branch_name} branch_id={this.state.branch_id} repository_id={this.state.repository_id} make_commit={this.makeCommit}/>
                         
                     </div>
                     <div className="left_components">

@@ -12,6 +12,7 @@
     padding-left: .5vw;
     padding-right: .5vw;
     display: grid;
+    grid-template-columns: 1fr 1fr;
     overflow: hidden;
     justify-content: center;
     align-content: center;

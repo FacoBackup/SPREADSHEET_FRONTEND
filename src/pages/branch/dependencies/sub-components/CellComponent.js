@@ -7,7 +7,7 @@ import {IconButton, InputBase, Paper} from "@material-ui/core";
 
 const cookies = new Cookies()
 
-export default class RenderCell extends Component {
+export default class CellComponent extends Component {
     
     constructor(props) {
         super(props);
@@ -15,10 +15,11 @@ export default class RenderCell extends Component {
             cell: props.cell,
             column_id: props.column_id,
             content: '',
-            changed: false,
+            saved: null,
             index: props.index,
             canMakeBranch: props.canMakeBranch,
-            canEdit: props.canEdit
+            canEdit: props.canEdit,
+
         }
         this.deleteCell = this.deleteCell.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -46,7 +47,8 @@ export default class RenderCell extends Component {
 
     handleChange(event){
         this.setState({
-            content: event.target.value
+            content: event.target.value,
+            saved: false
         })
     }
 
@@ -87,7 +89,7 @@ export default class RenderCell extends Component {
                     }).then(() => {
                         this.props.registerChange()
                         this.setState({
-                            changed:true
+                            saved:true
                         })
                     })
                     .catch(error => {
@@ -117,7 +119,7 @@ export default class RenderCell extends Component {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent:'space-between',
-                    border:(this.state.changed === true && this.state.cell !== null? "#39adf6 3px solid": null), borderRadius:(this.state.changed === true && this.state.cell !== null? "8px": null)
+                    border:(this.state.cell !== null && this.state.saved !== null? (this.state.saved === true ? "#39adf6 3px solid" : "#e34f50 3px solid"): null)
                 }}>
                     <InputBase
                         value={this.props.cell !== null? (this.state.content.length > 0 ? this.state.content: this.props.cell.content): this.state.content}

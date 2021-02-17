@@ -3,10 +3,12 @@ import Cookies from 'universal-cookie/lib';
 import Host from '../../../../Host'
 import axios from 'axios'
 import TextField from '@material-ui/core/TextField'
+import {IconButton, InputBase, Paper} from "@material-ui/core";
+import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 
 const cookies = new Cookies()
 
-export default class RenderColumn extends Component {
+export default class ColumnComponent extends Component {
 
     constructor(params) {
         super(params);
@@ -14,7 +16,7 @@ export default class RenderColumn extends Component {
             column_id: params.column_id,
             column_name:params.column_name,
             name: null,
-            changed: false,
+            saved: null,
             canEdit: params.canEdit
         }
         this.handleChange = this.handleChange.bind(this);
@@ -23,7 +25,8 @@ export default class RenderColumn extends Component {
 
     handleChange(event){
         this.setState({
-            name: event.target.value
+            name: event.target.value,
+            saved: false
         })
     }
     async saveData(key){
@@ -41,7 +44,7 @@ export default class RenderColumn extends Component {
                 }).then(()=>{
                     this.props.registerChange()
                     this.setState({
-                        changed:true
+                        saved:true
                     })
                 })
                     .catch(error => {
@@ -55,19 +58,30 @@ export default class RenderColumn extends Component {
 
     render() {
         return (
-            <TextField
-                        key={this.state.column_id + "-column"}
-                        variant={"outlined"}
-                       disabled={!this.state.canEdit}
-                       style={{border:(this.state.changed === true ? "#39adf6 3px solid": null),
-                           borderRadius:(this.state.changed === true? "8px": null),
-                           marginBottom:'1vh',
-                           marginTop:'1vh'
-                       }}
-                       defaultValue={this.state.column_name}
-                       onChange={this.handleChange}
-                       onKeyDown={key => this.saveData(key)}
-            />
+            <Paper
+                style={{
+                    backgroundColor: '#272e38',
+                    height:'6vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom:'1vh',
+                    marginTop:'1vh',
+                    justifyContent:'space-between',
+                    border:(this.state.cell !== null && this.state.saved !== null? (this.state.saved === true ? "#39adf6 3px solid" : "#e34f50 3px solid"): null)
+                }}
+                key={this.state.column_id + "-column"}
+
+            >
+                <InputBase
+                    defaultValue={this.state.column_name}
+                    placeholder={this.props.cell === null? "New": null}
+                    onChange={this.handleChange}
+                    onKeyDown={key => this.saveData(key)}
+                    disabled={!this.state.canEdit}
+                    variant="outlined"
+                    style={{marginLeft:'10px'}}
+                />
+            </Paper>
         )
     }
 }

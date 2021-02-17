@@ -1,29 +1,29 @@
 import React, {Component} from 'react';
 import Cookies from 'universal-cookie/lib';
 import AccountTreeRoundedIcon from '@material-ui/icons/AccountTreeRounded';
-import RenderCell from '../functions/render/RenderCell';
+import CellComponent from '../dependencies/sub-components/CellComponent';
 import {AvatarGroup} from "@material-ui/lab";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
-import fetchBranchData from "../functions/fetch/FetchData";
+import fetchBranchData from "../dependencies/fetch/FetchData";
 import GetAppRoundedIcon from '@material-ui/icons/GetAppRounded';
 import DeviceHubRoundedIcon from '@material-ui/icons/DeviceHubRounded';
-import MeetingRoomRoundedIcon from '@material-ui/icons/MeetingRoomRounded';
+import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded';
 import RenderAsUser from '../../shared/components/RenderAsUser'
 import Modal from '@material-ui/core/Modal'
-import RenderColumn from "../functions/render/RenderColumn";
+import ColumnComponent from "../dependencies/sub-components/ColumnComponent";
 import RenderRepositoryBranches from '../../shared/components/RenderRepositoryBranches'
-import RenderCommits from "../functions/render/RenderCommits";
+import RenderCommitsComponent from "../dependencies/sub-components/CommitComponent";
 import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
-import BranchCreation from "../functions/render/RenderBranchCreation";
+import BranchCreationComponent from "../dependencies/sub-components/BranchCreationComponent";
 import checkAccess from "../../shared/functions/CheckAccessBranch";
-import CsvDownload from 'react-json-to-csv'
-import RenderDownloadCSV from "../functions/render/RenderDownloadCSV";
+import RenderExportComponent from "../dependencies/sub-components/ExportComponent";
+import ContributorComponent from "../dependencies/sub-components/ContributorComponent";
 
 const cookies = new Cookies()
 
-export default class BranchVisualization extends Component {
+export default class BranchComponent extends Component {
     column_name;
     
     constructor(params) {
@@ -44,7 +44,8 @@ export default class BranchVisualization extends Component {
             contributorsOption: false,
             branchesOption: false,
             commitsOption: false,
-            createBranchOption: false
+            createBranchOption: false,
+            addContributorOption: false
         }
 
         this.renderModal = this.renderModal.bind(this)
@@ -55,7 +56,6 @@ export default class BranchVisualization extends Component {
         this.registerCreation = this.registerCreation.bind(this)
     }
 
-    //FETCH
     componentDidMount(){
         this.fetchData().catch(r => console.log(r))
     }
@@ -117,13 +117,14 @@ export default class BranchVisualization extends Component {
 
     renderModal(){
         return(
-            <Modal open={this.state.downloadOption || this.state.branchesOption || this.state.openCommit || this.state.commitsOption || this.state.contributorsOption || this.state.createBranchOption} onClose={() => this.setState({
+            <Modal open={this.state.addContributorOption || this.state.downloadOption || this.state.branchesOption || this.state.openCommit || this.state.commitsOption || this.state.contributorsOption || this.state.createBranchOption} onClose={() => this.setState({
                 branchesOption:false,
                 commitsOption: false,
                 contributorsOption: false,
                 createBranchOption: false,
                 openCommit: false,
-                downloadOption: false
+                downloadOption: false,
+                addContributorOption: false
             })} style={{ display:'grid', justifyContent:'center', alignContent: "center", textAlign:'center'}}>
                 <div className={"modal_style"} style={{width:(this.state.downloadOption ? "13vw" : null), height: (this.state.downloadOption || this.state.openCommit ? "10vh": null),alignContent:(this.state.downloadOption || this.state.openCommit ? "center" : null)}}>
                     {this.state.branchesOption ? <RenderRepositoryBranches repository_id={this.state.repository.id}/> : null}
@@ -140,7 +141,7 @@ export default class BranchVisualization extends Component {
                     {this.state.commitsOption ?
                         <div>
                             <p>Commits</p>
-                            <RenderCommits branch_id={this.state.branch.id}/>
+                            <RenderCommitsComponent branch_id={this.state.branch.id}/>
                         </div>
                         :
                         null
@@ -148,7 +149,7 @@ export default class BranchVisualization extends Component {
                     {this.state.createBranchOption ?
                         <div>
                             <p>Create Branch</p>
-                            <BranchCreation targetBranchId={this.state.branch_id}/>
+                            <BranchCreationComponent targetBranchId={this.state.branch_id}/>
                         </div>
                         :
                         null
@@ -162,7 +163,14 @@ export default class BranchVisualization extends Component {
                     }
                     {this.state.downloadOption ?
                         <div>
-                            <RenderDownloadCSV branch_id={this.state.branch_id} branch_name={this.state.branch.name}/>
+                            <RenderExportComponent branch_id={this.state.branch_id} branch_name={this.state.branch.name}/>
+                        </div>
+                        :
+                        null
+                    }
+                    {this.state.addContributorOption ?
+                        <div>
+                            <ContributorComponent branch_id={this.state.branch_id}/>
                         </div>
                         :
                         null
@@ -202,13 +210,12 @@ export default class BranchVisualization extends Component {
                         </Button>
                     </div>
                     <div className={"half_control_bar_container"}>
-                        <Button
-                            disabled={!this.state.canEdit}
+                        {(this.state.canEdit) ? <Button
                             style={{textTransform:'none', border: (this.state.changed ? "#39adf6 2px solid" : null)}}
                             variant="outlined"
                             onClick={() => this.registerCommit()}>
                             <SaveRoundedIcon style={{marginRight:'10px'}}/> Commit
-                        </Button>
+                        </Button> : null}
                         <Button style={{textTransform:'none'}} onClick={()=> this.setState({
                             commitsOption: true
                         })} variant={"outlined"}
@@ -221,31 +228,32 @@ export default class BranchVisualization extends Component {
                         <Button onClick={() => this.setState({createBranchOption: true})} style={{textTransform:'none'}} variant={"outlined"}>
                             <AccountTreeRoundedIcon style={{marginRight:'10px'}}/>Branch
                         </Button>
-                        {this.state.branch.is_master ? null : <Button onClick={() => this.props.merge()} style={{textTransform:'none'}} variant={"outlined"}>
+                        {this.state.branch.is_master ? null :(this.state.canEdit) ? <Button onClick={() => this.props.merge()} style={{textTransform:'none'}} variant={"outlined"}>
                             <DeviceHubRoundedIcon style={{marginRight: '10px'}}/>
                             Merge
-                        </Button>}
-                        <Button disabled><MeetingRoomRoundedIcon style={{marginRight:'10px'}}/>Give up as a contributor</Button>
+                        </Button> : null}
+                        {(this.state.canEdit) ? <Button variant={"outlined"} onClick={() => this.setState({
+                            addContributorOption: true
+                        })}><PersonAddRoundedIcon/></Button> : null}
                     </div>
                 </div>
                 <div  className="table_container">
                     {this.state.content !== undefined ? this.state.content.map((column, column_index) => (
                         <div className="column_container" key={column.column_id}>
                             <div className="column_title_container">
-                                <RenderColumn  registerChange={this.registerChange} fetch={this.fetchData} canEdit={this.state.canEdit} column_id={column.column_id} column_name={column.column_name}/>
+                                <ColumnComponent registerChange={this.registerChange} fetch={this.fetchData} canEdit={this.state.canEdit} column_id={column.column_id} column_name={column.column_name}/>
                             </div>
                             <div style={{marginTop:'1vh'}}>
                                 {column.cells.map((cell, cell_index) =>(
                                     <div key={cell.id}>
-                                        <RenderCell registerDeletion={this.registerDeletion} columnIndex={column_index} registerChange={this.registerChange} deletable={cell_index === (column.cells.length - 1)} canEdit={this.state.canEdit} canMakeBranch={this.state.canMakeBranch} column_id={column.column_id} cell={cell} index={cell_index}/>
+                                        <CellComponent registerDeletion={this.registerDeletion} columnIndex={column_index} registerChange={this.registerChange} deletable={cell_index === (column.cells.length - 1)} canEdit={this.state.canEdit} canMakeBranch={this.state.canMakeBranch} column_id={column.column_id} cell={cell} index={cell_index}/>
                                     </div>
                                 ))}
                                 {this.state.canEdit ?
                                     <div key={column.cells.length+" - column - "+column.column_id}>
-                                        <RenderCell columnIndex={column_index}  registerCreation={this.registerCreation} registerChange={this.registerChange} fetch={this.fetchData} canEdit={true} column_id={column.column_id} cell={null} index={column.cells.length}/>
+                                        <CellComponent columnIndex={column_index} registerCreation={this.registerCreation} registerChange={this.registerChange} fetch={this.fetchData} canEdit={true} column_id={column.column_id} cell={null} index={column.cells.length}/>
                                     </div>
                                     : null}
-
                             </div>
                         </div>
                     )) : null}

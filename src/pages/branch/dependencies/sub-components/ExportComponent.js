@@ -4,7 +4,7 @@ import axios from "axios";
 import Host from "../../../../Host";
 import Cookies from "universal-cookie/es6";
 
-export default class RenderDownloadCSV extends Component {
+export default class ExportComponent extends Component {
 
     constructor(params) {
         super(params);

@@ -100,17 +100,14 @@ export default class RenderProfile extends React.Component{
                             {this.state.commits.length > 0 ? this.state.commits.map((commit) => (
                                 <Link style={{textDecoration:'none', color:'white'}} to={"/branch/"+commit.branch_id}>
                                     <div className={"commit_container"}>
-                                        <div style={{display:'flex', gap:'10px', textAlign:'center'}}>
-                                            <div className={"render_as_text_container"} style={{display:'flex', width:'6vw'}}>
-                                                <p style={{fontWeight:'550'}}>{commit.repository_name}/</p>
-                                                <p style={{color:'#aaadb1'}}>{commit.branch_name}</p>
-
-                                            </div>
-                                            <p style={{color: '#aaadb1'}}>Changes: {commit.changes}</p>
+                                        <div style={{gridColumn:'1', textAlign:'center'}}>
+                                            <p style={{fontWeight:'550'}}>{commit.repository_name}</p>
+                                            <p style={{color:'#aaadb1', lineHeight:'2vh'}}>{commit.branch_name}</p>
                                         </div>
-                                        
-                                        <p  style={{textAlign:'right', fontSize:'11px'}}>{new Date(commit.commit_time).toString().slice(4, 11)}</p>
-                                        
+                                        <div style={{gridColumn:'2', textAlign:'center', display:'grid', alignContent:'space-between'}}>
+                                            <p style={{color: '#aaadb1'}}>Changes: {commit.changes}</p>
+                                            <p  style={{fontSize:'11px'}}>{new Date(commit.commit_time).toString().slice(4, 11)}</p>
+                                        </div>
                                     </div>
                                 </Link>
                             )):

@@ -13,9 +13,9 @@ export default async function fetchBranchData(branch_id){
 
     try {
         await axios({
-            method: 'patch',
-            url: Host() + 'api/get/branch',
-            data: {
+            method: 'get',
+            url: Host() + 'api/branch',
+            params: {
                 branch_id: branch_id
             }
         }).then(res => {

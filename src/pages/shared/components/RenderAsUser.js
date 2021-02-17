@@ -12,8 +12,7 @@ export default class RenderAsUser extends React.Component{
         this.state={
             subject: params.subject,
             more: false,
-            modal: false,
-            is_group: params.is_group
+            modal: false
         }
         this.renderModal = this.renderModal.bind(this)
     }
