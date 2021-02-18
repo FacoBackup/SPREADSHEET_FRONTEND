@@ -47,13 +47,12 @@ export default class Extensions extends React.Component{
         return(
             <ThemeProvider theme={theme}>
                 <TopBarComponent/>
-                <div className="profile_center_component">
-                    <div className='profile_background_image_container'>
-
-                    </div>
+                <div>
+                    
                     <div className="center_component">
+                        
                         {this.state.loading === true ?
-                            <div style={{display:'flex', alignItems:'center', alignContent:'center', padding:'1vh'}}>
+                            <div style={{display:'flex', alignItems:'flex-start', alignContent:'flex-start', padding:'1vh'}}>
                                 <Skeleton variant="circle" style={{backgroundColor:'#aaadb1', width:'50px', height: '50px'}}/>
                                 <div style={{marginLeft:'1vw'}}>
                                     <Skeleton style={{backgroundColor:'#aaadb1', width:'25vw', height: '4vh'}}/>

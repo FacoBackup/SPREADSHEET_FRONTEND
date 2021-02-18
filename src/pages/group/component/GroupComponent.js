@@ -87,11 +87,11 @@ class GroupComponent extends React.Component {
 
                         <div className="center_component" style={{top:'27vh', height:'73vh'}}>
                             <div className='group_info_container'>
-                                <div style={{display:'flex', justifyContent: 'center'}}>
+                                <div style={{display:'flex', justifyContent: 'center', gridRow: '1'}}>
                                     <p style={{fontWeight: '550', textTransform:'uppercase'}}>{this.state.group.name}/</p>
                                     <p style={{color:'#aaadb1', fontSize: '15px'}}>{this.state.group.about}</p>
                                 </div>
-                                <div >
+                                <div style={{gridRow: '2'}}>
                                     <ButtonGroup size="medium" variant="text" >
                                         <Button style={{width:'21.5vw',height: '7.5vh', display:'grid', lineHeight: '0', textTransform:'none',color:(this.state.repositoriesOption === true? "#39adf6": "#aaadb1")}}
                                                 onClick={() => this.setState({

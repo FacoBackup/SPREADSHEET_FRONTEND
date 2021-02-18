@@ -10,9 +10,9 @@ export default async function fetchProfileData(user_id){
 
     try {
         await axios({
-            method: 'patch',
+            method: 'get',
             url: Host() + 'api/get/user/by_id',
-            data: {
+            params: {
                 user_id: user_id
             }
         }).then(res => {
